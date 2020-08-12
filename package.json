@@ -6,9 +6,16 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "antd": "^4.5.2",
+    "antd-img-crop": "^3.9.0",
+    "framer-motion": "^2.3.0",
+    "moment": "^2.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-perfect-scrollbar": "^1.5.8",
+    "react-scripts": "3.4.1",
+    "react-smooth-scrollbar": "^8.0.6",
+    "smooth-scrollbar": "^8.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@emeks/antd-custom-theme-generator": "^0.1.3"
   }
 }
