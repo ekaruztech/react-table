@@ -1,5 +1,8 @@
 import React from "react";
 import { Modal, Button, Space, Typography, message } from "antd";
+import ambient from '../sound/Alerts/notification_ambient.wav';
+import highIntensity from '../sound/Alerts/notification_high-intensity.wav';
+import errorSound from '../sound/Secondary/alert_error-01.wav';
 
 const key = "updatable";
 
@@ -11,10 +14,14 @@ const openMessage = () => {
 };
 const Messagesuccess = () => {
   message.success("This is a success message");
+  const audio = new Audio(highIntensity);
+  audio.play();
 };
 
 const Messageerror = () => {
   message.error("This is an error message");
+  const audio = new Audio(errorSound);
+  audio.play();
 };
 
 const Messagewarning = () => {

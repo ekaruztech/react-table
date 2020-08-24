@@ -1,6 +1,16 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Typography, Space } from "antd";
+import { Form, Input, Button, Checkbox, Typography, Space, Tooltip } from "antd";
+import {AudioOutlined, UserOutlined, InfoCircleOutlined} from '@ant-design/icons';
+const { Search } = Input;
 
+const suffix = (
+    <AudioOutlined
+        style={{
+          fontSize: 16,
+          color: '#1890ff !important',
+        }}
+    />
+);
 const layout = {
   labelCol: {
     span: 8,
@@ -74,6 +84,24 @@ export default () => {
           </Button>
         </Form.Item>
       </Form>
+
+      <br />
+      <Search
+          placeholder="input search text"
+          enterButton="Search"
+          size="large"
+          suffix={suffix}
+          onSearch={value => console.log(value)}
+      />
+      <Input
+          placeholder="Enter your username"
+          prefix={<UserOutlined className="site-form-item-icon" />}
+          suffix={
+            <Tooltip title="Extra information">
+              <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+            </Tooltip>
+          }
+      />
     </Space>
   );
 };

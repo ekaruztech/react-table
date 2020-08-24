@@ -1,21 +1,131 @@
 @import url("./node_modules/antd/lib/style/themes/default.less");
+@import "d.less";
 @import url("./node_modules/antd/dist/antd.less");
-@import url("https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200;300;400;469;500;600;700&display=swap");
+
 
 // An override for the html selector for theme prefixes
 @html-selector: html;
 :root {
-  // --accent: rgb(123, 104, 237);
-  --accent: rgb(123, 104, 237);
-  --accent35: rgba(123, 104, 237, 0.35);
-  --accent35: rgba(123, 104, 237, 0.2);
+  // --accent: rgb(62, 130, 255);'
+
+  // Default Theme
+
+  --accent: rgb(62, 130, 255);
+  --accent35: rgba(62, 130, 255, 0.35);
+  --accent2: rgba(62, 130, 255, 0.2);
   --border: hsv(0, 0, 94%);
   --foreground: white;
+  --background-primary: rgba(255, 255, 255, 1);
+  --background-secondary: rgba(247, 248, 250, 1);
+  --border-color-base: hsv(0, 0, 85%); // base border outline a component
+  --border-color-split: hsv(0, 0, 94%);
+  --picker-cell-color: rgba(0, 0, 0, 0.25);
+  --picker-bg: var(--background-primary);
+  --picker-basic-cell-active-with-range-color: @primary-1;
+  --picker-basic-cell-hover-with-range-color: lighten(@primary-color, 35%);
+  --picker-panel-bg: var(--background-primary);
+  --picker-header-button: rgba(0, 0, 0, 0.25);
+  --picker-header-button-main: var(--text-color);
+  // Color
+
+  --disabled-color: fade(#000, 25%);
+  --item-hover-bg: #f5f5f5;
+  --text-color: fade(@black, 65%);
+  --text-color-secondary: fade(@black, 45%);
+  --text-color-inverse: @white;
+  --text-color-inverse-fade: fade(rgba(255, 255, 255, 1), 50%);
+  --icon-color: inherit;
+  --icon-color-hover: fade(@black, 75%);
+  --heading-color: fade(#000, 85%);
+  --menu-item-active-bg: @primary-1;
+  --message-text-color: var(--text-color);
+  --notification-bg: var(--background-primary);
+  --popover-background: var(--background-primary);
+  --drawer-bg: var(--background-primary);
+  --tooltip-bg: rgba(0, 0, 0, 0.75);
+  --tooltip-color: #fff;
+  --process-tail-color: var(--border-color-split);
+  // Disabled states
+  --background-color-light: var(--background-primary); // background of header and selected item
+  --background-color-base: var(--background-secondary); // Default grey background color
+  --disabled-bg: var(--background-color-base);
+  --disabled-color-dark: fade(#fff, 35%);
+  // Radio
+  --radio-disabled-button-checked-bg: tint(@black, 90%);
+  --radio-dot-disabled-color: fade(@black, 20%);
+  // Input
+  --input-icon-hover-color: fade(@black, 85%);
+  // Modal
+  --modal-mask-bg: rgba(32, 41, 50, 0.75);
+  --modal-content-bg: var(--background-primary);
+  // Switch
+  --switch-shadow-color: fade(#00230b, 20%);
+
+  --message-notice-content-bg: var(--background-primary);
+  // Steps
+  --steps-nav-arrow-color: fade(@black, 25%);
+  --shade-40-text-color-secondary: shade(@text-color-secondary, 40%);
+  // Scroll
+  --scroll-thumb-color: #999;
+  --scroll-bg: #fff;
+  --btn-default-color: var(--text-color);
+
+  --skeleton-color: #f2f2f2;
+  --skeleton-to-color: shade(#f2f2f2, 5%);
+  --divider-color: rgba(0, 0, 0, 6%);
+  --checkbox-color: var(--accent);
+  --input-number-handler-border-color: var(--border-color-base);
+  --sbmenu-border: var(--border);
+  --draggable-background-1: var(--background-secondary);
+  --draggable-background-2: var(--background-primary);
 }
+
+&-notice{
+  & when not (@theme = dark) {
+    color: var(--shade-40-text-color-secondary);
+  }
+}
+//// Picker
+@picker-bg: var(--picker-bg);
+@picker-basic-cell-active-with-range-color: var(--picker-basic-cell-active-with-range-color);
+//&.@{picker-prefix-cls}-cell-week {
+//  color: var(--text-color-inverse-fade);
+//}
+
+// Steps
+@steps-nav-arrow-color: var(--steps-nav-arrow-color);
+// Switch
+@switch-shadow-color: var(--switch-shadow-color);
+// Modal
+@modal-content-bg: var(--modal-content-bg);
+@modal-header-bg: var(--modal-content-bg);
+@modal-mask-bg: var(--modal-mask-bg);
+@modal-close-color: var(--text-color-secondary);
+@menu-item-group-title-color: var(--text-color-secondary);
+@comment-author-name-color: var(--text-color-secondary);
+@comment-action-color: var(--text-color-secondary);
+@back-top-bg: var(--text-color-secondary);
+@alert-close-color: var(--text-color-secondary);
+@upload-actions-color: var(--text-color-secondary);
+// Input
+@input-icon-hover-color: var(--input-icon-hover-color);
+// Radio
+@radio-dot-disabled-color: var(--radio-dot-disabled-color);
+@radio-disabled-button-checked-bg: var(--radio-disabled-button-checked-bg);
+// -------- Slider-----------
+
+
+// -------- Text ---------
+@text-color: var(--text-color);
+//@text-color-secondary: var(--text-color-secondary);
+//@text-color-inverse: var(--text-color-inverse);
+//@icon-color: var(--icon-color);
+//@icon-color-hover: var(--icon-color-hover);
+@heading-color: var(--heading-color);
 // -------- Colors -----------
-@picker-basic-cell-hover-with-range-color: var(--accent35);
-@picker-date-hover-range-border-color: var(--accent20);
-@blue-6: rgb(123, 104, 237);
+//@picker-basic-cell-hover-with-range-color: var(--accent35);
+//@picker-date-hover-range-border-color: var(--accent20);
+@blue-6: #3E82FF;
 @primary-color: @blue-6;
 @info-color: @primary-color;
 @success-color: @green-6;
@@ -26,18 +136,23 @@
 @normal-color: #d9d9d9;
 @white: #fff;
 @black: #000;
-@border-radius-base: 2px;
+@border-radius-base: 4px;
 @font-family: Poppins, Muli, "Segoe UI", sans-serif;
-// @shadow-1-up: 0 -6px 16px -8px rgba(123, 104, 237, 0.08), 0 -9px 28px 0 rgba(123, 104, 237, 0.05),
-//   0 -12px 48px 16px rgba(123, 104, 237, 0.03);
-// @shadow-1-down: 0 6px 16px -8px rgba(123, 104, 237, 0.08), 0 9px 28px 0 rgba(123, 104, 237, 0.05),
-//   0 12px 48px 16px rgba(123, 104, 237, 0.03);
-// @shadow-1-left: -6px 0 16px -8px rgba(123, 104, 237, 0.08), -9px 0 28px 0 rgba(123, 104, 237, 0.05),
-//   -12px 0 48px 16px rgba(123, 104, 237, 0.03);
-// @shadow-1-right: 6px 0 16px -8px rgba(123, 104, 237, 0.08), 9px 0 28px 0 rgba(123, 104, 237, 0.05),
-//   12px 0 48px 16px rgba(123, 104, 237, 0.03);
-// @shadow-2: 0 3px 6px -4px rgba(123, 104, 237, 0.12), 0 6px 16px 0 rgba(123, 104, 237, 0.08),
-//   0 9px 28px 8px rgba(123, 104, 237, 0.05);
+@item-hover-bg: var(--item-hover-bg);
+@checkbox-color: var(--checkbox-color);
+@checkbox-check-bg: var(--background-primary);
+@input-number-handler-border-color: var(--input-number-handler-border-color);
+//@disabled-color: var(--disabled-color);
+// @shadow-1-up: 0 -6px 16px -8px rgba(62, 130, 255, 0.08), 0 -9px 28px 0 rgba(62, 130, 255, 0.05),
+//   0 -12px 48px 16px rgba(62, 130, 255, 0.03);
+// @shadow-1-down: 0 6px 16px -8px rgba(62, 130, 255, 0.08), 0 9px 28px 0 rgba(62, 130, 255, 0.05),
+//   0 12px 48px 16px rgba(62, 130, 255, 0.03);
+// @shadow-1-left: -6px 0 16px -8px rgba(62, 130, 255, 0.08), -9px 0 28px 0 rgba(62, 130, 255, 0.05),
+//   -12px 0 48px 16px rgba(62, 130, 255, 0.03);
+// @shadow-1-right: 6px 0 16px -8px rgba(62, 130, 255, 0.08), 9px 0 28px 0 rgba(62, 130, 255, 0.05),
+//   12px 0 48px 16px rgba(62, 130, 255, 0.03);
+// @shadow-2: 0 3px 6px -4px rgba(62, 130, 255, 0.12), 0 6px 16px 0 rgba(62, 130, 255, 0.08),
+//   0 9px 28px 8px rgba(62, 130, 255, 0.05);
 
 // Menu
 @menu-inline-toplevel-item-height: 50px;
@@ -48,24 +163,99 @@
 @menu-item-boundary-margin: 0px;
 @menu-icon-size: 16px;
 @menu-collapsed-width: 60px;
-
+@menu-item-active-bg: var(--menu-item-active-bg);
 // Layout
-@body-background: #f7f8fa;
-@layout-body-background: #f7f8fa;
-// @border-color-base: yellow; // base border outline a component
-// @border-color-split: cyan; // split border inside a component
+@body-background: var(--background-secondary);
+@layout-body-background: var(--background-secondary);
+@layout-sider-background-light: var(--background-primary);
+@component-background: var(--background-primary);
+@background-color-light: var(--background-color-light); // background of header and selected item
+@background-color-base: var(--background-color-base); // Default grey background color
+ @border-color-base: var(--border-color-base); // base border outline a component
+ @border-color-split: var(--border-color-split); // split border inside a component
 
+@message-notice-content-bg: var(--message-notice-content-bg);
+@notification-bg: var(--notification-bg);
+@popover-background: var(--popover-background);
+@popover-bg: var(--popover-background);
+//@menu-bg: var(--popover-background);
+@menu-popup-bg: var(--popover-background);
+@dropdown-menu-bg: var(--popover-background);
+@select-dropdown-bg: var(--popover-background);
+@drawer-bg: var(--drawer-bg);
+@btn-default-color: var(--btn-default-color);
 // Tooltip
 // ---
 // Tooltip max width
 // @tooltip-max-width: 250px;
 // // Tooltip text color
-// @tooltip-color: #fff;
+ @tooltip-color: var(--tooltip-color);
 // // Tooltip background color
-// @tooltip-bg: rgba(0, 0, 0, 0.75);
+ @tooltip-bg: var(--tooltip-bg);
 // // Tooltip arrow width
 // @tooltip-arrow-width: 5px;
 // // Tooltip distance with trigger
 // @tooltip-distance: @tooltip-arrow-width - 1px + 4px;
 // // Tooltip arrow color
-// @tooltip-arrow-color: @tooltip-bg;
+ @tooltip-arrow-color: @tooltip-bg;
+@picker-basic-cell-hover-with-range-color: var(--picker-basic-cell-hover-with-range-color);
+@table-header-bg: #fff;
+@pagination-item-disabled-bg-active: @disabled-bg;
+@process-tail-color: var(--process-tail-color);
+@skeleton-color: var(--skeleton-color);
+@skeleton-to-color: var(--skeleton-to-color);
+//@divider-color: var(--divider-color);
+//:root {
+//    --accent: #4C52BC;
+//    --accent35: rgba(62, 130, 255, 0.35);
+//    --accent2: rgba(62, 130, 255, 0.2);
+//    --border: #162123;
+//    --foreground: white;
+//    --background-primary: #131d1e;
+//    --background-secondary: #162123;
+//    --border-color-base: var(--text-color); // base border outline a component
+//    --border-color-split: rgba(19, 29, 30, 1);
+//    --text-color: rgb(78, 93, 106);
+//    --text-color-secondary: rgba(78, 93, 106, 0.65);
+//    --text-color-inverse: #fff;
+//    --text-color-inverse-fade: rgba(0, 0, 0, 0.5);
+//    --icon-color: var(--text-color);
+//    --icon-color-hover: rgba(78, 93, 106, 0.75);
+//    --heading-color: rgba(255, 255, 255, 0.85);
+//    --disabled-color: fade(#4E5D6A, 50%);
+//    --background-color-light: var(--background-primary); // background of header and selected item
+//    --background-color-base: var(--background-secondary); // Default grey background color
+//    --disabled-bg: var(--background-color-base);
+//    --disabled-color-dark: rgba(255, 255, 255, 0.35);
+//    --radio-disabled-button-checked-bg: #e6e6e6;
+//    --radio-dot-disabled-color: rgba(78, 93, 106, 0.2);
+//    --input-icon-hover-color: rgba(0, 0, 0, 0.85);
+//    --modal-mask-bg: rgba(78, 93, 106, 0.45);
+//    --switch-shadow-color: rgba(0, 35, 11, 0.2);
+//    --steps-nav-arrow-color: rgba(255, 255, 255, 0.25);
+//    --shade-40-text-color-secondary: rgba(0, 0, 0, 0.67);
+//    --picker-cell-color: rgba(78, 93, 106, 0.45);
+//  --picker-bg: var(--background-secondary);
+//  --picker-panel-bg: var(--background-secondary);
+//  --picker-basic-cell-active-with-range-color: lighten(@primary-color, 20%);;
+//  --picker-basic-cell-hover-with-range-color: lighten(@primary-color, 10%);
+//  --picker-header-button: var(--text-color);
+//  --picker-header-button-main: var(--heading-color);
+//  --menu-item-active-bg: var(--background-secondary);
+//
+//  --modal-content-bg: var(--background-secondary);
+//  --message-notice-content-bg: var(--background-secondary);
+//  --message-text-color: var(--heading-color);
+//  --notification-bg: var(--background-secondary);
+//  --popover-background: var(--background-secondary);
+//  --drawer-bg: var(--background-secondary);
+//  --tooltip-bg: var(--text-color);
+//  --tooltip-color: var(--heading-color);
+//  --scroll-thumb-color: var(--text-color);
+//  --scroll-bg: var(--background-primary);
+//  --btn-default-color: var(--heading-color);
+//  --process-tail-color: var(--border-color-base);
+//  --skeleton-color: var(--text-color);
+//  --skeleton-to-color: shade(#131d1e, 5%);
+//  --divider-color: rgba(255, 255, 255, 6%);
+//}
