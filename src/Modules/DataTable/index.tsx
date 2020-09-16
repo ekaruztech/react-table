@@ -1,337 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import PropTypes from "prop-types";
+import React, {useEffect, useMemo, useState} from "react";
 import "./styles.scss";
-import {
-  FilterOutlined,
-  ReloadOutlined,
-  PlusOutlined,
-  TableOutlined,
-  DownloadOutlined,
-  CloseCircleFilled,
-  SettingOutlined,
-  FileTextOutlined,
-  FilePdfOutlined,
-  FileExcelOutlined,
-  AlignCenterOutlined,
-  AlignLeftOutlined,
-} from "@ant-design/icons";
+import { SettingOutlined } from "@ant-design/icons";
 import moment from "moment";
-import {
-  Menu,
-  Select,
-  Button,
-  Modal,
-  Tooltip,
-  Input,
-  DatePicker,
-  Divider,
-  Dropdown,
-  InputNumber,
-  Radio,
-  Tabs,
-  Checkbox,
-} from "antd";
+import { Button, Tooltip } from "antd";
 import TableHead from "./partials/TableHead";
 import TableBody from "./partials/TableBody";
 import TableFooter from "./partials/TableFooter";
-import ColumnFilter from "./partials/ColumnFilter";
-import { capitalize, clamp, last, filter, isEmpty, map, find } from "lodash";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import { SortableContainer, SortableElement } from "react-sortable-hoc";
-import arrayMove from "array-move";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-// fake data generator
+import { clamp } from "lodash";
+import DataManagement from "./partials/DataManagement";
+import TableControls from "./partials/TableControls";
+import {ColumnProps} from "./types/types";
 
-// a little function to help us with reordering the result
 
-const { Option } = Select;
-const { TabPane } = Tabs;
-const { Search } = Input;
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
-
-const propTypes = {
-  isFetchingResource: PropTypes.bool,
-  isAddingResource: PropTypes.bool,
-  resources: PropTypes.arrayOf(PropTypes.object),
-};
-
-const defaultProps = {
-  isFetchingResource: false,
-  isAddingResource: false,
-  resources: [],
-};
-
-export const useDimension = () => {
-  const [dimension, setDimension] = useState({
-    height: window.innerHeight,
-    width: window.innerWidth,
-  });
-  useEffect(() => {
-    const handleDimensionChange = () => {
-      setDimension({ height: window.innerHeight, width: window.innerWidth });
-    };
-    window.addEventListener("resize", handleDimensionChange);
-
-    return () => window.removeEventListener("resize", handleDimensionChange);
-  }, []);
-
-  return dimension;
-};
-const PagesContentMenu = ({ itemsLength, setPageLength }) => (
-  <Select
-    defaultValue="all"
-    style={{ width: 150 }}
-    onChange={(e) => console.log(e)}
-  >
-    <Option value="all">Showing All</Option>
-    <Option value="15">15 per page</Option>
-    <Option value="30">30 per page</Option>
-    <Option value="45">45 per page</Option>
-    <Option value="60">60 per page</Option>
-  </Select>
-);
-const PageRenderOrder = ({
-  setPageSortOrder = (value) => console.log(value),
-  pageSortOrder = "descending",
-}) => {
-  const [items, setItems] = useState([
-    { label: `15 per page`, value: 15 },
-    {
-      label: "30 per page",
-      value: 30,
-    },
-    { label: "50 per page", value: 50 },
-    { label: "100 per page", value: 100 },
-  ]);
-  const [inputValue, setInputValue] = useState("");
-  const handleCustomize = () => {
-    setItems((prev) => [
-      ...prev,
-      { label: `${inputValue} per page`, value: parseInt(inputValue, 10) },
-    ]);
-    setInputValue("");
-  };
-  return (
-    <>
-      <Button
-        style={{
-          borderTopRightRadius: 0,
-          borderBottomRightRadius: 0,
-          zIndex: 2,
-        }}
-        type={"primary"}
-      >
-        Showing
-      </Button>
-      <Select
-        style={{
-          width: 200,
-          marginLeft: -3,
-          borderTopLeftRadius: 0,
-          borderBottomLeftRadius: 0,
-        }}
-        placeholder="Customize data listing"
-        defaultValue={"15 per page"}
-        options={items}
-        dropdownRender={(menu) => (
-          <div>
-            <div className={"vmw-data-sort-order-header"}>
-              <p>Number of data</p>
-            </div>
-            {menu}
-            <Divider style={{ margin: "4px 0" }} />
-            <div style={{ display: "flex", flexWrap: "nowrap", padding: 8 }}>
-              <InputNumber
-                min={10}
-                max={500}
-                defaultValue={15}
-                step={5}
-                style={{ flex: "auto" }}
-                // value={}
-                placeholder={"Data per page"}
-                value={inputValue}
-                onChange={(value) => setInputValue(`${value}`)}
-              />
-            </div>
-            <Divider style={{ margin: "4px 0" }} />
-            <div style={{ display: "flex", flexWrap: "nowrap", padding: 8 }}>
-              <Button
-                type={"primary"}
-                block
-                icon={<PlusOutlined />}
-                onClick={handleCustomize}
-              >
-                Customize
-              </Button>
-            </div>
-          </div>
-        )}
-      ></Select>
-    </>
-  );
-};
-
-const TableDensity = () => {
-  const [value, setValue] = useState("default");
-  return (
-    <div style={{ marginRight: 20 }}>
-      <Radio.Group
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        optionType="button"
-        buttonStyle="solid"
-      >
-        <Radio.Button value="small">
-          <AlignCenterOutlined />
-        </Radio.Button>
-        <Radio.Button value="default">
-          <AlignLeftOutlined />
-        </Radio.Button>
-      </Radio.Group>
-    </div>
-  );
-};
-
-const FilterColumn = ({
-  visible,
-  handleOk,
-  handleCancel,
-  columns,
-  setColumns,
-
-  maxColumns,
-  minColumns,
-  defaultColumns,
-}) => {
-  const filters = [
-    { label: "Equals to", value: "equals to" },
-    { label: "Begins with", value: "begins with" },
-    { label: "Contains", value: "contains" },
-    { label: "In between", value: "in between" },
-    { label: "Not equals to", value: "not equals to" },
-    { label: "Greater than", value: "greater than" },
-    { label: "Less than", value: "Less than" },
-  ];
-  const [numOfFilters, setNumOfFilters] = useState([{ key: 1 }]);
-  const dimension = useDimension();
-
-  return (
-    <Modal
-      visible={visible}
-      title={"Data Settings"}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      centered
-      width={"75%"}
-      bodyStyle={{ height: dimension.height * 0.65, padding: 0 }}
-      footer={[
-        <div
-          key={"filter-columns-footer"}
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Button
-            key="submit"
-            type="primary"
-            onClick={handleOk}
-            style={{ marginRight: 10 }}
-          >
-            Apply filter
-          </Button>
-          <Button type={"dashed"} key="back" onClick={handleCancel}>
-            Cancel
-          </Button>
-        </div>,
-      ]}
-    >
-      <Tabs
-        defaultActiveKey="1"
-        centered
-        tabBarStyle={{ height: 50 }}
-        tabBarGutter={40}
-      >
-        <TabPane tab="Reorder Columns" key="1">
-          {/*<App*/}
-          {/*  dimension={dimension}*/}
-          {/*  setColumns={setColumns}*/}
-          {/*  columns={columns}*/}
-          {/*  maxColumns={maxColumns}*/}
-          {/*  minColumns={minColumns}*/}
-          {/*/>*/}
-        </TabPane>
-        <TabPane tab="Filter Data" key="2"></TabPane>
-        <TabPane tab="Sort data" key="3"></TabPane>
-      </Tabs>
-    </Modal>
-  );
-};
-const ExportDropDown = () => {
-  const menu = (
-    <Menu>
-      <Menu.Item
-        key="0"
-        icon={
-          <ReloadOutlined
-            style={{ color: "var(--accent)", paddingRight: 10 }}
-          />
-        }
-      >
-        Refresh
-      </Menu.Item>
-      <Menu.Item
-        key="1"
-        icon={
-          <FileTextOutlined
-            style={{ color: "var(--accent)", paddingRight: 10 }}
-          />
-        }
-      >
-        Export as CSV
-      </Menu.Item>
-      <Menu.Item
-        key="3"
-        icon={
-          <FileExcelOutlined
-            style={{ color: "var(--accent)", paddingRight: 10 }}
-          />
-        }
-      >
-        Export as Excel
-      </Menu.Item>
-      <Menu.Item
-        key="4"
-        icon={
-          <FilePdfOutlined
-            style={{ color: "var(--accent)", paddingRight: 10 }}
-          />
-        }
-      >
-        Export as PDF
-      </Menu.Item>
-    </Menu>
-  );
-
-  return (
-    <Dropdown overlay={menu} trigger={["click"]}>
-      <Tooltip title={"Export data"}>
-        <Button
-          icon={<DownloadOutlined style={{ fontSize: 17 }} />}
-          style={{ width: 160 }}
-        >
-          Export data
-        </Button>
-      </Tooltip>
-    </Dropdown>
-  );
-};
-const RoutePoint = (props) => {
+interface DataTableProps {
+  columns: ColumnProps[],
+  dataSource: Array<any>,
+  minColumns?: number,
+  maxColumns?: number
+}
+const DataTable = (props: DataTableProps) => {
   const {
     columns: defaultColumns,
     dataSource,
@@ -359,7 +47,7 @@ const RoutePoint = (props) => {
     all: dataSource.length,
     currentPage: 2,
   });
-  const onCheckedChange = (checkedList) => {
+  const onCheckedChange = (checkedList: any) => {
     setCheckedState({
       checkedList,
       indeterminate:
@@ -368,79 +56,68 @@ const RoutePoint = (props) => {
     });
   };
   //TODO: Find an optional way to get the total width of the table to enable responsiveness on screens.
-  const onCheckAllChange = (e) => {
+  const onCheckAllChange = (e: any) => {
+
     setCheckedState({
+      // @ts-ignore
       checkedList: e.target.checked ? dataSource : [],
       indeterminate: false,
       checkAll: e.target.checked,
     });
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const wrapper = document.querySelector(".vmw-table-wrapper");
-      const fixed = document.querySelector(".vmw-table-fixed");
-      const spaceFromTop = wrapper?.getBoundingClientRect?.()?.top;
-      console.log({ spaceFromTop });
-      if (spaceFromTop <= 120 && fixed) {
-        fixed.style.display = "table";
-        fixed.style.top = "215px";
-        fixed.style.position = "fixed";
-      } else {
-        if (fixed) {
-          fixed.style.display = "none";
-        }
-      }
-    };
-    const App = document.querySelector(".App");
-    if (App) {
-      App.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (App) {
-        App.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleOnload = () => {
-      const fixedTable = document.querySelector(".vmw-table-fixed");
-      const container = document.querySelector(".vmw-table-container");
-      if (fixedTable) {
-        fixedTable.style.width = `${
-          container?.offsetWidth ? `${container?.offsetWidth}px` : "100%"
-        }`;
-        fixedTable.style.display = `none`;
-      }
-    };
-    window.addEventListener("DOMContentLoaded", handleOnload);
-    return () => window.removeEventListener("DOMContentLoaded", handleOnload);
-  }, []);
-  const onExpandColumnClick = (ref) => {
-    const nextSibling = ref?.current?.nextElementSibling;
-    nextSibling.classList.toggle("vmw-table-collapsible-active");
-    nextSibling.classList.toggle("vmw-table-collapsible-inactive");
-    const div = nextSibling.querySelector(".vmw-table-collapsible-inner");
-    div.classList.toggle("vmw-table-collapsible-active");
-    div.classList.toggle("vmw-table-collapsible-inactive");
-  };
-  const handleFilterColumnClick = () => {
-    console.log("clickkkk");
-  };
-
   const handleFilterColumnCancel = () => {
     setFilterColumn((prev) => ({ ...prev, visible: false }));
   };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const wrapper = document.querySelector(".___table-wrapper");
+  //     const fixed = document.querySelector(".___table-fixed");
+  //     const spaceFromTop = wrapper?.getBoundingClientRect?.()?.top;
+  //     console.log({ spaceFromTop });
+  //     if (spaceFromTop <= 120 && fixed) {
+  //       fixed.style.display = "table";
+  //       fixed.style.top = "215px";
+  //       fixed.style.position = "fixed";
+  //     } else {
+  //       if (fixed) {
+  //         fixed.style.display = "none";
+  //       }
+  //     }
+  //   };
+  //   const App = document.querySelector(".App");
+  //   if (App) {
+  //     App.addEventListener("scroll", handleScroll);
+  //   }
+  //   return () => {
+  //     if (App) {
+  //       App.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // }, []);
+  //
+  // useEffect(() => {
+  //   const handleOnload = () => {
+  //     const fixedTable = document.querySelector(".___table-fixed");
+  //     const container = document.querySelector(".___table-container");
+  //     if (fixedTable) {
+  //       fixedTable.style.width = `${
+  //         container?.offsetWidth ? `${container?.offsetWidth}px` : "100%"
+  //       }`;
+  //       fixedTable.style.display = `none`;
+  //     }
+  //   };
+  //   window.addEventListener("DOMContentLoaded", handleOnload);
+  //   return () => window.removeEventListener("DOMContentLoaded", handleOnload);
+  // }, []);
 
-  const columnKeys = columns.selected.map((value) => value?.key);
+  const columnKeys = useMemo(() => columns.selected.map((value) => value?.key), [columns.selected]);
 
   return (
-    <div className={"vmw-table-container"}>
-      <div className={"vmw-table-sort"}>
-        <div className={"vmw-table-sort-inner-left"}>
-          <div className={"vmw-table-filter-radio-sort"}>
-            <Tooltip title={"Customize data"}>
+    <div className={"___table-container"}>
+      <div className={"___table-sort"}>
+        <div className={"___table-sort-inner-left"}>
+          <div className={"___table-filter-radio-sort"}>
+            <Tooltip title={"Manage data"}>
               <Button
                 icon={<SettingOutlined style={{ fontSize: 17 }} />}
                 onClick={() => {
@@ -448,33 +125,29 @@ const RoutePoint = (props) => {
                 }}
                 type={"primary"}
               >
-                Data settings
+                Data Management
               </Button>
             </Tooltip>
-            <FilterColumn
+            <DataManagement
               visible={filterColumn.visible}
               handleCancel={handleFilterColumnCancel}
-              handleOk={handleFilterColumnClick}
-              setColumns={setColumns}
               columns={columns}
-              maxColumns={maxColumns}
-              minColumns={minColumns}
-              defaultColumns={defaultColumns}
+              dataSource={dataSource}
             />
           </div>
 
-          <div className={"vmw-table-filter-btn-container"}>
-            <ExportDropDown />
+          <div className={"___table-filter-btn-container"}>
+            <TableControls.ControlActions />
           </div>
         </div>
 
-        <div className={"vmw-table-sort-inner-right"}>
-          <TableDensity />
-          <PageRenderOrder itemsLength={dataSource?.length} />
+        <div className={"___table-sort-inner-right"}>
+          <TableControls.ColumnDensity />
+          <TableControls.RenderOrder />
         </div>
       </div>
-      <div className={"vmw-table-wrapper"}>
-        <table className={"vmw-table"}>
+      <div className={"___table-wrapper"}>
+        <table className={"___table"}>
           <TableHead
             columns={columns}
             columnKeys={columnKeys}
@@ -488,16 +161,12 @@ const RoutePoint = (props) => {
           <TableBody
             columns={columns}
             columnKeys={columnKeys}
-            onCheckAllChange={onCheckAllChange}
-            onExpandColumnClick={onExpandColumnClick}
             checkState={checkState}
             onCheckedChange={onCheckedChange}
             dataSource={dataSource}
-            minColumns={minColumns}
-            maxColumns={maxColumns}
           />
         </table>
-        {/*<table className={'vmw-table-fixed'}>*/}
+        {/*<table className={'___table-fixed'}>*/}
         {/*    <TableHead*/}
         {/*        columns={columns}*/}
         {/*        columnKeys={columnKeys}*/}
@@ -520,8 +189,7 @@ const RoutePoint = (props) => {
   );
 };
 
-RoutePoint.propTypes = propTypes;
-RoutePoint.defaultProps = {
+DataTable.defaultProps = {
   dataSource: [
     {
       key: "1",
@@ -635,7 +303,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "8",
-      name: "Hanna Lee",
+      name: "Joseph Xi Lee",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -654,7 +322,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "10",
-      name: "Hanna Lee",
+      name: "Mikel Leeland",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -673,7 +341,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "11",
-      name: "Hanna Lee",
+      name: "Hanna Klose",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -692,7 +360,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "13",
-      name: "Hanna Lee",
+      name: "Hanna Um",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -711,7 +379,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "14",
-      name: "Hanna Lee",
+      name: "Josh Butland",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -730,7 +398,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "15",
-      name: "Hanna Lee",
+      name: "Gideon Morning",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -749,7 +417,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "16",
-      name: "Hanna Lee",
+      name: "James Levi",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -768,7 +436,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "17",
-      name: "Hanna Lee",
+      name: "Priah Singh",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -787,7 +455,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "18",
-      name: "Hanna Lee",
+      name: "Johanna Lee",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -806,7 +474,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "19",
-      name: "Hanna Lee",
+      name: "Emerald Lalong",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -825,7 +493,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "20",
-      name: "Hanna Lee",
+      name: "Lulu Oyetola",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -844,7 +512,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "21",
-      name: "Hanna Lee",
+      name: "Matthew Lee",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -863,7 +531,7 @@ RoutePoint.defaultProps = {
     },
     {
       key: "22",
-      name: "Hanna Lee",
+      name: "Gretchen Spears",
       age: 6,
       address: "40 Houstin Street",
       hobby: "Running",
@@ -887,6 +555,7 @@ RoutePoint.defaultProps = {
       dataIndex: "name",
       key: "name",
       type: "text",
+      autoComplete: true,
     },
     {
       title: "DOB",
@@ -900,26 +569,35 @@ RoutePoint.defaultProps = {
       title: "Age",
       dataIndex: "age",
       key: "age",
-      type: "text",
+      type: "number",
     },
     {
       title: "Hobby",
       dataIndex: "hobby",
       key: "hobby",
-      type: "text",
+      type: "list",
       presentationType: "tag",
+      multiple: true,
+      listMenu: [
+        { label: "Swimming", value: "swimming" },
+        { label: "Skipping", value: "skipping" },
+        { label: "Skiing", value: "skiing" },
+        { label: "Gaming", value: "gaming" },
+        { label: "Movies", value: "movies" },
+      ],
     },
     {
       title: "Food type",
       dataIndex: "food_type",
       key: "food_type",
-      type: "text",
+      type: "boolean",
     },
     {
       title: "ID-1",
       dataIndex: "id",
       key: "id",
       type: "text",
+      autoComplete: true,
     },
 
     {
@@ -951,8 +629,4 @@ RoutePoint.defaultProps = {
   minColumns: 4,
 };
 
-const dispatchProps = {};
-
-const stateProps = (state) => ({});
-
-export default RoutePoint;
+export default DataTable;
