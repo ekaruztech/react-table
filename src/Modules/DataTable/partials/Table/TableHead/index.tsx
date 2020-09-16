@@ -1,9 +1,9 @@
 import { Button, Checkbox, Popover, Tooltip } from "antd";
-import TableControls from "../TableControls";
+import TableControls from "../../Controls";
 import { PlusOutlined } from "@ant-design/icons";
 import React from "react";
 import { motion } from "framer-motion";
-import { TableColumnProps, ColumnProps } from "../../types/types";
+import { TableColumnProps, ColumnProps } from "../../../types";
 
 type TableHeadProps = {
   columns: TableColumnProps;

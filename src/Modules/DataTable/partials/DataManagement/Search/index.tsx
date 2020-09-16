@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Button, DatePicker, Input, InputNumber, Select, Typography} from "antd";
 import {SearchOutlined} from '@ant-design/icons';
 import {Align, Padding} from "../../UtilityComponents";
-import {ColumnProps, TableColumnProps} from "../../../types/types";
+import {ColumnProps, TableColumnProps} from "../../../types";
 
 const {Option} = Select;
 interface SearchProps {

@@ -8,7 +8,7 @@ import {
   TableColumnProps,
   TableFilterAction,
   TableFilterProps,
-} from "../../../../../types/types";
+} from "../../../../../types";
 import RenderFilterType from "../RenderFilterType";
 
 const { Option } = Select;

@@ -3,7 +3,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { Button } from "antd";
 import "./_style.scss";
 import Sortable from "./_partials/Sortable";
-import { ColumnProps, TableColumnProps } from "../../../types/types";
+import { ColumnProps, TableColumnProps } from "../../../types";
 
 type ColumnReorderProps = {
   setColumns: React.Dispatch<React.SetStateAction<TableColumnProps>>;

@@ -7,7 +7,7 @@ import { initDataManagementState, dataManagementReducer } from "./reducer";
 import Search from './Search';
 import Filter from './Filter';
 import Sort from './Sort';
-import {TableColumnProps, TableFilterAction, TableFilterState} from "../../types/types";
+import {TableColumnProps, TableFilterAction, TableFilterState} from "../../types";
 import {motion} from 'framer-motion';
 
 const { TabPane } = Tabs;

@@ -18,7 +18,7 @@ import {
 } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import CellMenu from "./_partials/CellMenu";
-import { ColumnProps } from "../../types/types";
+import { ColumnProps } from "../../../types";
 
 type TableCellProps = {
   checked: boolean;

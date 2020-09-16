@@ -7,7 +7,7 @@ import {
   TableColumnProps,
   TableFilterState,
   TableFilterAction,
-} from "../../../types/types";
+} from "../../../types";
 import FilterItem from "./_partials/FilterItem";
 
 type FilterProps = {

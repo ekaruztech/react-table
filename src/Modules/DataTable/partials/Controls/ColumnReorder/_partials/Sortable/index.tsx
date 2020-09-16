@@ -5,7 +5,7 @@ import { reorder } from "../../_utils";
 import { isEmpty, find, last } from "lodash";
 // @ts-ignore
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { TableColumnProps, ColumnProps } from "../../../../../types/types";
+import { TableColumnProps, ColumnProps } from "../../../../../types";
 
 type Sortable = {
   setColumns: React.Dispatch<React.SetStateAction<TableColumnProps>>;

@@ -1,4 +1,4 @@
-import {ColumnProps} from "../../../../types/types";
+import {ColumnProps} from "../../../../types";
 
 const reorder = (
   list: Array<ColumnProps>,

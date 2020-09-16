@@ -1,7 +1,7 @@
 import { find } from "lodash";
 import TableCell from "../TableCell";
 import React from "react";
-import { TableColumnProps } from "../../types/types";
+import { TableColumnProps } from "../../../types";
 
 const text = `
   A dog is a type of domesticated animal.

@@ -1,23 +1,16 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./styles.scss";
-import { SettingOutlined } from "@ant-design/icons";
 import moment from "moment";
-import { Button, Tooltip } from "antd";
-import TableHead from "./partials/TableHead";
-import TableBody from "./partials/TableBody";
-import TableFooter from "./partials/TableFooter";
-
+import Table from "./partials/Table";
+import Header from "./partials/Header";
 import { clamp } from "lodash";
-import DataManagement from "./partials/DataManagement";
-import TableControls from "./partials/TableControls";
-import {ColumnProps} from "./types/types";
-
+import { ColumnProps } from "./types";
 
 interface DataTableProps {
-  columns: ColumnProps[],
-  dataSource: Array<any>,
-  minColumns?: number,
-  maxColumns?: number
+  columns: ColumnProps[];
+  dataSource: Array<any>;
+  minColumns?: number;
+  maxColumns?: number;
 }
 const DataTable = (props: DataTableProps) => {
   const {
@@ -37,7 +30,7 @@ const DataTable = (props: DataTableProps) => {
         ? defaultColumns?.slice?.(maxColumns, defaultColumns.length)
         : [],
   });
-  const [filterColumn, setFilterColumn] = useState({ visible: false });
+
   const [checkState, setCheckedState] = useState({
     checkedList: [],
     indeterminate: true,
@@ -57,7 +50,6 @@ const DataTable = (props: DataTableProps) => {
   };
   //TODO: Find an optional way to get the total width of the table to enable responsiveness on screens.
   const onCheckAllChange = (e: any) => {
-
     setCheckedState({
       // @ts-ignore
       checkedList: e.target.checked ? dataSource : [],
@@ -65,126 +57,29 @@ const DataTable = (props: DataTableProps) => {
       checkAll: e.target.checked,
     });
   };
-  const handleFilterColumnCancel = () => {
-    setFilterColumn((prev) => ({ ...prev, visible: false }));
-  };
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const wrapper = document.querySelector(".___table-wrapper");
-  //     const fixed = document.querySelector(".___table-fixed");
-  //     const spaceFromTop = wrapper?.getBoundingClientRect?.()?.top;
-  //     console.log({ spaceFromTop });
-  //     if (spaceFromTop <= 120 && fixed) {
-  //       fixed.style.display = "table";
-  //       fixed.style.top = "215px";
-  //       fixed.style.position = "fixed";
-  //     } else {
-  //       if (fixed) {
-  //         fixed.style.display = "none";
-  //       }
-  //     }
-  //   };
-  //   const App = document.querySelector(".App");
-  //   if (App) {
-  //     App.addEventListener("scroll", handleScroll);
-  //   }
-  //   return () => {
-  //     if (App) {
-  //       App.removeEventListener("scroll", handleScroll);
-  //     }
-  //   };
-  // }, []);
-  //
-  // useEffect(() => {
-  //   const handleOnload = () => {
-  //     const fixedTable = document.querySelector(".___table-fixed");
-  //     const container = document.querySelector(".___table-container");
-  //     if (fixedTable) {
-  //       fixedTable.style.width = `${
-  //         container?.offsetWidth ? `${container?.offsetWidth}px` : "100%"
-  //       }`;
-  //       fixedTable.style.display = `none`;
-  //     }
-  //   };
-  //   window.addEventListener("DOMContentLoaded", handleOnload);
-  //   return () => window.removeEventListener("DOMContentLoaded", handleOnload);
-  // }, []);
 
-  const columnKeys = useMemo(() => columns.selected.map((value) => value?.key), [columns.selected]);
+  const columnKeys = useMemo(
+    () => columns.selected.map((value) => value?.key),
+    [columns.selected]
+  );
 
   return (
     <div className={"___table-container"}>
-      <div className={"___table-sort"}>
-        <div className={"___table-sort-inner-left"}>
-          <div className={"___table-filter-radio-sort"}>
-            <Tooltip title={"Manage data"}>
-              <Button
-                icon={<SettingOutlined style={{ fontSize: 17 }} />}
-                onClick={() => {
-                  setFilterColumn((prev) => ({ ...prev, visible: true }));
-                }}
-                type={"primary"}
-              >
-                Data Management
-              </Button>
-            </Tooltip>
-            <DataManagement
-              visible={filterColumn.visible}
-              handleCancel={handleFilterColumnCancel}
-              columns={columns}
-              dataSource={dataSource}
-            />
-          </div>
-
-          <div className={"___table-filter-btn-container"}>
-            <TableControls.ControlActions />
-          </div>
-        </div>
-
-        <div className={"___table-sort-inner-right"}>
-          <TableControls.ColumnDensity />
-          <TableControls.RenderOrder />
-        </div>
-      </div>
-      <div className={"___table-wrapper"}>
-        <table className={"___table"}>
-          <TableHead
-            columns={columns}
-            columnKeys={columnKeys}
-            onCheckAllChange={onCheckAllChange}
-            setColumns={setColumns}
-            checkState={checkState}
-            maxColumns={maxColumns}
-            minColumns={minColumns}
-            defaultColumns={defaultColumns}
-          />
-          <TableBody
-            columns={columns}
-            columnKeys={columnKeys}
-            checkState={checkState}
-            onCheckedChange={onCheckedChange}
-            dataSource={dataSource}
-          />
-        </table>
-        {/*<table className={'___table-fixed'}>*/}
-        {/*    <TableHead*/}
-        {/*        columns={columns}*/}
-        {/*        columnKeys={columnKeys}*/}
-        {/*        onCheckAllChange={onCheckAllChange}*/}
-        {/*        setColumns={setColumns}*/}
-        {/*        checkState={checkState}*/}
-        {/*        maxColumns={maxColumns}*/}
-        {/*        minColumns={minColumns}*/}
-        {/*        defaultColumns={defaultColumns}*/}
-        {/*    />*/}
-        {/*    <tbody/>*/}
-        {/*</table>*/}
-        <TableFooter
-          currentPage={tablePages.currentPage}
-          setCurrentPage={setCurrentPage}
-          total={tablePages.all}
-        />
-      </div>
+      <Header columns={columns} dataSource={dataSource} />
+      <Table
+        setColumns={setColumns}
+        setCurrentPage={setCurrentPage}
+        columns={columns}
+        columnKeys={columnKeys}
+        checkState={checkState}
+        dataSource={dataSource}
+        defaultColumns={defaultColumns}
+        maxColumns={maxColumns}
+        minColumns={minColumns}
+        onCheckAllChange={onCheckAllChange}
+        onCheckedChange={onCheckedChange}
+        tablePages={tablePages}
+      />
     </div>
   );
 };
