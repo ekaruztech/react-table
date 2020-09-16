@@ -1,35 +1,48 @@
 import React, { useReducer, useState } from "react";
-import { useDimension } from "../../hooks";
-import { Align, Margin } from "../UtilityComponents";
+import { useDimension } from "../../../hooks";
+import { Align, Margin } from "../../UtilityComponents";
 import { Button, Modal, Popover, Tabs, Tooltip } from "antd";
-import {QuestionCircleOutlined, SortAscendingOutlined, PlusOutlined, FilterOutlined} from '@ant-design/icons'
+import {
+  QuestionCircleOutlined,
+  SortAscendingOutlined,
+  PlusOutlined,
+  FilterOutlined,
+} from "@ant-design/icons";
 import { initDataManagementState, dataManagementReducer } from "./reducer";
-import Search from './Search';
-import Filter from './Filter';
-import Sort from './Sort';
-import {TableColumnProps, TableFilterAction, TableFilterState} from "../../types";
-import {motion} from 'framer-motion';
+import Search from "./Search";
+import Filter from "./Filter";
+import Sort from "./Sort";
+import {
+  TableColumnProps,
+  TableFilterAction,
+  TableFilterState,
+} from "../../../types";
+import { motion } from "framer-motion";
 
 const { TabPane } = Tabs;
 
 type DataManagementProps = {
   visible: boolean;
-  handleCancel:  ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void) | undefined;
+  handleCancel:
+    | ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void)
+    | undefined;
   columns: TableColumnProps;
   dataSource: any;
-}
+};
 
 type ModalFooterProps = {
-    activeTab: string;
-    dispatch: React.Dispatch<TableFilterAction>;
-    state: TableFilterState
-}
+  activeTab: string;
+  dispatch: React.Dispatch<TableFilterAction>;
+  state: TableFilterState;
+};
 
 export default (props: DataManagementProps) => {
   const { visible, handleCancel, columns, dataSource } = props;
   const [activeTab, setActiveTab] = useState("filter");
 
-  const [state, dispatch] = useReducer<React.Reducer<TableFilterState, TableFilterAction>>(
+  const [state, dispatch] = useReducer<
+    React.Reducer<TableFilterState, TableFilterAction>
+  >(
     dataManagementReducer,
     // @ts-ignore
     columns.selected,
@@ -67,7 +80,12 @@ export default (props: DataManagementProps) => {
           >
             <Tooltip title={"Help"}>
               <Button type={"link"}>
-                <QuestionCircleOutlined style={{ fontSize: 20 }} />
+                <span className={"anticon"}>
+                  <i
+                    className={"ri-question-line"}
+                    style={{ fontSize: 20 }}
+                  ></i>
+                </span>
               </Button>
             </Tooltip>
           </Popover>
@@ -119,14 +137,23 @@ export default (props: DataManagementProps) => {
             >
               <Tooltip title={"Help"}>
                 <Button type={"link"}>
-                  <QuestionCircleOutlined style={{ fontSize: 20 }} />
+                  <span className={"anticon"}>
+                    <i
+                      className={"ri-question-line"}
+                      style={{ fontSize: 20 }}
+                    ></i>
+                  </span>
                 </Button>
               </Tooltip>
             </Popover>
             <Margin left={20}>
               <Button
                 type={"primary"}
-                icon={<PlusOutlined />}
+                icon={
+                  <span className={"anticon"}>
+                    <i className={"ri-add-line"} style={{ fontSize: 16 }}></i>
+                  </span>
+                }
                 onClick={addFilter}
               >
                 Add Filter
@@ -138,7 +165,14 @@ export default (props: DataManagementProps) => {
             <Button>Clear filter</Button>
             <Margin left={20}>
               <Button
-                icon={<FilterOutlined />}
+                icon={
+                  <span className={"anticon"}>
+                    <i
+                      className={"ri-filter-line"}
+                      style={{ fontSize: 16 }}
+                    ></i>
+                  </span>
+                }
                 onClick={applyFilter}
                 type={"primary"}
               >
@@ -178,12 +212,24 @@ export default (props: DataManagementProps) => {
             >
               <Tooltip title={"Help"}>
                 <Button type={"link"}>
-                  <QuestionCircleOutlined style={{ fontSize: 20 }} />
+                  <span className={"anticon"}>
+                    <i
+                      className={"ri-question-line"}
+                      style={{ fontSize: 20 }}
+                    ></i>
+                  </span>
                 </Button>
               </Tooltip>
             </Popover>
             <Margin left={20}>
-              <Button type={"primary"} icon={<PlusOutlined />}>
+              <Button
+                type={"primary"}
+                icon={
+                  <span className={"anticon"}>
+                    <i className={"ri-add-line"} style={{ fontSize: 16 }}></i>
+                  </span>
+                }
+              >
                 Add sort
               </Button>
             </Margin>
@@ -192,7 +238,14 @@ export default (props: DataManagementProps) => {
             {" "}
             <Button>Clear sort</Button>
             <Margin left={20}>
-              <Button icon={<SortAscendingOutlined />} type={"primary"}>
+              <Button
+                icon={
+                  <span className={"anticon"}>
+                    <i className={"ri-sort-desc"} style={{ fontSize: 16 }}></i>
+                  </span>
+                }
+                type={"primary"}
+              >
                 Apply sort
               </Button>
             </Margin>
@@ -225,9 +278,7 @@ export default (props: DataManagementProps) => {
       >
         <TabPane tab="Search" key="search">
           <motion.div layout>
-            <Search
-              columns={columns}
-            />
+            <Search columns={columns} />
           </motion.div>
         </TabPane>
         <TabPane tab="Filter" key="filter">
@@ -239,7 +290,7 @@ export default (props: DataManagementProps) => {
           />
         </TabPane>
         <TabPane tab="Sort" key="sort">
-            <Sort />
+          <Sort />
         </TabPane>
       </Tabs>
     </Modal>

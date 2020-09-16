@@ -1,13 +1,13 @@
-import { toPercentage, useDimension } from "../../../hooks";
+import { toPercentage, useDimension } from "../../../../hooks";
 import React, { useState } from "react";
 import ScrollBar from "react-perfect-scrollbar";
-import { Align, Padding } from "../../UtilityComponents";
+import { Align, Padding } from "../../../UtilityComponents";
 import { Radio, Tooltip } from "antd";
 import {
   TableColumnProps,
   TableFilterState,
   TableFilterAction,
-} from "../../../types";
+} from "../../../../types";
 import FilterItem from "./_partials/FilterItem";
 
 type FilterProps = {

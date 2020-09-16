@@ -57,6 +57,7 @@
   --input-icon-hover-color: fade(@black, 85%);
   // Modal
   --modal-mask-bg: rgba(32, 41, 50, 0.75);
+  --modal-mask-fade: fade(rgba(32, 41, 50, 0.75), 10%);
   --modal-content-bg: var(--background-primary);
   // Switch
   --switch-shadow-color: fade(#00230b, 20%);
@@ -164,6 +165,11 @@
 @menu-icon-size: 16px;
 @menu-collapsed-width: 60px;
 @menu-item-active-bg: var(--menu-item-active-bg);
+
+//Dropdown
+@dropdown-font-size: 13px;
+@dropdown-line-height: 30px;
+
 // Layout
 @body-background: var(--background-secondary);
 @layout-body-background: var(--background-secondary);
@@ -184,26 +190,26 @@
 @select-dropdown-bg: var(--popover-background);
 @drawer-bg: var(--drawer-bg);
 @btn-default-color: var(--btn-default-color);
+
 // Tooltip
-// ---
-// Tooltip max width
-// @tooltip-max-width: 250px;
-// // Tooltip text color
  @tooltip-color: var(--tooltip-color);
-// // Tooltip background color
  @tooltip-bg: var(--tooltip-bg);
-// // Tooltip arrow width
-// @tooltip-arrow-width: 5px;
-// // Tooltip distance with trigger
-// @tooltip-distance: @tooltip-arrow-width - 1px + 4px;
-// // Tooltip arrow color
  @tooltip-arrow-color: @tooltip-bg;
+
+
 @picker-basic-cell-hover-with-range-color: var(--picker-basic-cell-hover-with-range-color);
+
 @table-header-bg: #fff;
+
 @pagination-item-disabled-bg-active: @disabled-bg;
+
 @process-tail-color: var(--process-tail-color);
+
+// Skeleton
 @skeleton-color: var(--skeleton-color);
 @skeleton-to-color: var(--skeleton-to-color);
+
+
 //@divider-color: var(--divider-color);
 //:root {
 //    --accent: #4C52BC;

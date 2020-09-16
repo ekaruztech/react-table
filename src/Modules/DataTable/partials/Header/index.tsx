@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Tooltip } from "antd";
-import DataManagement from "../DataManagement";
-import TableControls from "../Controls";
+import DataManagement from "./DataManagement";
+import TableControls from "./Controls";
 import { TableColumnProps } from "../../types";
 
 type HeaderProps = {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Divider, InputNumber, Select } from "antd";
-import './_styles.scss';
+import "./_styles.scss";
 
 type RenderOrderProps = {};
 export default (props: RenderOrderProps) => {
@@ -44,7 +44,7 @@ export default (props: RenderOrderProps) => {
         options={items}
         dropdownRender={(menu) => (
           <div>
-            <div className={"vmw-data-sort-order-header"}>
+            <div className={"___data-sort-order-header"}>
               <p>Number of data</p>
             </div>
             {menu}
@@ -66,7 +66,11 @@ export default (props: RenderOrderProps) => {
               <Button
                 type={"primary"}
                 block
-                icon={<PlusOutlined />}
+                icon={
+                  <span className={"anticon"}>
+                    <i className={"ri-add-line"} style={{fontSize: 16}}></i>
+                  </span>
+                }
                 onClick={handleCustomize}
               >
                 Customize

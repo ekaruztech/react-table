@@ -1,14 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Align, Margin } from "../../../../UtilityComponents";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { Align, Margin } from "../../../../../UtilityComponents";
 import { Button, Select, Tag, Tooltip } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
-import { toPercentage } from "../../../../../hooks";
+import { toPercentage } from "../../../../../../hooks";
 import {
   ColumnProps,
   TableColumnProps,
   TableFilterAction,
   TableFilterProps,
-} from "../../../../../types";
+} from "../../../../../../types";
 import RenderFilterType from "../RenderFilterType";
 
 const { Option } = Select;
@@ -69,11 +68,11 @@ export default (props: FilterItemProps) => {
     { label: "Does not equal", value: "does not equal" },
   ];
 
-    /**
-     * Evaluates the column types and displays its filter
-     * @param type
-     */
-  const evalType = (type: string): {value: string, label: string}[] => {
+  /**
+   * Evaluates the column types and displays its filter
+   * @param type
+   */
+  const evalType = (type: string): { value: string; label: string }[] => {
     if (type === "number") return numberFilters;
     if (type === "boolean") return booleanFilters;
     if (type === "date" || type === "datetime") return dateFilters;
@@ -93,30 +92,34 @@ export default (props: FilterItemProps) => {
 
   const type: string = property?.type || "text";
 
-    /**
-     * Tokenizes a text field value for autocompletion
-     * Tokenization replaces space with underscore and adds a new line to the beginning of each word, starting from the second.
-     * @param acc
-     * @param current
-     * @param index
-     */
-  const handleAutoCompleteResource = (acc: string, current: any, index: number): string => {
+  /**
+   * Tokenizes a text field value for autocompletion
+   * Tokenization replaces space with underscore and adds a new line to the beginning of each word, starting from the second.
+   * @param acc
+   * @param current
+   * @param index
+   */
+  const handleAutoCompleteResource = useCallback((
+    acc: string,
+    current: any,
+    index: number
+  ): string => {
     const currentValue = current[property?.key ?? ""] ?? "";
     const tokenize = currentValue.trim().split(" ").join("_");
     return index === 0 ? acc.concat(tokenize) : acc.concat(`\n${tokenize}`);
-  };
+  }, [property]);
 
   useEffect(() => {
     if (type === "text" && property?.autoComplete) {
       setAutoCompleteProps(dataSource.reduce(handleAutoCompleteResource, ""));
     }
-  }, [property]);
+  }, [dataSource, handleAutoCompleteResource, property, type]);
 
-    /**
-     * Matches user input with tokenized resource for autocompletion
-     * Converts all matched results to [{value: result}] format
-     * @param value
-     */
+  /**
+   * Matches user input with tokenized resource for autocompletion
+   * Converts all matched results to [{value: result}] format
+   * @param value
+   */
   const handleAutoComplete = (value: string): void => {
     const regex = new RegExp(
       `(^|\\s)${value}+(?:\\w)*(\\s|$)|(^|\\s)\\w+(?:\\w)*(?:_)${value}+(?:\\w)*(\\s|$)`,
@@ -130,18 +133,18 @@ export default (props: FilterItemProps) => {
     }
   };
 
-    /**
-     * Removes a filter item
-     * @param filterIndex
-     */
+  /**
+   * Removes a filter item
+   * @param filterIndex
+   */
   const handleFilterRemoval = (filterIndex: number): void => {
     dispatch({ type: "REMOVE_FILTER", payload: { filterIndex } });
   };
 
-    /**
-     * Handles the selection of different property(column) for a given filter.
-     * @param value
-     */
+  /**
+   * Handles the selection of different property(column) for a given filter.
+   * @param value
+   */
   const handlePropertyChange = (value: string): void => {
     const key = value;
     const newProperty = columns.all.find((o) => o.key === key);
@@ -152,12 +155,12 @@ export default (props: FilterItemProps) => {
     }));
   };
 
-    /**
-     * Stores the filter value whenever it changes
-     * @param value
-     * @param valueType
-     * @param rangePosition
-     */
+  /**
+   * Stores the filter value whenever it changes
+   * @param value
+   * @param valueType
+   * @param rangePosition
+   */
   const handleFilterValueChange = (
     value: number | string | Date | undefined,
     valueType: string | undefined = "fixed",
@@ -325,7 +328,12 @@ export default (props: FilterItemProps) => {
               danger
               onClick={() => handleFilterRemoval(filterData.filterIndex)}
             >
-              <DeleteOutlined />
+              <span className={"anticon"}>
+                <i
+                  className={"ri-delete-bin-2-line"}
+                  style={{ fontSize: 16 }}
+                ></i>
+              </span>
             </Button>
           </Tooltip>
         </Align>

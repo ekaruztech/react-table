@@ -1,5 +1,5 @@
 import { Button, Checkbox, Popover, Tooltip } from "antd";
-import TableControls from "../../Controls";
+import TableControls from "../../Header/Controls";
 import { PlusOutlined } from "@ant-design/icons";
 import React from "react";
 import { motion } from "framer-motion";
@@ -83,7 +83,20 @@ export default (props: TableHeadProps) => {
               style={{ borderRadius: 10 }}
             >
               <Tooltip title={"Customize columns"} placement={"left"}>
-                <Button type="dashed" shape="circle" icon={<PlusOutlined />} />
+                <Button
+                  type="link"
+                  style={{ background: "transaparent" }}
+                  icon={
+                    <span className={"anticon"}>
+                      <span className={"anticon"}>
+                        <i
+                          className={"ri-list-settings-line"}
+                          style={{ fontSize: 17 }}
+                        ></i>
+                      </span>
+                    </span>
+                  }
+                />
               </Tooltip>
             </Popover>
           </div>

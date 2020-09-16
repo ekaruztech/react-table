@@ -1,8 +1,8 @@
-import { Align } from "../../../../UtilityComponents";
+import { Align } from "../../../../../UtilityComponents";
 import { AutoComplete, DatePicker, InputNumber, Select } from "antd";
 import moment from "moment";
 import { has, isDate, isEmpty, isNumber } from "lodash";
-import { toPercentage } from "../../../../../hooks";
+import { toPercentage } from "../../../../../../hooks";
 import React from "react";
 import TagRender from '../TagRender';
 

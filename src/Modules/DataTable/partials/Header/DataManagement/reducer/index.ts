@@ -1,5 +1,5 @@
 import {filter} from "lodash";
-import {ColumnProps, TableFilterAction, TableFilterState} from "../../../types";
+import {ColumnProps, TableFilterAction, TableFilterState} from "../../../../types";
 
 const initDataManagementState = (columns: ColumnProps[]) => {
     return {

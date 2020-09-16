@@ -1,21 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
-  Button,
   Checkbox,
-  Dropdown,
-  Menu,
-  Popconfirm,
   Tag,
-  Tooltip,
-  Space,
   Drawer,
 } from "antd";
 import { isObject } from "lodash";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-} from "@ant-design/icons";
 import { motion } from "framer-motion";
 import CellMenu from "./_partials/CellMenu";
 import { ColumnProps } from "../../../types";
@@ -42,7 +31,6 @@ export default (props: TableCellProps) => {
     checkState,
     columnKeys,
     extraColumnsLength = 1,
-    TableExpandedView,
     columns,
   } = props;
   const trRef = useRef();
