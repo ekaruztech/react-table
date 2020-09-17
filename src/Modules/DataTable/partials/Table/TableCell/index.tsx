@@ -1,13 +1,163 @@
 import React, { useRef, useState } from "react";
-import {
-  Checkbox,
-  Tag,
-  Drawer,
-} from "antd";
-import { isObject } from "lodash";
+import { Checkbox, Tag, Drawer, Button } from "antd";
+
 import { motion } from "framer-motion";
 import CellMenu from "./_partials/CellMenu";
-import { ColumnProps } from "../../../types";
+import {
+  ColumnProps,
+  ColumnType,
+  PresentationType,
+  ActionPresentationType,
+  PresentationColor,
+} from "../../../types";
+import moment, { Moment } from "moment";
+
+const presentationHOC = ({
+  extraColumnsLength,
+  columnKeys,
+  columnType,
+}: {
+  extraColumnsLength: number;
+  columnKeys: string[];
+  columnType: ColumnType | undefined;
+}) => (Component: React.ReactNode) => (
+  <motion.td
+    layout
+    style={{
+      width: `calc(100% / ${columnKeys.length + extraColumnsLength} - 120px)`,
+    }}
+    className={"___table-row"}
+  >
+    <div
+      className={"___table-row-inner"}
+      style={{
+        textAlign:
+          columnType === "number" || columnType === "currency" ? 'right' : 'left',
+      }}
+    >
+      {Component}
+    </div>
+  </motion.td>
+);
+
+type PresentationProps = {
+  columnType: ColumnType | undefined;
+  data: string | Moment | Date | number | undefined;
+  actionPresentationType: ActionPresentationType | undefined;
+  presentationType: PresentationType | undefined;
+  presentationColor: PresentationColor | undefined;
+  actionCallback: undefined | ((source: any) => void);
+  bold: boolean | undefined;
+  actionTitle?: string;
+  source: any;
+  dateFormat: string | undefined;
+};
+const Presentation = (props: PresentationProps) => {
+  const {
+    columnType,
+    data,
+    presentationType,
+    actionCallback,
+    actionPresentationType,
+    actionTitle,
+    presentationColor,
+    bold,
+    source,
+    dateFormat,
+  } = props;
+  switch (columnType) {
+    case "action":
+      return (
+        <Button
+          type={actionPresentationType ?? "default"}
+          onClick={() => (actionCallback ? actionCallback(source) : null)}
+          size={"small"}
+          style={{fontSize: 12}}
+        >
+          {actionTitle ?? ""}
+        </Button>
+      );
+
+    case "currency":
+      const currency = Intl.NumberFormat("en-NG", { currency: "NGN", style: 'currency' }).format(
+        Number(data) ?? 0
+      );
+      if (presentationType === "tag") {
+        return (
+          <Tag
+            color={presentationColor ?? "gold"}
+            style={{
+              fontWeight: bold ? "bold" : "normal",
+            }}
+          >
+            {currency}
+          </Tag>
+        );
+      } else
+        return (
+          <span
+            style={{
+              fontWeight: bold ? "bold" : "normal",
+            }}
+          >
+            {currency}
+          </span>
+        );
+        case 'date':
+        case 'datetime':
+          const format = dateFormat === 'datetime' ? 'lll LT' : 'lll';
+          const date = moment(data).format(dateFormat ?? format) ?? moment(data).format(format);
+          if (presentationType === "tag") {
+            return (
+              <Tag
+                color={presentationColor ?? "gold"}
+                style={{
+                  fontWeight: bold ? "bold" : "normal",
+                }}
+              >
+                {date}
+              </Tag>
+            );
+          } else
+            return (
+              <Tag
+                color={presentationColor ?? "default"}
+                style={{
+                  fontWeight: bold ? "bold" : "normal",
+                  borderColor: "transparent",
+                  background: "transparent",
+                }}
+              >
+                {date}
+              </Tag>
+            );
+    default:
+      if (presentationType === "tag") {
+        return (
+          <Tag
+            color={presentationColor ?? "gold"}
+            style={{
+              fontWeight: bold ? "bold" : "normal",
+            }}
+          >
+            {data ?? "⏤⏤⏤"}
+          </Tag>
+        );
+      } else
+        return (
+          <Tag
+            color={presentationColor ?? "default"}
+            style={{
+              fontWeight: bold ? "bold" : "normal",
+              borderColor: "transparent",
+              background: "transparent",
+            }}
+          >
+            {data ?? "⏤⏤⏤"}
+          </Tag>
+        );
+  }
+};
 
 type TableCellProps = {
   checked: boolean;
@@ -48,7 +198,7 @@ export default (props: TableCellProps) => {
     <>
       <motion.tr
         layout
-          // @ts-ignore
+        // @ts-ignore
         ref={trRef}
         className={`${
           checked ? "___table-rows-checked " : "___table-rows"
@@ -80,37 +230,30 @@ export default (props: TableCellProps) => {
 
         {columnKeys.map((value) => {
           const retrieved = columns.find((c) => c?.key === value);
-          const retrievedIsAnObject = isObject(retrieved);
+          // const retrievedIsAnObject = isObject(retrieved);
           const presentationType = retrieved?.presentationType;
           const presentationColor = retrieved?.presentationColor;
+          /**Value is mapped to the key of the column */
           const data = source[value];
-          const tableTD = (Component: React.FunctionComponent) => (
-            <motion.td
-              layout
-              style={{
-                width: `calc(100% / ${
-                  columnKeys.length + extraColumnsLength
-                } - 120px)`,
-              }}
-              className={"___table-row"}
-            >
-              <div className={"___table-row-inner"}>
-                <Component />
-              </div>
-            </motion.td>
+
+          return presentationHOC({
+            extraColumnsLength,
+            columnKeys,
+            columnType: retrieved?.type,
+          })(
+            <Presentation
+              data={data}
+              presentationColor={presentationColor}
+              presentationType={presentationType}
+              actionCallback={retrieved?.actionCallback}
+              actionPresentationType={retrieved?.actionPresentationType}
+              columnType={retrieved?.type}
+              bold={retrieved?.bold}
+              actionTitle={retrieved?.actionTitle}
+              source={source}
+              dateFormat={retrieved?.dateFormat}
+            />
           );
-          if (
-            retrievedIsAnObject &&
-            (presentationType?.toLowerCase?.() === "tag" ||
-              presentationType?.toLowerCase?.() === "date")
-          ) {
-            return tableTD(() => (
-              <Tag color={presentationColor ? presentationColor : "blue"}>
-                {data}
-              </Tag>
-            ));
-          }
-          return tableTD(() => <span>{data}</span>);
         })}
         <td
           style={{

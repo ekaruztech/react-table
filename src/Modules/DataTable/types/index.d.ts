@@ -1,27 +1,36 @@
+type PresentationColor = | "magenta"
+| "volcano"
+| "orange"
+| "gold"
+| "geekblue"
+| "red"
+| "lime"
+| "green"
+| "cyan"
+| "processing"
+| "blue"
+| "purple"
+| "default";
+
+type PresentationType = 'tag';
+type ActionPresentationType = | 'primary' | 'default' | 'link' | 'text' | 'ghost' | 'dashed';
+type ColumnType = | 'text' | 'boolean' | 'datetime' | 'date' | 'number' | 'action' | 'currency' | 'list';
+
 interface ColumnProps {
   title: string;
   dataIndex: string;
   key: string;
-  type: string;
+  type: ColumnType;
   autoComplete?: boolean;
   multiple?: boolean;
-  presentationType?: string;
-  presentationColor?:
-    | "magenta"
-    | "volcano"
-    | "orange"
-    | "gold"
-    | "geekblue"
-    | "red"
-    | "lime"
-    | "green"
-    | "cyan"
-    | "processing"
-    | "blue"
-    | "purple"
-    | "default";
+  bold?: boolean;
+  presentationType?: PresentationType;
+  presentationColor?: PresentationColor;
+  actionPresentationType?: ActionPresentationType;
   listMenu?: Array<{ label: string; value: string | number }>;
-  actionCallback?: CallableFunction;
+  actionCallback?: (source: any) => void;
+  actionTitle?: string;
+  dateFormat?: string;
 }
 interface TableColumnProps {
   all: Array<ColumnProps>;
@@ -71,4 +80,8 @@ export type {
   TableFilterState,
   FilterProps,
   TableFilterAction,
+  PresentationColor,
+  PresentationType,
+  ColumnType,
+  ActionPresentationType
 };
