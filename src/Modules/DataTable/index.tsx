@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import "./styles.scss";
 import moment from "moment";
 import Table from "./partials/Table";
 import Header from "./partials/Header";
-import QuickFilter from './partials/Header/QuickFilter';
+import QuickFilter from "./partials/Header/QuickFilter";
 import { clamp } from "lodash";
 import { ColumnProps } from "./types";
 
@@ -12,13 +12,15 @@ interface DataTableProps {
   dataSource: Array<any>;
   minColumns?: number;
   maxColumns?: number;
+  useSkeletonLoader?: boolean;
 }
 const DataTable = (props: DataTableProps) => {
   const {
     columns: defaultColumns,
-    dataSource,
+    dataSource: unpaginatedDataSource,
     minColumns: defaultMinCol,
     maxColumns: defaultMaxCol,
+    useSkeletonLoader,
   } = props;
   const minColumns = clamp(defaultMinCol || 3, 3, 6);
   const maxColumns = clamp(defaultMaxCol || 3, minColumns, 6);
@@ -32,28 +34,35 @@ const DataTable = (props: DataTableProps) => {
         : [],
   });
 
+  const [dataSource, setDataSource] = useState<{
+    data: Array<any>;
+    range: { from: number; to: number };
+  }>({ data: [], range: { from: 0, to: 15 } });
+  
   const [checkState, setCheckedState] = useState({
     checkedList: [],
     indeterminate: true,
     checkAll: false,
   });
   const [tablePages, setCurrentPage] = useState({
-    all: dataSource.length,
-    currentPage: 2,
+    all: unpaginatedDataSource.length,
+    currentPage: 1,
   });
+  const [pageRenderOrder, setPageRenderOrder] = useState(15);
+  const [isLoadingContent, setIsLoadingContent] = useState(true);
   const onCheckedChange = (checkedList: any) => {
     setCheckedState({
       checkedList,
       indeterminate:
-        checkedList.length > 0 && checkedList.length !== dataSource.length,
-      checkAll: checkedList.length === dataSource.length,
+        checkedList.length > 0 && checkedList.length !== dataSource.data.length,
+      checkAll: checkedList.length === dataSource.data.length,
     });
   };
   //TODO: Find an optional way to get the total width of the table to enable responsiveness on screens.
   const onCheckAllChange = (e: any) => {
     setCheckedState({
       // @ts-ignore
-      checkedList: e.target.checked ? dataSource : [],
+      checkedList: e.target.checked ? dataSource.data : [],
       indeterminate: false,
       checkAll: e.target.checked,
     });
@@ -64,23 +73,50 @@ const DataTable = (props: DataTableProps) => {
     [columns.selected]
   );
 
+  const handlePagination = (page: number) => {
+    setDataSource((prev) => {
+      const to = pageRenderOrder * page;
+      const from = to - pageRenderOrder;
+      const range = { from, to };
+      const data = unpaginatedDataSource.slice(from, to);
+      return { range, data };
+    });
+    setCurrentPage((prev) => ({ ...prev, currentPage: page }));
+  };
+
+  useEffect(() => {
+    setIsLoadingContent(true);
+    const a = setTimeout(() => {
+      setDataSource(prev => ({...prev, data: unpaginatedDataSource.slice(0, 15)}));
+      setIsLoadingContent(false)
+    }, 5000);
+
+    return () => clearTimeout(a);
+  },[]);
+  
   return (
     <div className={"___table-container"}>
-      <Header columns={columns} dataSource={dataSource} />
-      <QuickFilter columns={columns} dataSource={dataSource} />
+      <Header
+        columns={columns}
+        dataSource={dataSource.data}
+        renderOrder={{ pageRenderOrder, setPageRenderOrder }}
+      />
+      <QuickFilter columns={columns} dataSource={dataSource.data} />
       <Table
         setColumns={setColumns}
-        setCurrentPage={setCurrentPage}
+        handlePagination={handlePagination}
         columns={columns}
         columnKeys={columnKeys}
         checkState={checkState}
-        dataSource={dataSource}
+        dataSource={dataSource.data}
         defaultColumns={defaultColumns}
         maxColumns={maxColumns}
         minColumns={minColumns}
         onCheckAllChange={onCheckAllChange}
         onCheckedChange={onCheckedChange}
         tablePages={tablePages}
+        isLoadingContent={isLoadingContent}
+        useSkeletonLoader={Boolean(useSkeletonLoader)}
       />
     </div>
   );
@@ -461,7 +497,7 @@ DataTable.defaultProps = {
       type: "date",
       presentationType: "date",
       presentationColor: "processing",
-      dateFormat: 'lll'
+      dateFormat: "lll",
     },
     {
       title: "Cost",
@@ -495,9 +531,9 @@ DataTable.defaultProps = {
       dataIndex: "id",
       key: "id",
       type: "action",
-      actionPresentationType: 'default',
-      actionCallback: (source: any) => console.log('action clicked id', source) ,
-      actionTitle: 'Print ID'
+      actionPresentationType: "default",
+      actionCallback: (source: any) => console.log("action clicked id", source),
+      actionTitle: "Print ID",
     },
 
     {
@@ -505,9 +541,10 @@ DataTable.defaultProps = {
       dataIndex: "id",
       key: "id2",
       type: "action",
-      actionPresentationType: 'primary',
-      actionCallback: (source: any) => console.log('action clicked id2', source) ,
-      actionTitle: 'Print ID-2'
+      actionPresentationType: "primary",
+      actionCallback: (source: any) =>
+        console.log("action clicked id2", source),
+      actionTitle: "Print ID-2",
     },
     {
       title: "ID-5",

@@ -32,7 +32,9 @@ const presentationHOC = ({
       className={"___table-row-inner"}
       style={{
         textAlign:
-          columnType === "number" || columnType === "currency" ? 'right' : 'left',
+          columnType === "number" || columnType === "currency"
+            ? "right"
+            : "left",
       }}
     >
       {Component}
@@ -72,16 +74,17 @@ const Presentation = (props: PresentationProps) => {
           type={actionPresentationType ?? "default"}
           onClick={() => (actionCallback ? actionCallback(source) : null)}
           size={"small"}
-          style={{fontSize: 12}}
+          style={{ fontSize: 12 }}
         >
           {actionTitle ?? ""}
         </Button>
       );
 
     case "currency":
-      const currency = Intl.NumberFormat("en-NG", { currency: "NGN", style: 'currency' }).format(
-        Number(data) ?? 0
-      );
+      const currency = Intl.NumberFormat("en-NG", {
+        currency: "NGN",
+        style: "currency",
+      }).format(Number(data) ?? 0);
       if (presentationType === "tag") {
         return (
           <Tag
@@ -103,34 +106,36 @@ const Presentation = (props: PresentationProps) => {
             {currency}
           </span>
         );
-        case 'date':
-        case 'datetime':
-          const format = dateFormat === 'datetime' ? 'lll LT' : 'lll';
-          const date = moment(data).format(dateFormat ?? format) ?? moment(data).format(format);
-          if (presentationType === "tag") {
-            return (
-              <Tag
-                color={presentationColor ?? "gold"}
-                style={{
-                  fontWeight: bold ? "bold" : "normal",
-                }}
-              >
-                {date}
-              </Tag>
-            );
-          } else
-            return (
-              <Tag
-                color={presentationColor ?? "default"}
-                style={{
-                  fontWeight: bold ? "bold" : "normal",
-                  borderColor: "transparent",
-                  background: "transparent",
-                }}
-              >
-                {date}
-              </Tag>
-            );
+    case "date":
+    case "datetime":
+      const format = dateFormat === "datetime" ? "lll LT" : "lll";
+      const date =
+        moment(data).format(dateFormat ?? format) ??
+        moment(data).format(format);
+      if (presentationType === "tag") {
+        return (
+          <Tag
+            color={presentationColor ?? "gold"}
+            style={{
+              fontWeight: bold ? "bold" : "normal",
+            }}
+          >
+            {date}
+          </Tag>
+        );
+      } else
+        return (
+          <Tag
+            color={presentationColor ?? "default"}
+            style={{
+              fontWeight: bold ? "bold" : "normal",
+              borderColor: "transparent",
+              background: "transparent",
+            }}
+          >
+            {date}
+          </Tag>
+        );
     default:
       if (presentationType === "tag") {
         return (
@@ -167,9 +172,9 @@ type TableCellProps = {
   checkState: any;
   columnKeys: string[];
   extraColumnsLength: number;
-  TableExpandedView: React.FunctionComponent;
   /** columns.selected*/
   columns: ColumnProps[];
+  index?: number
 };
 
 //TODO: Update TableCells to allow for more presentation types.
@@ -182,6 +187,7 @@ export default (props: TableCellProps) => {
     columnKeys,
     extraColumnsLength = 1,
     columns,
+    index
   } = props;
   const trRef = useRef();
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -204,6 +210,15 @@ export default (props: TableCellProps) => {
           checked ? "___table-rows-checked " : "___table-rows"
         } site-collapse-custom-collapse`}
         key={source?.key}
+        initial={{ y: 50 }}
+        animate={{ y: 0 }}
+        exit={{ y: 50 }}
+        transition={{
+          type: 'spring',
+          delay: (index ?? 1) * 0.02 ,
+          stiffness: 100,
+          damping: 13,
+        }}
       >
         <td
           className={"___table-row"}
