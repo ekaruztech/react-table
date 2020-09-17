@@ -6,7 +6,20 @@ interface ColumnProps {
   autoComplete?: boolean;
   multiple?: boolean;
   presentationType?: string;
-  presentationColor?: string;
+  presentationColor?:
+    | "magenta"
+    | "volcano"
+    | "orange"
+    | "gold"
+    | "geekblue"
+    | "red"
+    | "lime"
+    | "green"
+    | "cyan"
+    | "processing"
+    | "blue"
+    | "purple"
+    | "default";
   listMenu?: Array<{ label: string; value: string | number }>;
   actionCallback?: CallableFunction;
 }

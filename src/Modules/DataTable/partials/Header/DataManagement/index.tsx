@@ -2,12 +2,6 @@ import React, { useReducer, useState } from "react";
 import { useDimension } from "../../../hooks";
 import { Align, Margin } from "../../UtilityComponents";
 import { Button, Modal, Popover, Tabs, Tooltip } from "antd";
-import {
-  QuestionCircleOutlined,
-  SortAscendingOutlined,
-  PlusOutlined,
-  FilterOutlined,
-} from "@ant-design/icons";
 import { initDataManagementState, dataManagementReducer } from "./reducer";
 import Search from "./Search";
 import Filter from "./Filter";

@@ -81,7 +81,7 @@ export default (props: FilterItemProps) => {
   };
   const [property, setProperty] = useState<TableFilterProps>(filterData);
   const [filterType, setFilterType] = useState<string | null>(
-    evalType(property?.type)?.[0]?.value ?? "equals"
+    evalType(property?.type)?.[0]?.value ?? ""
   );
   const [autoCompleteProps, setAutoCompleteProps] = useState<string | null>(
     null

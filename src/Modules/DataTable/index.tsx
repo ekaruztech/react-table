@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import "./styles.scss";
 import moment from "moment";
 import Table from "./partials/Table";
 import Header from "./partials/Header";
+import QuickFilter from './partials/Header/QuickFilter';
 import { clamp } from "lodash";
 import { ColumnProps } from "./types";
 
@@ -66,6 +67,7 @@ const DataTable = (props: DataTableProps) => {
   return (
     <div className={"___table-container"}>
       <Header columns={columns} dataSource={dataSource} />
+      <QuickFilter columns={columns} dataSource={dataSource} />
       <Table
         setColumns={setColumns}
         setCurrentPage={setCurrentPage}
@@ -89,7 +91,7 @@ DataTable.defaultProps = {
     {
       key: "1",
       name: "Mike Boris",
-      age: 32,
+      cost: 32,
       address: "10 Downing Street",
       hobby: "hunting",
 
@@ -108,7 +110,7 @@ DataTable.defaultProps = {
     {
       key: "2",
       name: "John Smith",
-      age: 62,
+      cost: 62,
       address: "30 Downing Avenue",
       hobby: "hunting",
 
@@ -127,7 +129,7 @@ DataTable.defaultProps = {
     {
       key: "3",
       name: "Elia Jones",
-      age: 22,
+      cost: 22,
       address: "40 Floor Street",
       hobby: "baking",
       food_type: "Vegan",
@@ -145,7 +147,7 @@ DataTable.defaultProps = {
     {
       key: "5",
       name: "Nathan Philips",
-      age: 30,
+      cost: 30,
       address: "4 14th Avenue",
       hobby: "Biking",
       food_type: "Vegan",
@@ -163,7 +165,7 @@ DataTable.defaultProps = {
     {
       key: "6",
       name: "John McCally",
-      age: 27,
+      cost: 27,
       address: "45 Boston Avenue",
       hobby: "Gymnastics",
       food_type: "Vegan",
@@ -181,7 +183,7 @@ DataTable.defaultProps = {
     {
       key: "9",
       name: "Masi klones",
-      age: 42,
+      cost: 42,
       address: "1 Main Street",
       hobby: "teaching",
       food_type: "Vegan",
@@ -199,7 +201,7 @@ DataTable.defaultProps = {
     {
       key: "8",
       name: "Joseph Xi Lee",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -218,7 +220,7 @@ DataTable.defaultProps = {
     {
       key: "10",
       name: "Mikel Leeland",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -237,7 +239,7 @@ DataTable.defaultProps = {
     {
       key: "11",
       name: "Hanna Klose",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -256,7 +258,7 @@ DataTable.defaultProps = {
     {
       key: "13",
       name: "Hanna Um",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -275,7 +277,7 @@ DataTable.defaultProps = {
     {
       key: "14",
       name: "Josh Butland",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -294,7 +296,7 @@ DataTable.defaultProps = {
     {
       key: "15",
       name: "Gideon Morning",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -313,7 +315,7 @@ DataTable.defaultProps = {
     {
       key: "16",
       name: "James Levi",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -332,7 +334,7 @@ DataTable.defaultProps = {
     {
       key: "17",
       name: "Priah Singh",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -351,7 +353,7 @@ DataTable.defaultProps = {
     {
       key: "18",
       name: "Johanna Lee",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -370,7 +372,7 @@ DataTable.defaultProps = {
     {
       key: "19",
       name: "Emerald Lalong",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -389,7 +391,7 @@ DataTable.defaultProps = {
     {
       key: "20",
       name: "Lulu Oyetola",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -408,7 +410,7 @@ DataTable.defaultProps = {
     {
       key: "21",
       name: "Matthew Lee",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -427,7 +429,7 @@ DataTable.defaultProps = {
     {
       key: "22",
       name: "Gretchen Spears",
-      age: 6,
+      cost: 6,
       address: "40 Houstin Street",
       hobby: "Running",
 
@@ -458,13 +460,13 @@ DataTable.defaultProps = {
       key: "dob",
       type: "date",
       presentationType: "date",
-      presentationColor: "magenta",
+      presentationColor: "processing",
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-      type: "number",
+      title: "Cost",
+      dataIndex: "cost",
+      key: "cost",
+      type: "currency",
     },
     {
       title: "Hobby",
@@ -492,7 +494,7 @@ DataTable.defaultProps = {
       dataIndex: "id",
       key: "id",
       type: "text",
-      autoComplete: true,
+      autoComplete: false,
     },
 
     {

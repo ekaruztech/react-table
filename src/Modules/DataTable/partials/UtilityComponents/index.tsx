@@ -179,10 +179,10 @@ const Position = (props: PositionProps) => {
       style={{
         ...style,
         position: type || "relative",
-        top: top || 0,
-        bottom: bottom || 0,
-        right: right || 0,
-        left: left || 0,
+        top: top ?? 'auto',
+        bottom: bottom ?? 'auto',
+        right: right ?? 'auto',
+        left: left ?? 'auto',
       }}
       className={className ?? ""}
     >
