@@ -4,7 +4,7 @@
   "description": "React table for voomsway web application",
   "author": "Cmion",
   "license": "MIT",
-  "repository": "ekaruztech/@voomsway/react-table.git",
+  "repository": "https://github.com/ekaruztech/react-table.git",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
