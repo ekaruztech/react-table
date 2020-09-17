@@ -3,8 +3,14 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Divider, InputNumber, Select } from "antd";
 import "./_styles.scss";
 
-type RenderOrderProps = {};
+type RenderOrderProps = {
+  renderOrder: number,
+  setRenderOrder: React.Dispatch<React.SetStateAction<number>>
+};
 export default (props: RenderOrderProps) => {
+
+  const {renderOrder, setRenderOrder} = props;
+
   const [items, setItems] = useState([
     { label: `15 per page`, value: 15 },
     {
@@ -40,8 +46,10 @@ export default (props: RenderOrderProps) => {
       <Select
         className={"RenderOrder__select"}
         placeholder="Customize data listing"
-        defaultValue={"15 per page"}
+        defaultValue={15}
         options={items}
+        value={renderOrder}
+        onChange={(value) => setRenderOrder(value)}
         dropdownRender={(menu) => (
           <div>
             <div className={"___data-sort-order-header"}>

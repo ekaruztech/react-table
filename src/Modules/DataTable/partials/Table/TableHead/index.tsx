@@ -29,7 +29,7 @@ export default (props: TableHeadProps) => {
   } = props;
 
   return (
-    <thead className={"___table-header"}>
+    <motion.thead className={"___table-header"} transition={{type: 'inertia'}}>
       <tr className={"___table-columns"}>
         <th
           className={"___table-column"}
@@ -48,7 +48,15 @@ export default (props: TableHeadProps) => {
         {columns.selected.map((value, index) => {
           return (
             <motion.th
-              layout
+              initial={{ y: 50 }}
+              animate={{ y: 0 }}
+              exit={{ y: 50 }}
+              transition={{
+                type: "spring",
+                delay: (index ?? 1) * 0.02,
+                stiffness: 100,
+                damping: 13,
+              }}
               className={"___table-column"}
               key={value?.key}
               style={{
@@ -67,7 +75,10 @@ export default (props: TableHeadProps) => {
             width: 64,
           }}
         >
-          <div className={"___table-selectable-columns-child-container"}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className={"___table-selectable-columns-child-container"}
+          >
             <Popover
               placement="bottomRight"
               content={() => (
@@ -99,9 +110,9 @@ export default (props: TableHeadProps) => {
                 />
               </Tooltip>
             </Popover>
-          </div>
+          </motion.div>
         </th>
       </tr>
-    </thead>
+    </motion.thead>
   );
 };

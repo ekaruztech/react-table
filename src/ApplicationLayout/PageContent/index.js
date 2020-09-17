@@ -37,7 +37,7 @@ export default (props) => {
                 style={{
                     // padding: 24,
                     // margin: "0 0 30px 30px",
-                    minHeight: "100vh",
+                    minHeight: "100%",
                     width: "100%",
                     overflowX: 'hidden',
                 }}

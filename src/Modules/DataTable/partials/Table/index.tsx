@@ -3,6 +3,7 @@ import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import TableFooter from "./TableFooter";
 import { TableColumnProps, ColumnProps } from "../../types";
+import { isEmpty } from "lodash";
 
 type TableProps = {
   columnKeys: string[];
@@ -20,9 +21,8 @@ type TableProps = {
   onCheckAllChange: (e: any) => void;
   onCheckedChange: (checkedList: Array<any>) => void;
   tablePages: { all: number; currentPage: number };
-  setCurrentPage: React.Dispatch<
-    React.SetStateAction<{ all: number; currentPage: number }>
-  >;
+  handlePagination: (page: number) => void;
+  isLoadingContent: boolean;useSkeletonLoader: boolean;
 };
 export default (props: TableProps) => {
   const {
@@ -37,7 +37,8 @@ export default (props: TableProps) => {
     setColumns,
     onCheckedChange,
     tablePages,
-    setCurrentPage,
+    handlePagination,
+    isLoadingContent,useSkeletonLoader
   } = props;
   return (
     <div className={"___table-wrapper"}>
@@ -58,6 +59,8 @@ export default (props: TableProps) => {
           checkState={checkState}
           onCheckedChange={onCheckedChange}
           dataSource={dataSource}
+          isLoadingContent={isLoadingContent}
+          useSkeletonLoader={useSkeletonLoader}
         />
       </table>
       {/*<table className={'___table-fixed'}>*/}
@@ -75,8 +78,10 @@ export default (props: TableProps) => {
       {/*</table>*/}
       <TableFooter
         currentPage={tablePages.currentPage}
-        setCurrentPage={setCurrentPage}
+        handlePagination={handlePagination}
         total={tablePages.all}
+        isLoadingContent={isLoadingContent}
+        isAnEmptyContent={isEmpty(dataSource)}
       />
     </div>
   );
