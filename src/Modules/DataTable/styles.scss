@@ -81,7 +81,7 @@
   align-items: center;
   justify-content: space-between;
 }
-.___table-sort-arrow {
+.___table-container-header-arrow {
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -234,7 +234,7 @@
   }
 }
 
-.___table-sort {
+.___table-container-header {
   background-color: var(--background-primary);
   padding: 20px;
   display: flex;
@@ -242,8 +242,8 @@
   min-height: 80px;
   justify-content: space-between;
 
-  .___table-sort-inner-left,
-  .___table-sort-inner-right {
+  .___table-container-header-inner-left,
+  .___table-container-header-inner-right {
     display: flex;
     align-items: center;
     .___table-filter-radio-sort {

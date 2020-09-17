@@ -12,6 +12,7 @@ import {
 import "./App.css";
 import "./custom-theme.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import 'remixicon/fonts/remixicon.css';
 import Scrollbar from "react-perfect-scrollbar";
 import { Layout, Menu } from "antd";
 import {
