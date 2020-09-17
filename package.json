@@ -1,6 +1,6 @@
 {
   "name": "@voomsway/react-table",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "React table for voomsway web application",
   "author": "Cmion",
   "license": "MIT",
@@ -21,7 +21,8 @@
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "deploy": "gh-pages -d example/build",
+    "semantic-release": "semantic-release"
   },
   "peerDependencies": {
     "react": "^16.0.0"
@@ -57,7 +58,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "semantic-release": "^17.1.2"
   },
   "files": [
     "dist"
@@ -72,5 +74,8 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-perfect-scrollbar": "^1.5.8",
     "remixicon": "^2.5.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
   }
 }
