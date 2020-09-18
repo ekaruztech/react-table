@@ -45,7 +45,7 @@ export default (props: DataManagementProps) => {
     columns.selected,
     initDataManagementState
   )
-  console.log(state)
+
   const dimension = useDimension()
 
   const ModalFooter = (props: ModalFooterProps) => {

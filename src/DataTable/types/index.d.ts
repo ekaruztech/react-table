@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-unused-vars
+import { ReactNode } from 'react'
 type PresentationColor =
   | 'magenta'
   | 'volcano'
@@ -88,6 +90,46 @@ type TableFilterAction =
   | { type: 'UPDATE_FILTER'; payload: FilterProps }
   | { type: 'ADD_OR_UPDATE_SEARCH'; payload: any }
 
+type TableColumnControls = {
+  delete?: (key: string) => void
+  duplicate?: (source: any) => void
+  edit?: (source: any) => void
+  refresh?: () => void
+  export?: () => void
+  deleteMultiple?: (sources: Array<string>) => void
+}
+
+type TableSettings = {
+  minColumns?: number
+  maxColumns?: number
+  useSkeletonLoader?: boolean
+  pagination: { all: number; currentPage: number }
+  pageRenderOrder?: number
+  onRenderOrderChange?: (renderOrder: number) => void
+  onPaginationChange: (page: number) => void
+  useQuickFilter?: boolean
+}
+
+type TableQuickFilterProps = {
+  onApply: (
+    value: Array<{
+      property: string
+      value: string[] | number | number[] | string
+    }>
+  ) => void
+  onClear: () => void
+}
+
+type ColumnMenuItems = {
+  title: string
+  icon: ReactNode
+  onClick: (source: any) => void
+}[]
+
+type TableLoaders = {
+  isLoadingContent?: boolean
+}
+
 export type {
   ColumnProps,
   TableColumnProps,
@@ -98,5 +140,10 @@ export type {
   PresentationColor,
   PresentationType,
   ColumnType,
-  ActionPresentationType
+  ActionPresentationType,
+  TableColumnControls,
+  TableSettings,
+  TableQuickFilterProps,
+  TableLoaders,
+  ColumnMenuItems
 }

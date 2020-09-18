@@ -1,8 +1,14 @@
 import { find, isEmpty } from 'lodash'
 import TableCell from '../TableCell'
 import React from 'react'
-// eslint-disable-next-line no-unused-vars
-import { TableColumnProps } from '../../../types'
+import {
+  // eslint-disable-next-line no-unused-vars
+  TableColumnProps,
+  // eslint-disable-next-line no-unused-vars
+  TableColumnControls,
+  // eslint-disable-next-line no-unused-vars
+  ColumnMenuItems
+} from '../../../types'
 import { motion } from 'framer-motion'
 import { Skeleton, Empty } from 'antd'
 import { Align } from '../../../../TableUtility'
@@ -16,6 +22,8 @@ type TableBodyProps = {
   onCheckedChange: Function
   isLoadingContent: boolean
   useSkeletonLoader: boolean
+  controls: TableColumnControls
+  columnMenuItems: ColumnMenuItems | undefined
 }
 export default (props: TableBodyProps) => {
   const {
@@ -25,7 +33,9 @@ export default (props: TableBodyProps) => {
     checkState,
     onCheckedChange,
     isLoadingContent,
-    useSkeletonLoader
+    useSkeletonLoader,
+    controls,
+    columnMenuItems
   } = props
 
   return (
@@ -96,6 +106,8 @@ export default (props: TableBodyProps) => {
               source={source}
               key={`table_cell_${source?.key}`}
               index={index}
+              controls={controls}
+              columnMenuItems={columnMenuItems}
             />
           )
         })}

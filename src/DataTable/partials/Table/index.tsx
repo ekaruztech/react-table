@@ -3,7 +3,7 @@ import TableHead from './TableHead'
 import TableBody from './TableBody'
 import TableFooter from './TableFooter'
 // eslint-disable-next-line no-unused-vars
-import { TableColumnProps, ColumnProps } from '../../types'
+import { TableColumnProps, ColumnProps, TableColumnControls, ColumnMenuItems } from '../../types'
 import { isEmpty } from 'lodash'
 
 type TableProps = {
@@ -25,6 +25,8 @@ type TableProps = {
   handlePagination: (page: number) => void
   isLoadingContent: boolean
   useSkeletonLoader: boolean
+  controls: TableColumnControls
+  columnMenuItems: ColumnMenuItems | undefined
 }
 export default (props: TableProps) => {
   const {
@@ -41,7 +43,9 @@ export default (props: TableProps) => {
     tablePages,
     handlePagination,
     isLoadingContent,
-    useSkeletonLoader
+    useSkeletonLoader,
+    controls,
+    columnMenuItems
   } = props
   return (
     <div className='___table-wrapper'>
@@ -64,6 +68,8 @@ export default (props: TableProps) => {
           dataSource={dataSource}
           isLoadingContent={isLoadingContent}
           useSkeletonLoader={useSkeletonLoader}
+          controls={controls}
+          columnMenuItems={columnMenuItems}
         />
       </table>
       {/* <table className={'___table-fixed'}> */}

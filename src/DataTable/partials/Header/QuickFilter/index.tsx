@@ -3,10 +3,10 @@ import { Collapse, Typography, Button, Empty, Menu, Dropdown, Row } from 'antd'
 import { Align, Margin, Position, Padding } from '../../../../TableUtility'
 import './_styles.scss'
 import { quickFilterReducer, initQuickFilterState } from './reducer'
-import { isEmpty, pick } from 'lodash'
+import { isEmpty, isFunction, pick } from 'lodash'
 import { motion } from 'framer-motion'
 // eslint-disable-next-line no-unused-vars
-import { TableColumnProps } from '../../../types'
+import { TableColumnProps, TableQuickFilterProps } from '../../../types'
 import QuickFilterItem from './_partials/QuickFilterItem'
 
 const { Panel } = Collapse
@@ -82,10 +82,12 @@ const EmptyImage = (
 type QuickFilter = {
   columns: TableColumnProps
   dataSource: Array<any>
+  quickFilterActions: TableQuickFilterProps | undefined
+  useQuickFilter: boolean
 }
 
 export default (props: QuickFilter) => {
-  const { columns, dataSource } = props
+  const { columns, dataSource, useQuickFilter, quickFilterActions } = props
   // @ts-ignore
   const [state, dispatch] = useReducer(
     quickFilterReducer,
@@ -103,13 +105,19 @@ export default (props: QuickFilter) => {
       }
     })
   }
-  const clearFilter = () => dispatch({ type: 'RESET' })
+  const clearFilter = () => {
+    dispatch({ type: 'RESET' })
+    if (quickFilterActions && isFunction(quickFilterActions.onClear)) {
+      quickFilterActions.onClear()
+    }
+  }
   const applyFilter = () => {
     const filters = state.filters.map((value) =>
       pick(value, ['property', 'value'])
     )
-    console.log(filters)
-    return filters
+    if (quickFilterActions && isFunction(quickFilterActions?.onApply)) {
+      quickFilterActions.onApply(filters)
+    }
   }
 
   const menu = (
@@ -120,7 +128,7 @@ export default (props: QuickFilter) => {
     </Menu>
   )
 
-  return (
+  return useQuickFilter ? (
     <div className='QuickFilter'>
       <Collapse expandIconPosition='right'>
         <Panel
@@ -243,5 +251,5 @@ export default (props: QuickFilter) => {
         </Panel>
       </Collapse>
     </div>
-  )
+  ) : null
 }

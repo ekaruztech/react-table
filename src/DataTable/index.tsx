@@ -4,37 +4,57 @@ import './styles/override.scss'
 import './styles/styles.scss'
 import Table from './partials/Table'
 import Header from './partials/Header'
-import QuickFilter from './partials/Header/QuickFilter'
 import { clamp, isArray } from 'lodash'
-// eslint-disable-next-line no-unused-vars
-import { ColumnProps } from './types'
+import {
+  // eslint-disable-next-line no-unused-vars
+  ColumnProps,
+  // eslint-disable-next-line no-unused-vars
+  TableColumnControls,
+  // eslint-disable-next-line no-unused-vars
+  TableSettings,
+  // eslint-disable-next-line no-unused-vars
+  TableQuickFilterProps,
+  // eslint-disable-next-line no-unused-vars
+  TableLoaders,
+  // eslint-disable-next-line no-unused-vars
+  ColumnMenuItems
+} from './types'
 
 interface DataTableProps {
   columns: ColumnProps[]
   dataSource: Array<any>
-  minColumns?: number
-  maxColumns?: number
-  useSkeletonLoader?: boolean
-  isLoadingContent?: boolean
-  pageRenderOrder?: number
-  onRenderOrderChange?: (renderOrder: number) => void
-  onPaginationChange: (page: number) => void
-  pagination: { all: number; currentPage: number }
+  loaders: TableLoaders
+  settings: TableSettings
+  controls: TableColumnControls
+  quickFilter?: TableQuickFilterProps
+  columnMenuItems?: ColumnMenuItems
 }
 
 const DataTable = (props: DataTableProps) => {
   const {
     columns: defaultColumns,
     dataSource,
+    settings,
+    loaders,
+    controls,
+    columnMenuItems,
+    quickFilter
+  } = props
+
+  const {
     minColumns: defaultMinCol,
     maxColumns: defaultMaxCol,
     useSkeletonLoader,
-    isLoadingContent,
+    useQuickFilter,
     pageRenderOrder,
     onRenderOrderChange,
     pagination,
     onPaginationChange
-  } = props
+  } = settings || {
+    minColumns: 3,
+    maxColumns: 5
+  }
+  const { isLoadingContent } = loaders || { isLoadingContent: false }
 
   if (!defaultColumns || !isArray(defaultColumns))
     throw new Error(
@@ -99,8 +119,10 @@ const DataTable = (props: DataTableProps) => {
           pageRenderOrder: pageRenderOrder || 15,
           setPageRenderOrder: onRenderOrderChange || null
         }}
+        useQuickFilter={Boolean(useQuickFilter)}
+        quickFilter={quickFilter}
       />
-      <QuickFilter columns={columns} dataSource={dataSource} />
+
       <Table
         setColumns={setColumns}
         handlePagination={handlePagination}
@@ -116,6 +138,8 @@ const DataTable = (props: DataTableProps) => {
         tablePages={pagination}
         isLoadingContent={Boolean(isLoadingContent)}
         useSkeletonLoader={Boolean(useSkeletonLoader)}
+        controls={controls}
+        columnMenuItems={columnMenuItems}
       />
     </div>
   )
