@@ -1,6 +1,6 @@
 {
   "name": "@voomsway/react-table",
-  "version": "0.0.0-development",
+  "version": "1.0.0-beta.1",
   "description": "React table for voomsway web application",
   "author": "Cmion",
   "license": "MIT",
@@ -76,6 +76,6 @@
     "remixicon": "^2.5.0"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }
