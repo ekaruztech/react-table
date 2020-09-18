@@ -1,171 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef, useState } from 'react'
-import { Checkbox, Tag, Drawer, Button } from 'antd'
-
+import { Checkbox, Drawer } from 'antd'
 import { motion } from 'framer-motion'
 import CellMenu from './_partials/CellMenu'
-
 import {
   ColumnProps,
-  ColumnType,
-  PresentationType,
-  ActionPresentationType,
-  PresentationColor
+  TableColumnControls,
+  ColumnMenuItems
 } from '../../../types'
-import moment, { Moment } from 'moment'
-
-const presentationHOC = ({
-  extraColumnsLength,
-  columnKeys,
-  columnType
-}: {
-  extraColumnsLength: number
-  columnKeys: string[]
-  columnType: ColumnType | undefined
-}) => (Component: React.ReactNode) => (
-  <motion.td
-    layout
-    style={{
-      width: `calc(100% / ${columnKeys.length + extraColumnsLength} - 120px)`
-    }}
-    className='___table-row'
-  >
-    <div
-      className='___table-row-inner'
-      style={{
-        textAlign:
-          columnType === 'number' || columnType === 'currency'
-            ? 'right'
-            : 'left'
-      }}
-    >
-      {Component}
-    </div>
-  </motion.td>
-)
-
-type PresentationProps = {
-  columnType: ColumnType | undefined
-  data: string | Moment | Date | number | undefined
-  actionPresentationType: ActionPresentationType | undefined
-  presentationType: PresentationType | undefined
-  presentationColor: PresentationColor | undefined
-  actionCallback: undefined | ((source: any) => void)
-  bold: boolean | undefined
-  actionTitle?: string
-  source: any
-  dateFormat: string | undefined
-}
-const Presentation = (props: PresentationProps) => {
-  const {
-    columnType,
-    data,
-    presentationType,
-    actionCallback,
-    actionPresentationType,
-    actionTitle,
-    presentationColor,
-    bold,
-    source,
-    dateFormat
-  } = props
-  switch (columnType) {
-    case 'action':
-      return (
-        <Button
-          type={actionPresentationType || 'default'}
-          onClick={() => (actionCallback ? actionCallback(source) : null)}
-          size='small'
-          style={{ fontSize: 12 }}
-        >
-          {actionTitle || ''}
-        </Button>
-      )
-
-    case 'currency': {
-      const currency = Intl.NumberFormat('en-NG', {
-        currency: 'NGN',
-        style: 'currency'
-      }).format(Number(data) || 0)
-      if (presentationType === 'tag') {
-        return (
-          <Tag
-            color={presentationColor || 'gold'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal'
-            }}
-          >
-            {currency}
-          </Tag>
-        )
-      } else
-        return (
-          <span
-            style={{
-              fontWeight: bold ? 'bold' : 'normal'
-            }}
-          >
-            {currency}
-          </span>
-        )
-    }
-    case 'date':
-    case 'datetime': {
-      const format = dateFormat === 'datetime' ? 'lll LT' : 'lll'
-      const date =
-        moment(data).format(dateFormat || format) || moment(data).format(format)
-      if (presentationType === 'tag') {
-        return (
-          <Tag
-            color={presentationColor || 'gold'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal'
-            }}
-          >
-            {date}
-          </Tag>
-        )
-      } else
-        return (
-          <Tag
-            color={presentationColor || 'default'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              borderColor: 'transparent',
-              background: 'transparent'
-            }}
-          >
-            {date}
-          </Tag>
-        )
-    }
-    default:
-      if (presentationType === 'tag') {
-        return (
-          <Tag
-            color={presentationColor || 'gold'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal'
-            }}
-          >
-            {data || '⏤⏤⏤'}
-          </Tag>
-        )
-      } else
-        return (
-          <Tag
-            color={presentationColor || 'default'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              borderColor: 'transparent',
-              background: 'transparent'
-            }}
-          >
-            {data || '⏤⏤⏤'}
-          </Tag>
-        )
-  }
-}
+import presentationHOC from './_partials/presentationHOC'
+import Presentation from './_partials/Presentation'
 
 type TableCellProps = {
   checked: boolean
@@ -178,6 +22,8 @@ type TableCellProps = {
   /** columns.selected */
   columns: ColumnProps[]
   index?: number
+  controls: TableColumnControls
+  columnMenuItems: ColumnMenuItems | undefined
 }
 
 // TODO: Update TableCells to allow for more presentation types.
@@ -190,8 +36,11 @@ export default (props: TableCellProps) => {
     columnKeys,
     extraColumnsLength = 1,
     columns,
-    index
+    index,
+    controls,
+    columnMenuItems
   } = props
+
   const trRef = useRef()
   const [drawerVisible, setDrawerVisible] = useState(false)
   const showDrawer = () => {
@@ -246,7 +95,7 @@ export default (props: TableCellProps) => {
           </div>
         </td>
 
-        {columnKeys.map((value) => {
+        {columnKeys.map((value, columnIndex) => {
           const retrieved = columns.find((c) => c?.key === value)
           // const retrievedIsAnObject = isObject(retrieved);
           const presentationType = retrieved?.presentationType
@@ -257,7 +106,10 @@ export default (props: TableCellProps) => {
           return presentationHOC({
             extraColumnsLength,
             columnKeys,
-            columnType: retrieved?.type
+            columnType: retrieved?.type,
+            key: `presentation__${
+              source?.key || index
+            }__of__column_${columnIndex}`
           })(
             <Presentation
               data={data}
@@ -280,7 +132,12 @@ export default (props: TableCellProps) => {
           className='___table-row'
         >
           <div className='___table-utility'>
-            <CellMenu showDrawer={showDrawer} />
+            <CellMenu
+              showDrawer={showDrawer}
+              controls={controls}
+              columnMenuItems={columnMenuItems}
+              source={source}
+            />
           </div>
         </td>
       </motion.tr>

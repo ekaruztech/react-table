@@ -1,27 +1,22 @@
 import { Button, Dropdown, Menu, Tooltip } from 'antd'
 import { motion } from 'framer-motion'
 import React from 'react'
-import {
-  FilterOutlined,
-  ReloadOutlined,
-  FullscreenOutlined,
-  FileTextOutlined,
-  FilePdfOutlined,
-  FileExcelOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  EllipsisOutlined
-} from '@ant-design/icons'
+// eslint-disable-next-line no-unused-vars
+import { TableColumnControls, ColumnMenuItems } from '../../../../../types'
 import './_styles.scss'
+import { isEmpty, isFunction } from 'lodash'
 
 type CellMenuProps = {
   showDrawer:
     | ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
     | undefined
+  controls: TableColumnControls
+  columnMenuItems: ColumnMenuItems | undefined
+  source: any
 }
 
 export default (props: CellMenuProps) => {
-  const { showDrawer } = props
+  const { showDrawer, controls, columnMenuItems, source } = props
   const menu = (
     <Menu
       style={{
@@ -34,15 +29,16 @@ export default (props: CellMenuProps) => {
           <motion.div
             initial={{ color: 'var(--text-color)', cursor: 'pointer' }}
             whileHover={{ scale: 1.25 }}
+            whileTap={{ scale: 0.85 }}
+            onClick={showDrawer}
           >
             <Tooltip title='Expand column'>
-              <Button
-                type='text'
-                onClick={showDrawer}
-                style={{ color: 'var(--accent35)', width: 40, padding: 0 }}
-              >
-                <FullscreenOutlined />
-              </Button>
+              <span className='anticon'>
+                <i
+                  className='ri-fullscreen-line'
+                  style={{ fontSize: 16, cursor: 'pointer' }}
+                />
+              </span>
             </Tooltip>
           </motion.div>
         </Menu.Item>
@@ -50,18 +46,18 @@ export default (props: CellMenuProps) => {
           <motion.div
             initial={{ color: 'var(--text-color)', cursor: 'pointer' }}
             whileHover={{ scale: 1.25 }}
+            whileTap={{ scale: 0.85 }}
+            onClick={() =>
+              isFunction(controls.edit) ? controls.edit(source) : null
+            }
           >
             <Tooltip title='Edit'>
-              <Button
-                type='text'
-                style={{
-                  color: 'var(--accent35)',
-                  width: 40,
-                  padding: 0
-                }}
-              >
-                <EditOutlined />
-              </Button>
+              <span className='anticon'>
+                <i
+                  className='ri-edit-line'
+                  style={{ fontSize: 16, cursor: 'pointer' }}
+                />
+              </span>
             </Tooltip>
           </motion.div>
         </Menu.Item>
@@ -69,18 +65,18 @@ export default (props: CellMenuProps) => {
           <motion.div
             initial={{ color: 'var(--text-color)', cursor: 'pointer' }}
             whileHover={{ scale: 1.25 }}
+            whileTap={{ scale: 0.85 }}
+            onClick={() =>
+              isFunction(controls.duplicate) ? controls.duplicate(source) : null
+            }
           >
-            <Tooltip title='Filter data by value'>
-              <Button
-                type='text'
-                style={{
-                  color: 'var(--accent35)',
-                  width: 40,
-                  padding: 0
-                }}
-              >
-                <FilterOutlined />
-              </Button>
+            <Tooltip title='Duplicate'>
+              <span className='anticon'>
+                <i
+                  className='ri-file-copy-line'
+                  style={{ fontSize: 16, cursor: 'pointer' }}
+                />
+              </span>
             </Tooltip>
           </motion.div>
         </Menu.Item>
@@ -88,63 +84,48 @@ export default (props: CellMenuProps) => {
           <motion.div
             initial={{ color: 'var(--text-color)', cursor: 'pointer' }}
             whileHover={{ scale: 1.25 }}
+            whileTap={{ scale: 0.85 }}
+            onClick={() =>
+              isFunction(controls.delete)
+                ? controls.delete(source?.key || null)
+                : null
+            }
           >
             <Tooltip title='Delete'>
-              <Button danger type='text' style={{ width: 40, padding: 0 }}>
-                <DeleteOutlined />
-              </Button>
+              <span className='anticon'>
+                <i
+                  className='ri-delete-bin-line'
+                  style={{ fontSize: 16, cursor: 'pointer', color: '#ed5e68' }}
+                />
+              </span>
             </Tooltip>
           </motion.div>
         </Menu.Item>
       </Menu>
-      <Menu
-        style={{
-          border: 0,
-          background: 'var(--background-secondary)'
-        }}
-      >
-        <Menu.Divider />
-        <Menu.Item
-          key='0'
-          icon={
-            <ReloadOutlined
-              style={{ color: 'var(--accent)', paddingRight: 10 }}
-            />
-          }
+      {!isEmpty(columnMenuItems) && (
+        <Menu
+          style={{
+            border: 0,
+            background: 'var(--background-secondary)'
+          }}
+          onSelect={({ key }) => {
+            const item = (columnMenuItems || [])[Number(key)]
+            if (isFunction(item.onClick)) {
+              item.onClick(item)
+            }
+          }}
         >
-          Refresh
-        </Menu.Item>
-        <Menu.Item
-          key='1'
-          icon={
-            <FileTextOutlined
-              style={{ color: 'var(--accent)', paddingRight: 10 }}
-            />
-          }
-        >
-          Export as CSV
-        </Menu.Item>
-        <Menu.Item
-          key='3'
-          icon={
-            <FileExcelOutlined
-              style={{ color: 'var(--accent)', paddingRight: 10 }}
-            />
-          }
-        >
-          Export as Excel
-        </Menu.Item>
-        <Menu.Item
-          key='4'
-          icon={
-            <FilePdfOutlined
-              style={{ color: 'var(--accent)', paddingRight: 10 }}
-            />
-          }
-        >
-          Export as PDF
-        </Menu.Item>
-      </Menu>
+          <Menu.Divider />
+
+          {(columnMenuItems || []).map(({ title, icon }, index) => {
+            return (
+              <Menu.Item key={index} icon={icon}>
+                {title}
+              </Menu.Item>
+            )
+          })}
+        </Menu>
+      )}
     </Menu>
   )
 
@@ -155,7 +136,11 @@ export default (props: CellMenuProps) => {
           <Button
             shape='circle'
             type='text'
-            icon={<EllipsisOutlined style={{ fontSize: 17 }} />}
+            icon={
+              <span className='anticon'>
+                <i className='ri-more-line' style={{ fontSize: 17 }} />
+              </span>
+            }
           />
         </motion.div>
       </Tooltip>

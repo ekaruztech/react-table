@@ -474,7 +474,10 @@ const App = () => {
   }>({ data: [], range: { from: 0, to: 15 } })
 
   const [pageRenderOrder, setPageRenderOrder] = useState(15)
-  const [pagination, setPagination] = useState({all: db.dataSource.length, currentPage: 1});
+  const [pagination, setPagination] = useState({
+    all: db.dataSource.length,
+    currentPage: 1
+  })
 
   const paginate = (page: number) => {
     setDataSource(() => {
@@ -484,7 +487,7 @@ const App = () => {
       const data = db.dataSource.slice(from, to)
       return { range, data }
     })
-    setPagination((prev) => ({...prev, currentPage: page}));
+    setPagination((prev) => ({ ...prev, currentPage: page }))
   }
 
   const onRenderOrderChange = (renderOrder: number) => {
@@ -495,8 +498,7 @@ const App = () => {
       const data = db.dataSource.slice(from, to)
       return { range, data }
     })
-    setPageRenderOrder(renderOrder);
-
+    setPageRenderOrder(renderOrder)
   }
 
   return (
@@ -504,13 +506,38 @@ const App = () => {
       <DataTable
         columns={db.columns}
         dataSource={dataSource.data}
-        maxColumns={db.maxColumns}
-        minColumns={db.minColumns}
-        onRenderOrderChange={onRenderOrderChange}
-        pageRenderOrder={pageRenderOrder}
-        onPaginationChange={paginate}
-        pagination={pagination}
-        isLoadingContent={isLoadingContent}
+        settings={{
+          maxColumns: db.maxColumns,
+          minColumns: db.minColumns,
+          onRenderOrderChange,
+          onPaginationChange: paginate,
+          pagination,
+          pageRenderOrder
+        }}
+        loaders={{ isLoadingContent }}
+        controls={{
+          delete: (key: string) => console.log(key)
+        }}
+        columnMenuItems={[
+          {
+            title: 'Summary',
+            onClick: () => null,
+            icon: (
+              <span className='anticon'>
+                <i className='ri-focus-line'></i>
+              </span>
+            )
+          },
+          {
+            title: 'Deactivate',
+            onClick: () => null,
+            icon: (
+              <span className='anticon'>
+                <i className='ri-switch-line'></i>
+              </span>
+            )
+          }
+        ]}
       />
     </div>
   )

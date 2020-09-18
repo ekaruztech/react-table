@@ -31,10 +31,19 @@ export default (props: TableHeadProps) => {
   return (
     <motion.thead className='___table-header' transition={{ type: 'inertia' }}>
       <tr className='___table-columns'>
-        <th
+        <motion.th
           className='___table-column'
           style={{
             width: '64px'
+          }}
+          initial={{ y: 50 }}
+          animate={{ y: 0 }}
+          exit={{ y: 50 }}
+          transition={{
+            type: 'spring',
+            delay: 0.02,
+            stiffness: 100,
+            damping: 13
           }}
         >
           <div className='___table-header-checkbox-container'>
@@ -44,7 +53,7 @@ export default (props: TableHeadProps) => {
               checked={checkState.checkAll}
             />
           </div>
-        </th>
+        </motion.th>
         {columns.selected.map((value, index) => {
           return (
             <motion.th
@@ -53,7 +62,7 @@ export default (props: TableHeadProps) => {
               exit={{ y: 50 }}
               transition={{
                 type: 'spring',
-                delay: (index || 1) * 0.02,
+                delay: ((index || 1) + 1) * 0.02,
                 stiffness: 100,
                 damping: 13
               }}
