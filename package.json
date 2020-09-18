@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.2",
   "description": "React table for voomsway web application",
   "author": "Cmion",
-  "license": "apache-2.0",
+  "license": "Apache-2.0",
   "repository": "https://github.com/ekaruztech/react-table.git",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
