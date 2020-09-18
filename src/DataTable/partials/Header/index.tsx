@@ -2,10 +2,17 @@ import React, { Fragment, useState } from 'react'
 import { Button, Tooltip } from 'antd'
 import DataManagement from './DataManagement'
 import TableControls from './Controls'
-// eslint-disable-next-line no-unused-vars
-import { TableColumnProps, TableQuickFilterProps } from '../../types'
+
+import {
+  // eslint-disable-next-line no-unused-vars
+  TableColumnProps,
+  // eslint-disable-next-line no-unused-vars
+  TableQuickFilterProps,
+  // eslint-disable-next-line no-unused-vars
+  TableColumnControls
+} from '../../types'
 import QuickFilter from './QuickFilter'
-import { Align, Padding } from '../../../TableUtility'
+import MultipleSelect from './Controls/MultipleSelect'
 
 type HeaderProps = {
   columns: TableColumnProps
@@ -16,6 +23,8 @@ type HeaderProps = {
   }
   quickFilter: TableQuickFilterProps | undefined
   useQuickFilter: boolean
+  multipleSelectList?: any
+  controls: TableColumnControls
 }
 export default (props: HeaderProps) => {
   const {
@@ -23,7 +32,9 @@ export default (props: HeaderProps) => {
     columns,
     renderOrder: { pageRenderOrder, setPageRenderOrder },
     useQuickFilter,
-    quickFilter
+    quickFilter,
+    multipleSelectList,
+    controls
   } = props
 
   const [filterColumn, setFilterColumn] = useState({ visible: false })
@@ -81,68 +92,10 @@ export default (props: HeaderProps) => {
         useQuickFilter={useQuickFilter}
         quickFilterActions={quickFilter}
       />
-      <Align
-        style={{
-          width: '100%',
-          borderTop: '1px solid var(--border-color-split)',
-          background: 'var(--background-primary)',
-          height: 60
-        }}
-        alignCenter
-      >
-        <Padding horizontal={20} vertical={10} style={{ height: '100%' }}>
-          <Align alignCenter style={{ height: '100%' }}>
-            <Button type='link'>
-              <Align alignCenter>
-                <span>20 selected</span>
-              </Align>
-            </Button>
-            <Padding horizontal={10} style={{ height: '100%' }}>
-              <div
-                style={{
-                  height: '100%',
-                  borderLeft: '1px solid var(--border-color-split)'
-                }}
-              />
-            </Padding>
-
-            <Tooltip title='Delete selected'>
-              <Button
-                danger
-                type='text'
-                icon={
-                  <span className='anticon'>
-                    <i className='ri-delete-bin-line' />
-                  </span>
-                }
-              >
-                Delete
-              </Button>
-            </Tooltip>
-            <Padding horizontal={10} style={{ height: '100%' }}>
-              <div
-                style={{
-                  height: '100%',
-                  borderLeft: '1px solid var(--border-color-split)'
-                }}
-              />
-            </Padding>
-
-            <Tooltip title='Pin selected'>
-              <Button
-                type='text'
-                icon={
-                  <span className='anticon'>
-                    <i className='ri-pushpin-line' />
-                  </span>
-                }
-              >
-                Pin
-              </Button>
-            </Tooltip>
-          </Align>
-        </Padding>
-      </Align>
+      <MultipleSelect
+        multipleSelectList={multipleSelectList}
+        controls={controls}
+      />
     </Fragment>
   )
 }

@@ -48,7 +48,9 @@ export default (props: CellMenuProps) => {
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 0.85 }}
             onClick={() =>
-              isFunction(controls.edit) ? controls.edit(source) : null
+              controls?.edit && isFunction(controls?.edit)
+                ? controls.edit(source)
+                : null
             }
           >
             <Tooltip title='Edit'>
@@ -67,7 +69,9 @@ export default (props: CellMenuProps) => {
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 0.85 }}
             onClick={() =>
-              isFunction(controls.duplicate) ? controls.duplicate(source) : null
+              controls?.duplicate && isFunction(controls?.duplicate)
+                ? controls.duplicate(source)
+                : null
             }
           >
             <Tooltip title='Duplicate'>
@@ -86,7 +90,7 @@ export default (props: CellMenuProps) => {
             whileHover={{ scale: 1.25 }}
             whileTap={{ scale: 0.85 }}
             onClick={() =>
-              isFunction(controls.delete)
+              controls?.delete && isFunction(controls?.delete)
                 ? controls.delete(source?.key || null)
                 : null
             }
@@ -110,7 +114,7 @@ export default (props: CellMenuProps) => {
           }}
           onSelect={({ key }) => {
             const item = (columnMenuItems || [])[Number(key)]
-            if (isFunction(item.onClick)) {
+            if (item?.onClick && isFunction(item?.onClick)) {
               item.onClick(item)
             }
           }}

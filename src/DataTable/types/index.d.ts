@@ -96,7 +96,8 @@ type TableColumnControls = {
   edit?: (source: any) => void
   refresh?: () => void
   export?: () => void
-  deleteMultiple?: (sources: Array<string>) => void
+  pin?: (sources: Array<any>) => void
+  deleteMultiple?: (sources: Array<any>) => void
 }
 
 type TableSettings = {
