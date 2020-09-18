@@ -28,6 +28,7 @@ interface DataTableProps {
   controls: TableColumnControls
   quickFilter?: TableQuickFilterProps
   columnMenuItems?: ColumnMenuItems
+  name: string
 }
 
 const DataTable = (props: DataTableProps) => {
@@ -39,6 +40,7 @@ const DataTable = (props: DataTableProps) => {
     controls,
     columnMenuItems,
     quickFilter
+    // name
   } = props
 
   const {
@@ -121,6 +123,8 @@ const DataTable = (props: DataTableProps) => {
         }}
         useQuickFilter={Boolean(useQuickFilter)}
         quickFilter={quickFilter}
+        multipleSelectList={checkState.checkedList}
+        controls={controls}
       />
 
       <Table
