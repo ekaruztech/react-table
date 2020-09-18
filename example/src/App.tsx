@@ -504,6 +504,7 @@ const App = () => {
   return (
     <div style={{ padding: 20, background: '#f7f8fa' }}>
       <DataTable
+        name={'TestTable'}
         columns={db.columns}
         dataSource={dataSource.data}
         settings={{
