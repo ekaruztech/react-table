@@ -1,6 +1,6 @@
 {
   "name": "@voomsway/react-table",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.5",
   "description": "React table for voomsway web application",
   "author": "Cmion",
   "license": "Apache-2.0",
@@ -31,6 +31,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@types/invariant": "^2.2.34",
     "@types/jest": "^25.1.4",
     "@types/lodash": "^4.14.161",
     "@types/node": "^12.12.38",
@@ -58,8 +59,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "typescript": "^3.7.5",
-    "semantic-release": "^17.1.2"
+    "semantic-release": "^17.1.2",
+    "typescript": "^3.7.5"
   },
   "files": [
     "dist"
@@ -68,6 +69,7 @@
     "@ant-design/icons": "^4.2.2",
     "antd": "^4.6.4",
     "framer-motion": "^2.6.13",
+    "invariant": "^2.2.4",
     "lodash": "^4.17.20",
     "moment": "^2.28.0",
     "node-sass": "^4.14.1",

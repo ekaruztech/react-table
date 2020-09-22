@@ -3,10 +3,7 @@
 > React table for voomsway web application
 
 [![NPM](https://img.shields.io/npm/v/@voomsway/react-table.svg)](https://www.npmjs.com/package/@voomsway/react-table) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-![GitHub repo size](https://img.shields.io/github/repo-size/ekaruztech/react-table)
-![npm bundle size](https://img.shields.io/bundlephobia/min/@voomsway/react-table)
-![GitHub language count](https://img.shields.io/github/languages/count/ekaruztech/react-table)
-![GitHub](https://img.shields.io/github/license/ekaruztech/react-table)
+
 
 ## Install
 
