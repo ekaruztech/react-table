@@ -1,9 +1,10 @@
 import React from 'react'
 
-import { DataTable } from '@voomsway/react-table'
+import ReactTable from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import moment from 'moment'
 import { useState, useEffect } from 'react'
+import { Menu } from 'antd'
 
 const db = {
   dataSource: [
@@ -453,6 +454,7 @@ const db = {
   minColumns: 4
 }
 const App = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingContent, setIsLoadingContent] = useState(true)
 
   useEffect(() => {
@@ -474,12 +476,14 @@ const App = () => {
   }>({ data: [], range: { from: 0, to: 15 } })
 
   const [pageRenderOrder, setPageRenderOrder] = useState(15)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pagination, setPagination] = useState({
     all: db.dataSource.length,
     currentPage: 1
   })
+  console.log(setPagination, pagination)
 
-  const paginate = (page: number) => {
+  const onPaginate = (page: number) => {
     setDataSource(() => {
       const to = pageRenderOrder * page
       const from = to - pageRenderOrder
@@ -500,46 +504,87 @@ const App = () => {
     })
     setPageRenderOrder(renderOrder)
   }
+  const selectMenu = [
+    {
+      title: 'Summary',
+      onClick: (value: any) => console.log(value),
+      icon: (
+        <span className='anticon'>
+          <i className='ri-focus-line'></i>
+        </span>
+      )
+    },
+    {
+      title: 'Deactivate',
+      onClick: (value: any) => console.log(value),
+      icon: (
+        <span className='anticon'>
+          <i className='ri-switch-line'></i>
+        </span>
+      )
+    }
+  ]
 
   return (
     <div style={{ padding: 20, background: '#f7f8fa' }}>
-      <DataTable
+      <ReactTable
         name={'TestTable'}
         columns={db.columns}
         dataSource={dataSource.data}
-        settings={{
-          maxColumns: db.maxColumns,
-          minColumns: db.minColumns,
-          onRenderOrderChange,
-          onPaginationChange: paginate,
-          pagination,
-          pageRenderOrder
-        }}
-        loaders={{ isLoadingContent }}
-        controls={{
-          delete: (key: string) => console.log(key)
-        }}
-        columnMenuItems={[
-          {
-            title: 'Summary',
-            onClick: () => null,
-            icon: (
-              <span className='anticon'>
-                <i className='ri-focus-line'></i>
-              </span>
-            )
-          },
-          {
-            title: 'Deactivate',
-            onClick: () => null,
-            icon: (
-              <span className='anticon'>
-                <i className='ri-switch-line'></i>
-              </span>
-            )
+        maxColumns={db.maxColumns}
+        minColumns={db.minColumns}
+      >
+        <ReactTable.Controls
+          renderOrder={pageRenderOrder}
+          onRenderOrderChange={onRenderOrderChange}
+        />
+        <ReactTable.QuickFilter
+          onApply={(value: any) => console.log(value)}
+          onClear={() => console.log('cleared')}
+        />
+        <ReactTable.Body
+          pagination={pagination}
+          onPaginate={onPaginate}
+          loader={'skeleton'}
+          loading={isLoadingContent}
+          onCellSelect={(selectCount: number) => ({
+            onDelete: (source: any[]) => console.log(source, selectCount),
+            onPin: (source: any[]) => console.log(source, selectCount)
+          })}
+          cellMenu={
+            <ReactTable.CellMenu
+              onDelete={() => null}
+              onDuplicate={() => null}
+              onEdit={() => null}
+            >
+              {({ source }: { source: any }) => {
+                return (
+                  <Menu
+                    style={{
+                      border: 0,
+                      background: 'var(--background-primary)'
+                    }}
+                  >
+                    <Menu.Divider />
+                    {selectMenu.map(
+                      ({ onClick, icon, title }, index: number) => (
+                        <Menu.Item
+                          onClick={() => onClick(source)}
+                          icon={icon}
+                          key={title + index}
+                        >
+                          {title}
+                        </Menu.Item>
+                      )
+                    )}
+                  </Menu>
+                )
+              }}
+            </ReactTable.CellMenu>
           }
-        ]}
-      />
+        />
+      </ReactTable>
+
     </div>
   )
 }
