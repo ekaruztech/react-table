@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ReactTable } from '@voomsway/react-table/dist'
+import { Table as ReactTable } from '@voomsway/react-table/dist'
 import '@voomsway/react-table/dist/index.css'
 import moment from 'moment'
 import { useState, useEffect } from 'react'
