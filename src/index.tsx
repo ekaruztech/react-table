@@ -7,6 +7,7 @@ import { ReactTableContext } from './ReactTableContext'
 import Controls, { ControlsProps } from './Controls'
 import QuickFilter, { QuickFilterProps } from './QuickFilter'
 import Table, { BodyProps, CellMenu, CellMenuProps } from './Table'
+import { Align, Position, Padding, Margin } from './TableUtility'
 
 // TYPES
 // eslint-disable-next-line no-unused-vars
@@ -25,17 +26,6 @@ import './styles/ant-custom.css'
 import 'remixicon/fonts/remixicon.css'
 import './styles/override.scss'
 import './styles/styles.scss'
-
-export { Align, Position, Padding, Margin } from './TableUtility'
-export * from './hooks'
-export {
-  QuickFilterProps,
-  ControlsProps,
-  ColumnProps,
-  ReactTableProps,
-  BodyProps,
-  CellMenuProps
-}
 
 class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   static Controls = Controls
@@ -108,8 +98,6 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     const {
       // columns: defaultColumns,
       dataSource,
-      minColumns: defaultMinCol,
-      maxColumns: defaultMaxCol,
       children
       // name
     } = this.props
@@ -124,13 +112,6 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       `ReactTable expects dataSource to be of type Array, got ${typeof this
         .props.dataSource} instead`
     )
-
-    console.log({
-      minColumns: this.minColumns,
-      maxColumns: this.maxColumns,
-      defaultMaxCol,
-      defaultMinCol
-    })
 
     /* Gets the keys of the selected columns */
     const columnKeys = this.state.columns.selected.map(
@@ -150,10 +131,7 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       setSelectedTableItems: this.setSelectedTableItems,
       defaultColumns: this.props.columns
     }
-    // const cb = (child: React.ReactElement) => {
-    //   return React.cloneElement(child, providerValue)
-    // }
-    // const reactTableChildren = React.Children.map(children, cb)
+
     return (
       <div className='ReactTable___table-container'>
         <ReactTableContext.Provider value={providerValue}>
@@ -164,4 +142,16 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   }
 }
 
-export default ReactTable
+export {
+  QuickFilterProps,
+  ControlsProps,
+  ColumnProps,
+  ReactTableProps,
+  BodyProps,
+  CellMenuProps,
+  Align,
+  Margin,
+  Padding,
+  Position,
+  ReactTable as default
+}
