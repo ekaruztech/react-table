@@ -1,19 +1,19 @@
 {
   "name": "@voomsway/react-table",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.9",
   "description": "React table for voomsway web application",
   "author": "Cmion",
   "license": "Apache-2.0",
   "repository": "https://github.com/ekaruztech/react-table.git",
   "main": "dist/index.js",
-  "module": "dist/index.modern.js",
+  "esmodule": "dist/react-table.js",
   "source": "src/index.tsx",
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "build": "microbundle-crl --css-modules false  --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --css-modules false --format modern,cjs",
+    "build": "microbundle-crl --css-modules false --compress  --format es,cjs,umd",
+    "start": "microbundle-crl watch --no-compress --css-modules false --format es,cjs,umd",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",

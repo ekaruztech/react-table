@@ -192,6 +192,6 @@ const Position = (props: PositionProps) => {
   )
 }
 
-export type { AlignProps, PositionProps, PaddingProps, MarginProps }
+export { AlignProps, PositionProps, PaddingProps, MarginProps }
 export { Align, Padding, Position, Margin }
 // @ts-ignore

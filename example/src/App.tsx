@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ReactTable from '@voomsway/react-table'
+import { Table as ReactTable } from '@voomsway/react-table/dist'
 import '@voomsway/react-table/dist/index.css'
 import moment from 'moment'
 import { useState, useEffect } from 'react'
@@ -524,7 +524,9 @@ const App = () => {
       )
     }
   ]
-
+  // TODO: add a confirmation to the select delete.
+  // TODO: add a cancel button to close the cell selection.
+  // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
   return (
     <div style={{ padding: 20, background: '#f7f8fa' }}>
       <ReactTable
@@ -584,7 +586,6 @@ const App = () => {
           }
         />
       </ReactTable>
-
     </div>
   )
 }
