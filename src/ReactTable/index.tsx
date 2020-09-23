@@ -24,7 +24,7 @@ import 'remixicon/fonts/remixicon.css'
 import '../styles/override.scss'
 import '../styles/styles.scss'
 
-class Index extends React.Component<ReactTableProps, ReactTableState> {
+class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   static Controls = Controls
   static QuickFilter = QuickFilter
   static Body = Table
@@ -139,4 +139,4 @@ class Index extends React.Component<ReactTableProps, ReactTableState> {
   }
 }
 
-export default Index
+export default ReactTable

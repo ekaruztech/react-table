@@ -1,6 +1,6 @@
-export { ControlsProps } from './Controls'
-export { QuickFilterProps } from './QuickFilter'
-export { BodyProps, CellMenuProps } from './Table'
-export { Align, Position, Padding, Margin } from './TableUtility'
+// export { ControlsProps } from './Controls'
+// export { QuickFilterProps } from './QuickFilter'
+// export { BodyProps, CellMenuProps } from './Table'
+export * from './TableUtility'
 
-export { default as Table } from './ReactTable'
+export { default as ReactTable } from './ReactTable'
