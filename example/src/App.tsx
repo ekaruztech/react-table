@@ -584,7 +584,6 @@ const App = () => {
           }
         />
       </ReactTable>
-
     </div>
   )
 }
