@@ -387,7 +387,8 @@ const db = {
       title: 'Cost',
       dataIndex: 'cost',
       key: 'cost',
-      type: 'currency'
+      type: 'currency',
+      currency: 'NGN'
     },
     {
       title: 'Hobby',

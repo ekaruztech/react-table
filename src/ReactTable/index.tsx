@@ -13,11 +13,11 @@ import {
 } from '../types'
 import { clamp, isFunction } from 'lodash'
 import invariant from 'invariant'
-import { ReactTableContext } from '../ReactTableContext'
+import { ReactTableContext } from './utils/ReactTableContext'
 
-import Controls from '../Controls'
-import QuickFilter from '../QuickFilter'
-import Table, { CellMenu } from '../Table'
+import Controls from './utils/Controls'
+import QuickFilter from './utils/QuickFilter'
+import Table, { CellMenu } from './utils/Table'
 // CSS
 import '../styles/ant-custom.css'
 import 'remixicon/fonts/remixicon.css'
@@ -139,7 +139,7 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   }
 }
 
-export { QuickFilterProps, QuickFilterApplyFn } from '../QuickFilter'
-export { CellMenuProps } from '../Table'
+export { QuickFilterProps, QuickFilterApplyFn } from './utils/QuickFilter'
+export { CellMenuProps } from './utils/Table'
 export { ColumnProps } from '../types'
 export { ReactTable as Table }

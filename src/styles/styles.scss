@@ -232,7 +232,7 @@
   justify-content: space-between;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-
+  border-bottom: 1px solid var(--border-color-split) !important;
   .ReactTable___table-container-header-inner-left,
   .ReactTable___table-container-header-inner-right {
     display: flex;
