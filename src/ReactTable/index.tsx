@@ -139,4 +139,4 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   }
 }
 
-export default ReactTable
+export { ReactTable as Table }

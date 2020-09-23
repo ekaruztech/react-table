@@ -3,4 +3,4 @@
 // export { BodyProps, CellMenuProps } from './Table'
 export * from './TableUtility'
 
-export { default as ReactTable } from './ReactTable'
+export * from './ReactTable'
