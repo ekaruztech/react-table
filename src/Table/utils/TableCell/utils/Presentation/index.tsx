@@ -71,13 +71,16 @@ const Presentation: React.FC<IPresentation> = (props) => {
         )
       } else
         return (
-          <span
+          <Tag
+            color={presentationColor || 'default'}
             style={{
-              fontWeight: bold ? 'bold' : 'normal'
+              fontWeight: bold ? 'bold' : 'normal',
+              borderColor: 'transparent',
+              backgroundColor: 'transparent'
             }}
           >
             {currency}
-          </span>
+          </Tag>
         )
     }
     case 'date':
