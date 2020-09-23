@@ -22,28 +22,28 @@ const EmptyImage = (
       <path
         d='M34.04,51.8a5.18,5.18,0,1,1,0-10.36H5.18a5.18,5.18,0,1,1,0-10.36h29.6a5.18,5.18,0,0,0,0-10.36H16.28a5.18,5.18,0,0,1,0-10.36h29.6A5.18,5.18,0,1,1,45.88,0H118.4a5.18,5.18,0,0,1,0,10.36H88.8a5.18,5.18,0,1,1,0,10.36h16.28a5.18,5.18,0,1,1,0,10.36H97.551c-3.607,0-6.531,2.319-6.531,5.179s4.44,5.18,4.44,5.18a5.18,5.18,0,1,1,0,10.36Zm79.18-25.9a5.18,5.18,0,1,1,5.18,5.18A5.18,5.18,0,0,1,113.22,25.9Z'
         transform='translate(0 7.4)'
-        fill='#f3f7ff'
+        fill='var(--background-secondary)'
       />
       <path
         d='M21.548,0A8.88,8.88,0,1,0,39.132,0H60.68V19.753a2.22,2.22,0,0,1-2.22,2.22H2.22A2.22,2.22,0,0,1,0,19.753V0Z'
         transform='translate(31.08 43.147)'
-        fill='#fff'
+        fill='var(--background-primary)'
       />
       <path
         d='M39.96,22.94a9.62,9.62,0,0,1-19.24,0q0-.258.013-.513H0L7.075,1.509A2.22,2.22,0,0,1,9.178,0H51.5a2.22,2.22,0,0,1,2.1,1.509L60.68,22.427H39.947Q39.96,22.682,39.96,22.94Z'
         transform='translate(31.08 19.98)'
-        fill='#fff'
+        fill='var(--background-primary)'
       />
       <path
         d='M31.892,16.986A8.468,8.468,0,0,1,23.68,25.16a8.468,8.468,0,0,1-8.212-8.174c0-.133,0-1.005.011-1.136H0L6.039,1.166A1.89,1.89,0,0,1,7.835,0H39.525a1.89,1.89,0,0,1,1.8,1.166L47.36,15.85H31.881C31.888,15.981,31.892,16.853,31.892,16.986Z'
         transform='translate(37.74 26.64)'
-        fill='#e8f0fe'
+        fill='var(--background-secondary)'
       />
       <g
         transform='translate(31.08 19.98)'
         fill='none'
-        strokeLinejoin='round'
-        strokeMiterlimit='10'
+        stroke-linejoin='round'
+        stroke-miterlimit='10'
       >
         <path
           d='M7.075,1.509A2.22,2.22,0,0,1,9.178,0H51.5a2.22,2.22,0,0,1,2.1,1.509L60.68,22.427V42.18a2.22,2.22,0,0,1-2.22,2.22H2.22A2.22,2.22,0,0,1,0,42.18V22.427Z'
@@ -60,20 +60,20 @@ const EmptyImage = (
         transform='translate(50.871 42.179)'
         fill='none'
         stroke='#75a4fe'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        strokeMiterlimit='10'
-        strokeWidth='2.5'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        stroke-miterlimit='10'
+        stroke-width='2.5'
       />
       <path
         d='M38.553,3.184,30.34,12.4ZM19.314,0V0ZM0,3.184,8.214,12.4Z'
         transform='translate(41.44)'
         fill='none'
         stroke='#a4c3fe'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        strokeMiterlimit='10'
-        strokeWidth='2.5'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        stroke-miterlimit='10'
+        stroke-width='2.5'
       />
     </g>
   </svg>

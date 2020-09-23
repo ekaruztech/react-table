@@ -43,7 +43,7 @@ const Controls: React.FC<IReactTableControls> = (props) => {
                     }}
                     type='primary'
                   >
-                    Data Controls
+                    Data Management
                   </Button>
                 </Tooltip>
                 <DataManagement

@@ -24,6 +24,7 @@ interface IPresentation {
   actionTitle?: string
   source: any
   dateFormat: string | undefined
+  currency: string | undefined
 }
 const Presentation: React.FC<IPresentation> = (props) => {
   const {
@@ -36,7 +37,8 @@ const Presentation: React.FC<IPresentation> = (props) => {
     presentationColor,
     bold,
     source,
-    dateFormat
+    dateFormat,
+    currency: currencyType
   } = props
   switch (columnType) {
     case 'action':
@@ -53,7 +55,7 @@ const Presentation: React.FC<IPresentation> = (props) => {
 
     case 'currency': {
       const currency = Intl.NumberFormat('en-NG', {
-        currency: 'NGN',
+        currency: currencyType || 'NGN',
         style: 'currency'
       }).format(Number(data) || 0)
       if (presentationType === 'tag') {

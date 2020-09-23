@@ -139,4 +139,7 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   }
 }
 
+export { QuickFilterProps, QuickFilterApplyFn } from '../QuickFilter'
+export { CellMenuProps } from '../Table'
+export { ColumnProps } from '../types'
 export { ReactTable as Table }

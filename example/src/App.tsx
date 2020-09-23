@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Table as ReactTable } from '@voomsway/react-table/dist'
+import { Table as ReactTable } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import moment from 'moment'
 import { useState, useEffect } from 'react'
@@ -481,7 +481,7 @@ const App = () => {
     all: db.dataSource.length,
     currentPage: 1
   })
-  console.log(setPagination, pagination)
+  // console.log(() setPagination, pagination)
 
   const onPaginate = (page: number) => {
     setDataSource(() => {

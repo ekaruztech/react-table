@@ -35,7 +35,8 @@ const TableCell: React.FC<ITableCell> = (props) => {
       {({ onSelectedItemChange, selectedTableItems, columnKeys, columns }) => (
         <TableBodyContext.Consumer>
           {({ expandCell = null, allowCellSelect, cellMenu }) => {
-            const cellSelected = find(selectedTableItems?.itemList, ['key', source?.key]) !==
+            const cellSelected =
+              find(selectedTableItems?.itemList, ['key', source?.key]) !==
               undefined
             const cb = (child: React.ReactElement<any>) => {
               if (React.isValidElement(child)) {
@@ -59,12 +60,12 @@ const TableCell: React.FC<ITableCell> = (props) => {
                       : 'ReactTable___table-rows'
                   } site-collapse-custom-collapse`}
                   key={source?.key}
-                  initial={{ y: 50 }}
-                  animate={{ y: 0 }}
-                  exit={{ y: 50 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{
                     type: 'spring',
-                    delay: (index || 1) * 0.02,
+                    delay: (index || 1) * 0.03,
                     stiffness: 100,
                     damping: 13
                   }}
@@ -123,6 +124,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                         actionTitle={retrieved?.actionTitle}
                         source={source}
                         dateFormat={retrieved?.dateFormat}
+                        currency={retrieved?.currency}
                       />
                     )
                   })}

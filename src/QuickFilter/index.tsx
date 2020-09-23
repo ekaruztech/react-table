@@ -2,13 +2,14 @@ import React from 'react'
 import { ReactTableContext } from '../ReactTableContext'
 import FilterController from './utils/FilterController'
 
+type QuickFilterApplyFn = (
+  value: {
+    property: string
+    value: string[] | number | number[] | string
+  }[]
+) => void
 interface IQuickFilter {
-  onApply: (
-    value: {
-      property: string
-      value: string[] | number | number[] | string
-    }[]
-  ) => void
+  onApply: QuickFilterApplyFn
   onClear: () => void
 }
 
@@ -31,4 +32,8 @@ const QuickFilter: React.FC<IQuickFilter> = (props) => {
   )
 }
 
-export { QuickFilter as default, IQuickFilter as QuickFilterProps }
+export {
+  QuickFilter as default,
+  IQuickFilter as QuickFilterProps,
+  QuickFilterApplyFn
+}

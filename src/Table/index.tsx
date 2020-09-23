@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { Fragment, ReactNode } from 'react'
+import React, { Fragment, ReactNode, ReactElement } from 'react'
 import TableHead from './utils/TableHead'
 import TableBody from './utils/TableBody'
 import TableFooter from './utils/TableFooter'
@@ -22,7 +22,7 @@ interface ITable {
   /* JSX element for displaying expanded data for table cell */
   expandCell?: (data: any) => ReactNode
   /* JSX element for displaying menu for table cell */
-  cellMenu?: ReactNode
+  cellMenu?: ReactElement<CellMenuProps>
 }
 const Table: React.FC<ITable> = (props) => {
   const {

@@ -1,6 +1,12 @@
-// export { ControlsProps } from './Controls'
-// export { QuickFilterProps } from './QuickFilter'
-// export { BodyProps, CellMenuProps } from './Table'
+// import { Table } from './ReactTable'
 export * from './TableUtility'
 
-export * from './ReactTable'
+export {
+  QuickFilterApplyFn,
+  QuickFilterProps,
+  CellMenuProps,
+  ColumnProps,
+  Table
+} from './ReactTable'
+
+// export default Table

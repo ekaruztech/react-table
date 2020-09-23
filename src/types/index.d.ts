@@ -1,5 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import React, { ReactNode } from 'react'
+import React, { ReactElement } from 'react'
+// eslint-disable-next-line no-unused-vars
+import { CellMenuProps } from '../Table/utils/CellMenu'
 
 export declare type PresentationColor =
   | 'magenta'
@@ -50,6 +52,7 @@ export interface ColumnProps {
   actionCallback?: (source: any) => void
   actionTitle?: string
   dateFormat?: string
+  currency?: string
 }
 export interface TableColumnProps {
   all: Array<ColumnProps>
@@ -92,11 +95,6 @@ export type TableFilterAction =
   | { type: 'UPDATE_FILTER'; payload: FilterProps }
   | { type: 'ADD_OR_UPDATE_SEARCH'; payload: any }
 
-export interface OnCellMenu {
-  onEdit: (record: any) => void
-  onDelete: (record: any) => void
-  onDuplicate: (record: any) => void
-}
 export interface OnCellSelect {
   onPin: (source: any) => void
   onDelete: (source: any) => void
@@ -135,7 +133,7 @@ export interface ReactTableProviderProps {
 }
 
 export interface TableBodyProviderProps {
-  cellMenu?: ReactNode
+  cellMenu?: ReactElement<CellMenuProps>
   allowCellSelect: boolean
   expandCell?: (data: any) => React.ReactNode | null
 }

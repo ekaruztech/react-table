@@ -45,14 +45,14 @@ const TableHead: React.FC<ITableHead> = (props) => {
             style={{
               width: '64px'
             }}
-            initial={{ y: 50 }}
-            animate={{ y: 0 }}
-            exit={{ y: 50 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{
-              type: 'spring',
-              delay: 0.02,
+              type: "spring",
+              delay:  0.1,
               stiffness: 100,
-              damping: 13
+              damping: 13,
             }}
           >
             <div className='ReactTable___table-header-checkbox-container'>
@@ -67,14 +67,14 @@ const TableHead: React.FC<ITableHead> = (props) => {
         {columns.selected.map((value, index) => {
           return (
             <motion.th
-              initial={{ y: 50 }}
-              animate={{ y: 0 }}
-              exit={{ y: 50 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{
-                type: 'spring',
-                delay: ((index || 1) + 1) * 0.02,
+                type: "spring",
+                delay: ((index || 1) + 1) * 0.1,
                 stiffness: 100,
-                damping: 13
+                damping: 13,
               }}
               className='ReactTable___table-column'
               key={value?.key}
@@ -92,7 +92,16 @@ const TableHead: React.FC<ITableHead> = (props) => {
             </motion.th>
           )
         })}
-        <th
+        <motion.th
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            type: "spring",
+            delay: (columns.selected.length || 1) * 0.1,
+            stiffness: 100,
+            damping: 13,
+          }}
           className='ReactTable___table-column selectable-columns'
           style={{
             width: 64
@@ -134,7 +143,7 @@ const TableHead: React.FC<ITableHead> = (props) => {
               </Tooltip>
             </Popover>
           </motion.div>
-        </th>
+        </motion.th>
       </tr>
     </motion.thead>
   )
