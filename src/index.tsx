@@ -148,10 +148,7 @@ export {
   ColumnProps,
   ReactTableProps,
   BodyProps,
-  CellMenuProps,
-  Align,
-  Margin,
-  Padding,
-  Position,
-  ReactTable as default
+  CellMenuProps
 }
+
+export { Align, Margin, Padding, Position, ReactTable as Table }
