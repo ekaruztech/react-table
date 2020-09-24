@@ -51,7 +51,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
             return (
               <Fragment>
                 <motion.tr
-                  layout
+                  // layout
                   // @ts-ignore
                   ref={trRef}
                   className={`${

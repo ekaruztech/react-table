@@ -1,4 +1,4 @@
-import { Button, Tooltip } from 'antd'
+import { Button, Tooltip, Popconfirm } from 'antd'
 import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
 import React, { Fragment } from 'react'
@@ -98,24 +98,30 @@ const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
                           }}
                         />
                       </Padding>
-                      <Tooltip title='Delete selected'>
-                        <Button
-                          danger
-                          type='text'
-                          onClick={() =>
-                            controls?.onDelete && isFunction(controls?.onDelete)
-                              ? controls.onDelete(selectedTableItems?.itemList)
-                              : null
-                          }
-                          icon={
-                            <span className='anticon'>
-                              <i className='ri-delete-bin-line' />
-                            </span>
-                          }
-                        >
-                          Delete
-                        </Button>
-                      </Tooltip>
+                      <Popconfirm
+                        title='Are you sure you want to delete all selected data?'
+                        onConfirm={() =>
+                          controls?.onDelete && isFunction(controls?.onDelete)
+                            ? controls.onDelete(selectedTableItems?.itemList)
+                            : null
+                        }
+                        okText='Yes'
+                        cancelText='No'
+                      >
+                        <Tooltip title='Delete selected'>
+                          <Button
+                            danger
+                            type='text'
+                            icon={
+                              <span className='anticon'>
+                                <i className='ri-delete-bin-line' />
+                              </span>
+                            }
+                          >
+                            Delete
+                          </Button>
+                        </Tooltip>
+                      </Popconfirm>
                     </Fragment>
                   )}
                 </Align>

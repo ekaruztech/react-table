@@ -16,7 +16,7 @@ const presentationHOC = ({
   key
 }: IHOC) => (Component: React.ReactNode) => (
   <motion.td
-    layout
+    // layout
     style={{
       width: `calc(100% / ${columnKeys.length + extraColumnsLength} - 120px)`
     }}

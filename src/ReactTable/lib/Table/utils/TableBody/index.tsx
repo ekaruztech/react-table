@@ -38,28 +38,30 @@ const TableBody: React.FC<ITableBody> = (props) => {
           initial={{ opacity: 0 }}
           style={{ width: '100%', padding: 10 }}
         >
-          <motion.td colSpan={columnKeys.length + 2} style={{ padding: 10 }}>
-            {loader === 'skeleton' && (
-              <div style={{ height: 450 }}>
-                <Skeleton active />
-                <Skeleton active />
-                <Skeleton active />
-              </div>
-            )}
-            {loader === 'spinner' && (
-              <Align
-                alignCenter
-                justifyCenter
-                style={{ height: 450 }}
-                children={[
-                  <LoadingOutlined
-                    key='loading-0'
-                    style={{ fontSize: 40, color: 'var(--accent)' }}
-                    spin
-                  />
-                ]}
-              />
-            )}
+          <motion.td colSpan={columnKeys.length + 2}>
+            <Padding horizontal={10} top={10} bottom={30}>
+              {loader === 'skeleton' && (
+                <div style={{ height: 450 }}>
+                  <Skeleton active />
+                  <Skeleton active />
+                  <Skeleton active />
+                </div>
+              )}
+              {loader === 'spinner' && (
+                <Align
+                  alignCenter
+                  justifyCenter
+                  style={{ height: 450 }}
+                  children={[
+                    <LoadingOutlined
+                      key='loading-0'
+                      style={{ fontSize: 40, color: 'var(--accent)' }}
+                      spin
+                    />
+                  ]}
+                />
+              )}
+            </Padding>
           </motion.td>
         </motion.tr>
       )}

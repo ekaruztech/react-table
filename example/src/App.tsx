@@ -543,10 +543,10 @@ const App = () => {
         {/*  renderOrder={pageRenderOrder}*/}
         {/*  onRenderOrderChange={onRenderOrderChange}*/}
         {/*/>*/}
-        {/*<ReactTable.QuickFilter*/}
-        {/*  onApply={(value: any) => console.log(value)}*/}
-        {/*  onClear={() => console.log('cleared')}*/}
-        {/*/>*/}
+        <ReactTable.QuickFilter
+          onApply={(value: any) => console.log(value)}
+          onClear={() => console.log('cleared')}
+        />
 
         <ReactTable.Body
           pagination={pagination}

@@ -4,6 +4,7 @@ import TableHead from './utils/TableHead'
 import TableBody from './utils/TableBody'
 import TableFooter from './utils/TableFooter'
 import CellSelectionHeader from './utils/CellSelectionHeader'
+import FixHeader from './utils/FixHeader'
 import { ReactTableContext } from '../ReactTableContext'
 // eslint-disable-next-line no-unused-vars
 import {
@@ -64,7 +65,10 @@ class Table extends React.Component<ITable, any> {
             <Fragment>
               <CellSelectionHeader onCellSelect={onCellSelect} />
               <div className='ReactTable___table-wrapper'>
-                <table className='ReactTable___table'>
+                <table
+                  className='ReactTable___table'
+                  id='ReactTable___table_identifier'
+                >
                   <TableHead
                     columns={columns}
                     columnKeys={columnKeys}
@@ -86,19 +90,20 @@ class Table extends React.Component<ITable, any> {
                     allowCellSelect={!!onCellSelect}
                   />
                 </table>
-                {/* <table className={'ReactTable___table-fixed'}> */}
-                {/*    <TableHead */}
-                {/*        columns={columns} */}
-                {/*        columnKeys={columnKeys} */}
-                {/*        onCheckAllChange={onCheckAllChange} */}
-                {/*        setColumns={setColumns} */}
-                {/*        checkState={checkState} */}
-                {/*        maxColumns={maxColumns} */}
-                {/*        minColumns={minColumns} */}
-                {/*        defaultColumns={defaultColumns} */}
-                {/*    /> */}
-                {/*    <tbody/> */}
-                {/* </table> */}
+                <FixHeader>
+                  <TableHead
+                    columns={columns}
+                    columnKeys={columnKeys}
+                    onSelectAll={onSelectAll}
+                    setColumns={setColumns}
+                    selectedTableItems={selectedTableItems}
+                    maxColumns={maxColumns}
+                    minColumns={minColumns}
+                    defaultColumns={defaultColumns}
+                    allowCellSelect={!!onCellSelect}
+                  />
+                  <tbody />
+                </FixHeader>
                 <TableFooter
                   currentPage={pagination?.currentPage || 1}
                   handlePagination={onPaginate}

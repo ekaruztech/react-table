@@ -41,6 +41,7 @@
   border-collapse: collapse;
   table-layout: fixed;
   //width: 1233px;
+
   width: 100%;
 
   input[type='checkbox'] {
@@ -61,7 +62,8 @@
 }
 .ReactTable___table-fixed {
   //background-color: #eaedee;
-  z-index: 9999;
+  z-index: 180;
+  display: none;
 }
 .ReactTable___table-columns {
   height: 52px;
