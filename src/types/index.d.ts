@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { ReactElement } from 'react'
 // eslint-disable-next-line no-unused-vars
-import { CellMenuProps } from '../ReactTable/utils/Table/utils/CellMenu'
+import { CellMenuProps } from '../ReactTable/lib/Table/utils/CellMenu'
 
 export declare type PresentationColor =
   | 'magenta'
@@ -108,6 +108,7 @@ export interface SelectedTableItems {
 export interface ReactTableState {
   columns: TableColumnProps
   selectedTableItems: SelectedTableItems
+  isControlsPresent: boolean
 }
 export interface ReactTableProps {
   columns: ColumnProps[]

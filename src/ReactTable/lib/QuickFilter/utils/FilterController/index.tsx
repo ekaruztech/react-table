@@ -229,7 +229,7 @@ const FilterController: React.FC<IFilterController> = (props) => {
                   >
                     <Align style={{ width: '100%' }} justifyBetween alignCenter>
                       <Button
-                        type='link'
+                        type='default'
                         onClick={clearFilter}
                         icon={
                           <span className='anticon'>

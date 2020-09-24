@@ -454,6 +454,7 @@ const db = {
   maxColumns: 8,
   minColumns: 4
 }
+
 const App = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingContent, setIsLoadingContent] = useState(true)
@@ -528,6 +529,7 @@ const App = () => {
   // TODO: add a confirmation to the select delete.
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
+  console.log(pageRenderOrder, onRenderOrderChange)
   return (
     <div style={{ padding: 20, background: '#f7f8fa' }}>
       <ReactTable
@@ -537,14 +539,15 @@ const App = () => {
         maxColumns={db.maxColumns}
         minColumns={db.minColumns}
       >
-        <ReactTable.Controls
-          renderOrder={pageRenderOrder}
-          onRenderOrderChange={onRenderOrderChange}
-        />
-        <ReactTable.QuickFilter
-          onApply={(value: any) => console.log(value)}
-          onClear={() => console.log('cleared')}
-        />
+        {/*<ReactTable.Controls*/}
+        {/*  renderOrder={pageRenderOrder}*/}
+        {/*  onRenderOrderChange={onRenderOrderChange}*/}
+        {/*/>*/}
+        {/*<ReactTable.QuickFilter*/}
+        {/*  onApply={(value: any) => console.log(value)}*/}
+        {/*  onClear={() => console.log('cleared')}*/}
+        {/*/>*/}
+
         <ReactTable.Body
           pagination={pagination}
           onPaginate={onPaginate}

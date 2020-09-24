@@ -13,11 +13,11 @@ import {
 } from '../types'
 import { clamp, isFunction } from 'lodash'
 import invariant from 'invariant'
-import { ReactTableContext } from './utils/ReactTableContext'
+import { ReactTableContext } from './lib/ReactTableContext'
 
-import Controls from './utils/Controls'
-import QuickFilter from './utils/QuickFilter'
-import Table, { CellMenu } from './utils/Table'
+import Controls from './lib/Controls'
+import QuickFilter from './lib/QuickFilter'
+import Table, { CellMenu } from './lib/Table'
 // CSS
 import '../styles/ant-custom.css'
 import 'remixicon/fonts/remixicon.css'
@@ -54,7 +54,9 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
                 this.props.columns.length
               )
             : []
-      }
+      },
+      isControlsPresent: false
+      // isTableOnly: false,
     }
   }
 
@@ -91,6 +93,60 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     })
   }
 
+  componentDidMount(): void {
+    const { children } = this.props
+    const childrenLength = React.Children.count(children)
+
+    if (childrenLength === 0) {
+      invariant(false, 'ReactTable expects at least one child')
+    }
+
+    const expectedChildren = [
+      '$$REACT_TABLE_QUICK_FILTER',
+      '$$REACT_TABLE_BODY',
+      '$$REACT_TABLE_CONTROLS'
+    ]
+
+    React.Children.forEach(children, (child) => {
+      if (React.isValidElement(child)) {
+        const componentType = (child as React.ReactElement<any>).type[
+          /* eslint-disable-next-line dot-notation */
+          '__DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE'
+        ]
+        const isExpectedChild =
+          componentType && expectedChildren.includes(componentType)
+
+        if (!isExpectedChild) {
+          invariant(
+            false,
+            `An unknown component was found as a child of ReactTable. \nReactTable expects one or all of the following [ReactTable.Controls, ReactTable.QuickFilter] and ReactTable.Body`
+          )
+        }
+        console.log(isExpectedChild, componentType === '$$REACT_TABLE_CONTROLS')
+        if (isExpectedChild) {
+          if (componentType === '$$REACT_TABLE_CONTROLS') {
+            this.setState((prev) => ({
+              ...prev,
+              isControlsPresent: true
+            }))
+          }
+        }
+      }
+    })
+
+    const tableExists = React.Children.toArray(children).find((predicate) => {
+      const componentType = (predicate as React.ReactElement<any>).type[
+        /* eslint-disable-next-line dot-notation */
+        '__DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE'
+      ]
+      return componentType === '$$REACT_TABLE_BODY'
+    })
+
+    if (!tableExists) {
+      invariant(false, 'ReactTable requires ReactTable.Body to work')
+    }
+  }
+
   render() {
     const {
       // columns: defaultColumns,
@@ -99,16 +155,21 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       // name
     } = this.props
 
-    invariant(
-      Array.isArray(this.props.columns),
-      `ReactTable expects columns to be of type Array, got ${typeof this.props
-        .columns} instead`
-    )
-    invariant(
-      Array.isArray(this.props.dataSource),
-      `ReactTable expects dataSource to be of type Array, got ${typeof this
-        .props.dataSource} instead`
-    )
+    if (!Array.isArray(this.props.columns)) {
+      invariant(
+        false,
+        `ReactTable expects columns to be of type Array, got ${typeof this.props
+          .columns} instead`
+      )
+    }
+
+    if (!Array.isArray(this.props.dataSource)) {
+      invariant(
+        false,
+        `ReactTable expects dataSource to be of type Array, got ${typeof this
+          .props.dataSource} instead`
+      )
+    }
 
     /* Gets the keys of the selected columns */
     const columnKeys = this.state.columns.selected.map(
@@ -129,8 +190,15 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       defaultColumns: this.props.columns
     }
 
+    const childrenLength = React.Children.count(children)
     return (
-      <div className='ReactTable___table-container'>
+      <div
+        className={`ReactTable___table-container${
+          this.state.isControlsPresent
+            ? ''
+            : ` no-header-present${childrenLength > 1 ? ' pt5' : ''}`
+        }`}
+      >
         <ReactTableContext.Provider value={providerValue}>
           {children}
         </ReactTableContext.Provider>
@@ -139,7 +207,7 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   }
 }
 
-export { QuickFilterProps, QuickFilterApplyFn } from './utils/QuickFilter'
-export { CellMenuProps } from './utils/Table'
+export { QuickFilterProps, QuickFilterApplyFn } from './lib/QuickFilter'
+export { CellMenuProps } from './lib/Table'
 export { ColumnProps } from '../types'
 export { ReactTable as Table }

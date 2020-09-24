@@ -13,6 +13,17 @@
   //box-shadow: 0 3px 30px rgba(0, 0, 0, 0.10);
   border: 1.3px solid var(--border);
   //border-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.ReactTable___table-container.no-header-present {
+  padding-top: 40px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: var(--background-primary);
+}
+.ReactTable___table-container.no-header-present.pt5 {
+  padding-top: 5px;
 }
 .ReactTable___table-wrapper {
   max-width: 100%;
