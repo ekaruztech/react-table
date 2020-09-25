@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { Fragment, ReactNode, ReactElement } from 'react'
+import ScrollBar from 'react-perfect-scrollbar'
 import TableHead from './utils/TableHead'
 import TableBody from './utils/TableBody'
 import TableFooter from './utils/TableFooter'
@@ -16,6 +17,7 @@ import { isEmpty } from 'lodash'
 import CellExpanseSetter from './utils/CellExpanseSetter'
 // import { motion } from 'framer-motion'
 
+// TODO: Find a reasonable way to make a sticky header for table
 interface ITable {
   pagination: { all: number; currentPage: number }
   onPaginate: (page: number) => void
@@ -85,29 +87,36 @@ class Table extends React.Component<ITable, any> {
                 {/*  /> */}
                 {/*  <tbody /> */}
                 {/* </FixHeader> */}
-                <table className='ReactTable___table'>
-                  <CellExpanseSetter columns={columns} />
-                  <TableHead
-                    columns={columns}
-                    columnKeys={columnKeys}
-                    onSelectAll={onSelectAll}
-                    setColumns={setColumns}
-                    selectedTableItems={selectedTableItems}
-                    maxColumns={maxColumns}
-                    minColumns={minColumns}
-                    defaultColumns={defaultColumns}
-                    allowCellSelect={!!onCellSelect}
-                  />
-                  <TableBody
-                    columnKeys={columnKeys}
-                    dataSource={dataSource}
-                    loading={loading}
-                    loader={loader}
-                    cellMenu={cellMenu}
-                    expandCell={expandCell}
-                    allowCellSelect={!!onCellSelect}
-                  />
-                </table>
+                <div
+                  style={{ overflow: 'auto hidden' }}
+                  className='ReactTable___scroll-wrapper'
+                >
+                  <ScrollBar>
+                    <table className='ReactTable___table'>
+                      <CellExpanseSetter columns={columns} />
+                      <TableHead
+                        columns={columns}
+                        columnKeys={columnKeys}
+                        onSelectAll={onSelectAll}
+                        setColumns={setColumns}
+                        selectedTableItems={selectedTableItems}
+                        maxColumns={maxColumns}
+                        minColumns={minColumns}
+                        defaultColumns={defaultColumns}
+                        allowCellSelect={!!onCellSelect}
+                      />
+                      <TableBody
+                        columnKeys={columnKeys}
+                        dataSource={dataSource}
+                        loading={loading}
+                        loader={loader}
+                        cellMenu={cellMenu}
+                        expandCell={expandCell}
+                        allowCellSelect={!!onCellSelect}
+                      />
+                    </table>
+                  </ScrollBar>
+                </div>
                 <TableFooter
                   currentPage={pagination?.currentPage || 1}
                   handlePagination={onPaginate}

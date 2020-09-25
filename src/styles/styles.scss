@@ -26,7 +26,7 @@
 }
 .ReactTable___table-wrapper {
   max-width: 100%;
-  overflow: auto scroll;
+  //overflow: auto scroll;
   border-left: 1.3px solid var(--border);
   border-right: 1.3px solid var(--border);
   .ant-popover-inner {
@@ -58,7 +58,7 @@
   }
 }
 .ReactTable___table-header {
-  position: sticky;
+  //position: sticky;
 }
 .ReactTable___table-fixed {
   //background-color: #eaedee;
@@ -85,7 +85,7 @@
 .ReactTable___table-column.table-column-first {
   position: sticky;
   left: 0;
-  z-index: 5;
+  z-index: 3;
   //box-shadow: 10px 0 0 0 rgba(0, 0, 0, 0.15);
   //border-right: 1px solid var(--border);
   background: var(--background-secondary);
@@ -94,8 +94,8 @@
 
 .ReactTable___table-column.table-column-last {
   position: sticky;
-  right: 0;
-  z-index: 5;
+  right: -1px;
+  z-index: 3;
   //box-shadow: 10px 0 0 0 rgba(0, 0, 0, 0.15);
   //border-left: 1px solid var(--border);
   background: var(--background-secondary);
@@ -177,7 +177,7 @@
 .ReactTable___table-row.table-row-first {
   position: sticky;
   left: 0;
-  z-index: 5;
+  z-index: 3;
   //box-shadow: 10px 0 0 0 rgba(0, 0, 0, 0.15);
   //border-right: 1px solid var(--border);
   //background-color: var(--row-selected)
@@ -185,8 +185,8 @@
 }
 .ReactTable___table-row.table-row-last {
   position: sticky;
-  right: 0;
-  z-index: 5;
+  right: -1px;
+  z-index: 3;
   background: var(--background-primary);
   //border-left: 1px solid var(--border);
 }

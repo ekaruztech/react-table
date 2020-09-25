@@ -33,26 +33,15 @@ const TableHead: React.FC<ITableHead> = (props) => {
     allowCellSelect
   } = props
 
-  const tableWrapper = document.querySelector('.ReactTable___table-wrapper')
-  const top = tableWrapper?.getBoundingClientRect?.()?.top
-
   return (
     <motion.thead
       className='ReactTable___table-header'
       transition={{ type: 'inertia' }}
-      style={{
-        top
-      }}
     >
       <tr className='ReactTable___table-columns'>
         {allowCellSelect && (
           <motion.th
             className='ReactTable___table-column table-column-first'
-            style={
-              {
-                // width: '64px'
-              }
-            }
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

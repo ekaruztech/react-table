@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import { useDimension } from '../../../../../hooks'
 
@@ -11,32 +11,8 @@ const FixHeader: React.FC<IFixHeader> = (props) => {
     'element',
     'ReactTable___table_wrapper-identifier'
   )
-  useEffect(() => {
-    const tableWrapper = document.querySelector('.ReactTable___table-wrapper')
-    const fixedTable = document.querySelector(
-      '.ReactTable__table-fixed-wrapper'
-    )
 
-    if (fixedTable && tableWrapper) {
-      const spaceFromTop = tableWrapper?.getBoundingClientRect?.()?.top
-      console.log(spaceFromTop, fixedTable)
-      // @ts-ignore
-      // fixedTable.style.top = `${spaceFromTop}px`
-    }
-    // if ((spaceFromTop || 0) <= -1 && fixedTable) {
-    //   // @ts-ignore
-    //   fixedTable.style.display = 'table'
-    //   // @ts-ignore
-    //   fixedTable.style.top = '0'
-    //   // @ts-ignore
-    //   fixedTable.style.position = 'fixed'
-    // } else {
-    //   if (fixedTable) {
-    //     // @ts-ignore
-    //     fixedTable.style.display = 'none'
-    //   }
-    // }
-  }, [])
+  console.info(dimension)
 
   return (
     <div
@@ -45,7 +21,9 @@ const FixHeader: React.FC<IFixHeader> = (props) => {
         position: 'sticky',
         zIndex: 5,
         top: 0,
-        width: dimension.width
+        width: '100%',
+        minWidth: '100%',
+        overflow: 'hidden'
       }}
     >
       <motion.table
@@ -58,7 +36,7 @@ const FixHeader: React.FC<IFixHeader> = (props) => {
           damping: 13
         }}
         className='ReactTable___table-fixed'
-        style={{ ...(style || {}), width: dimension.width }}
+        style={{ ...(style || {}), width: '100%', minWidth: '100%' }}
       >
         {children}
       </motion.table>

@@ -542,10 +542,10 @@ const App = () => {
         maxColumns={db.maxColumns}
         minColumns={db.minColumns}
       >
-        {/*<ReactTable.Controls*/}
-        {/*  renderOrder={pageRenderOrder}*/}
-        {/*  onRenderOrderChange={onRenderOrderChange}*/}
-        {/*/>*/}
+        <ReactTable.Controls
+          renderOrder={pageRenderOrder}
+          onRenderOrderChange={onRenderOrderChange}
+        />
         <ReactTable.QuickFilter
           onApply={(value: any) => console.log(value)}
           onClear={() => console.log('cleared')}
