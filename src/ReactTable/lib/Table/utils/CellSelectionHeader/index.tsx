@@ -14,6 +14,7 @@ interface ICellSelectionHeader {
 const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
   const { onCellSelect } = props
 
+  // TODO: moved inline styles to css file
   return (
     <ReactTableContext.Consumer>
       {({ selectedTableItems, onSelectedItemChange }) => {
@@ -34,6 +35,8 @@ const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
               style={{
                 width: '100%',
                 borderTop: '1px solid var(--border-color-split)',
+                borderLeft: '1px solid var(--border-color-split)',
+                borderRight: '1px solid var(--border-color-split)',
                 background: 'var(--background-primary)',
                 height: 60
               }}

@@ -4,7 +4,7 @@ import TableHead from './utils/TableHead'
 import TableBody from './utils/TableBody'
 import TableFooter from './utils/TableFooter'
 import CellSelectionHeader from './utils/CellSelectionHeader'
-import FixHeader from './utils/FixHeader'
+// import FixHeader from './utils/FixHeader'
 import { ReactTableContext } from '../ReactTableContext'
 // eslint-disable-next-line no-unused-vars
 import {
@@ -13,6 +13,8 @@ import {
 } from '../../../types'
 import CellMenu, { CellMenuProps } from './utils/CellMenu'
 import { isEmpty } from 'lodash'
+import CellExpanseSetter from './utils/CellExpanseSetter'
+// import { motion } from 'framer-motion'
 
 interface ITable {
   pagination: { all: number; currentPage: number }
@@ -64,11 +66,27 @@ class Table extends React.Component<ITable, any> {
           return (
             <Fragment>
               <CellSelectionHeader onCellSelect={onCellSelect} />
-              <div className='ReactTable___table-wrapper'>
-                <table
-                  className='ReactTable___table'
-                  id='ReactTable___table_identifier'
-                >
+              <div
+                className='ReactTable___table-wrapper'
+                id='ReactTable___table_wrapper-identifier'
+              >
+                {/* <FixHeader> */}
+                {/*  <CellExpanseSetter columns={columns} /> */}
+                {/*  <TableHead */}
+                {/*    columns={columns} */}
+                {/*    columnKeys={columnKeys} */}
+                {/*    onSelectAll={onSelectAll} */}
+                {/*    setColumns={setColumns} */}
+                {/*    selectedTableItems={selectedTableItems} */}
+                {/*    maxColumns={maxColumns} */}
+                {/*    minColumns={minColumns} */}
+                {/*    defaultColumns={defaultColumns} */}
+                {/*    allowCellSelect={!!onCellSelect} */}
+                {/*  /> */}
+                {/*  <tbody /> */}
+                {/* </FixHeader> */}
+                <table className='ReactTable___table'>
+                  <CellExpanseSetter columns={columns} />
                   <TableHead
                     columns={columns}
                     columnKeys={columnKeys}
@@ -90,20 +108,6 @@ class Table extends React.Component<ITable, any> {
                     allowCellSelect={!!onCellSelect}
                   />
                 </table>
-                <FixHeader>
-                  <TableHead
-                    columns={columns}
-                    columnKeys={columnKeys}
-                    onSelectAll={onSelectAll}
-                    setColumns={setColumns}
-                    selectedTableItems={selectedTableItems}
-                    maxColumns={maxColumns}
-                    minColumns={minColumns}
-                    defaultColumns={defaultColumns}
-                    allowCellSelect={!!onCellSelect}
-                  />
-                  <tbody />
-                </FixHeader>
                 <TableFooter
                   currentPage={pagination?.currentPage || 1}
                   handlePagination={onPaginate}

@@ -10,9 +10,8 @@
   //color: var(--text-dark)
 }
 .ReactTable___table-container {
-  //box-shadow: 0 3px 30px rgba(0, 0, 0, 0.10);
-  border: 1.3px solid var(--border);
-  //border-radius: 10px;
+  border-top: 1.3px solid var(--border);
+  border-bottom: 1.3px solid var(--border);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -27,21 +26,19 @@
 }
 .ReactTable___table-wrapper {
   max-width: 100%;
+  overflow: auto scroll;
+  border-left: 1.3px solid var(--border);
+  border-right: 1.3px solid var(--border);
   .ant-popover-inner {
     border-radius: 10px;
   }
 }
 .ReactTable___table,
 .ReactTable___table-fixed {
-  //min-width: 100%;
-  //width: 1300px;
   background: var(--background-primary);
-  padding: 20px;
-  //border-radius: 5px;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   table-layout: fixed;
-  //width: 1233px;
-
   width: 100%;
 
   input[type='checkbox'] {
@@ -60,10 +57,13 @@
     color: var(--text-color);
   }
 }
+.ReactTable___table-header {
+  position: sticky;
+}
 .ReactTable___table-fixed {
   //background-color: #eaedee;
   z-index: 180;
-  display: none;
+  //display: none;
 }
 .ReactTable___table-columns {
   height: 52px;
@@ -78,16 +78,29 @@
   position: relative;
   user-select: none;
   height: 52px;
-
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   background-color: var(--background-secondary);
-  &:nth-child(2) {
-    position: sticky;
-    left: 0;
-    //box-shadow: 10px 0 0 0 rgba(0, 0, 0, 0.15);
-    //border-right: 1px solid var(--border);
-    //background-color: var(--row-selected)
-  }
 }
+.ReactTable___table-column.table-column-first {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  //box-shadow: 10px 0 0 0 rgba(0, 0, 0, 0.15);
+  //border-right: 1px solid var(--border);
+  background: var(--background-secondary);
+  //background-color: var(--row-selected)
+}
+
+.ReactTable___table-column.table-column-last {
+  position: sticky;
+  right: 0;
+  z-index: 5;
+  //box-shadow: 10px 0 0 0 rgba(0, 0, 0, 0.15);
+  //border-left: 1px solid var(--border);
+  background: var(--background-secondary);
+}
+
 .ReactTable___table-column-container {
   display: flex;
   align-items: center;
@@ -146,6 +159,7 @@
   position: relative;
   height: 52px;
   line-height: 52px;
+  border-bottom: 1px solid var(--border);
   .ReactTable___table-row-inner {
     width: 100%;
     position: absolute;
@@ -158,15 +172,34 @@
       padding: 0 10px;
     }
   }
-  &:nth-child(2) {
-    position: sticky;
-    left: 0;
-  }
+}
+
+.ReactTable___table-row.table-row-first {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  //box-shadow: 10px 0 0 0 rgba(0, 0, 0, 0.15);
+  //border-right: 1px solid var(--border);
+  //background-color: var(--row-selected)
+  background: var(--background-primary);
+}
+.ReactTable___table-row.table-row-last {
+  position: sticky;
+  right: 0;
+  z-index: 5;
+  background: var(--background-primary);
+  //border-left: 1px solid var(--border);
 }
 .ReactTable___table-header-checkbox-container {
+  padding: 0 6px;
   display: flex;
   align-items: center;
-  padding: 0 6px;
+  justify-content: center;
+}
+.ReactTable___table-row-checkbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .ReactTable___table-column.selectable-columns {
   padding: 0 10px;
@@ -316,11 +349,6 @@
     color: var(--accent);
   }
 }
-
-
-
-
-
 
 .ReactTable___table-column-reorder {
   width: 100%;

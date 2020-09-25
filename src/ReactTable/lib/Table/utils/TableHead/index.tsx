@@ -23,7 +23,7 @@ interface ITableHead {
 const TableHead: React.FC<ITableHead> = (props) => {
   const {
     columns,
-    columnKeys,
+    // columnKeys,
     selectedTableItems,
     onSelectAll,
     setColumns,
@@ -33,26 +33,34 @@ const TableHead: React.FC<ITableHead> = (props) => {
     allowCellSelect
   } = props
 
+  const tableWrapper = document.querySelector('.ReactTable___table-wrapper')
+  const top = tableWrapper?.getBoundingClientRect?.()?.top
+
   return (
     <motion.thead
       className='ReactTable___table-header'
       transition={{ type: 'inertia' }}
+      style={{
+        top
+      }}
     >
       <tr className='ReactTable___table-columns'>
         {allowCellSelect && (
           <motion.th
-            className='ReactTable___table-column'
-            style={{
-              width: '64px'
-            }}
+            className='ReactTable___table-column table-column-first'
+            style={
+              {
+                // width: '64px'
+              }
+            }
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{
-              type: "spring",
-              delay:  0.1,
+              type: 'spring',
+              delay: 0.1,
               stiffness: 100,
-              damping: 13,
+              damping: 13
             }}
           >
             <div className='ReactTable___table-header-checkbox-container'>
@@ -71,18 +79,13 @@ const TableHead: React.FC<ITableHead> = (props) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{
-                type: "spring",
+                type: 'spring',
                 delay: ((index || 1) + 1) * 0.1,
                 stiffness: 100,
-                damping: 13,
+                damping: 13
               }}
               className='ReactTable___table-column'
               key={value?.key}
-              style={{
-                width: `calc(100% / ${columnKeys.length + 2}) - ${
-                  allowCellSelect ? '64px' : '120px'
-                }`
-              }}
             >
               <div className='ReactTable___table-column-container'>
                 <div className='ReactTable___table-column-title'>
@@ -97,15 +100,12 @@ const TableHead: React.FC<ITableHead> = (props) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{
-            type: "spring",
+            type: 'spring',
             delay: (columns.selected.length || 1) * 0.1,
             stiffness: 100,
-            damping: 13,
+            damping: 13
           }}
-          className='ReactTable___table-column selectable-columns'
-          style={{
-            width: 64
-          }}
+          className='ReactTable___table-column selectable-columns  table-column-last'
         >
           <motion.div
             whileHover={{ scale: 1.1 }}

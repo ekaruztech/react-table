@@ -17,13 +17,14 @@ const presentationHOC = ({
 }: IHOC) => (Component: React.ReactNode) => (
   <motion.td
     // layout
-    style={{
-      width: `calc(100% / ${columnKeys.length + extraColumnsLength} - 120px)`
-    }}
+    // style={{
+    //   width: `calc(100% / ${columnKeys.length + extraColumnsLength} - 120px)`
+    // }}
     className='ReactTable___table-row'
     key={key}
   >
     <div
+      key={columnKeys.length + extraColumnsLength + Math.random()}
       className='ReactTable___table-row-inner'
       style={{
         textAlign:

@@ -58,7 +58,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     cellSelected
                       ? 'ReactTable___table-rows-checked '
                       : 'ReactTable___table-rows'
-                  } site-collapse-custom-collapse`}
+                  }`}
                   key={source?.key}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -71,12 +71,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   }}
                 >
                   {allowCellSelect && (
-                    <td
-                      className='ReactTable___table-row'
-                      style={{
-                        width: '64px'
-                      }}
-                    >
+                    <td className='ReactTable___table-row table-row-first'>
                       <div className='ReactTable___table-row-checkbox-container'>
                         <Checkbox
                           key={source?.key}
@@ -128,12 +123,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                       />
                     )
                   })}
-                  <td
-                    style={{
-                      width: 64
-                    }}
-                    className='ReactTable___table-row'
-                  >
+                  <td className='ReactTable___table-row table-row-last'>
                     <div className='ReactTable___table-utility'>
                       {revisedCellMenu}
                     </div>

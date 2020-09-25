@@ -53,6 +53,7 @@ export interface ColumnProps {
   actionTitle?: string
   dateFormat?: string
   currency?: string
+  columnSpan?: number
 }
 export interface TableColumnProps {
   all: Array<ColumnProps>

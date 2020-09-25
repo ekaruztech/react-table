@@ -372,7 +372,8 @@ const db = {
       dataIndex: 'name',
       key: 'name',
       type: 'text',
-      autoComplete: true
+      autoComplete: true,
+      columnSpan: 1.5
     },
     {
       title: 'DOB',
@@ -388,7 +389,8 @@ const db = {
       dataIndex: 'cost',
       key: 'cost',
       type: 'currency',
-      currency: 'NGN'
+      currency: 'NGN',
+      columnSpan: 2
     },
     {
       title: 'Hobby',
@@ -409,7 +411,8 @@ const db = {
       title: 'Food type',
       dataIndex: 'food_type',
       key: 'food_type',
-      type: 'boolean'
+      type: 'boolean',
+      columnSpan: 3
     },
     {
       title: 'ID-1',
