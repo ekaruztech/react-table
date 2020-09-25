@@ -193,6 +193,11 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     const childrenLength = React.Children.count(children)
     return (
       <div
+        style={
+          !this.state.isControlsPresent
+            ? { borderTop: '1.3px solid var(--border)' }
+            : {}
+        }
         className={`ReactTable___table-container${
           this.state.isControlsPresent
             ? ''

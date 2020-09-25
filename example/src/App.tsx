@@ -373,6 +373,7 @@ const db = {
       key: 'name',
       type: 'text',
       autoComplete: true,
+      columnSpan: 2
     },
     {
       title: 'DOB',
@@ -388,7 +389,8 @@ const db = {
       dataIndex: 'cost',
       key: 'cost',
       type: 'currency',
-      currency: 'NGN',
+      currency: 'GBP',
+      columnSpan: 1.5
     },
     {
       title: 'Hobby',
@@ -554,10 +556,10 @@ const App = () => {
           onPaginate={onPaginate}
           loader={'skeleton'}
           loading={isLoadingContent}
-          // onCellSelect={(selectCount: number) => ({
-          //   onDelete: (source: any[]) => console.log(source, selectCount),
-          //   onPin: (source: any[]) => console.log(source, selectCount)
-          // })}
+          onCellSelect={(selectCount: number) => ({
+            onDelete: (source: any[]) => console.log(source, selectCount),
+            onPin: (source: any[]) => console.log(source, selectCount)
+          })}
 
         />
       </ReactTable>

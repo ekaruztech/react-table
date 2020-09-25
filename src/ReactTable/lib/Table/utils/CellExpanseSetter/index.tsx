@@ -2,6 +2,7 @@ import React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { ColumnProps, TableColumnProps } from '../../../../../types'
 import { clamp } from 'lodash'
+import { useDimension } from '../../../../../hooks'
 
 interface ICellExpanseSetter {
   columns: TableColumnProps
@@ -11,8 +12,21 @@ interface ICellExpanseSetter {
 const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
   const { columns, allowCellSelect } = props
 
+  const dimension = useDimension(
+    'element',
+    'ReactTable___table_wrapper-identifier'
+  )
+
   const UNUSED_COLUMN_WIDTH = 60
-  const DEFAULT_COLUMN_WIDTH = 152
+  const DEFAULT_COLUMN_WIDTH = 150
+  const COMPUTED_COLUMN_WIDTH =
+    dimension.width / columns.selected.length - UNUSED_COLUMN_WIDTH
+
+  const COLUMN_WIDTH = clamp(
+    COMPUTED_COLUMN_WIDTH,
+    DEFAULT_COLUMN_WIDTH,
+    DEFAULT_COLUMN_WIDTH * 12
+  )
 
   return (
     <colgroup>
@@ -20,7 +34,8 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
         <col
           style={{
             width: UNUSED_COLUMN_WIDTH,
-            minWidth: UNUSED_COLUMN_WIDTH
+            minWidth: UNUSED_COLUMN_WIDTH,
+            maxWidth: UNUSED_COLUMN_WIDTH
           }}
         />
       )}
@@ -30,15 +45,19 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
           <col
             key={index}
             style={{
-              width: span * DEFAULT_COLUMN_WIDTH,
-              minWidth: span * DEFAULT_COLUMN_WIDTH
+              width: span * COLUMN_WIDTH,
+              minWidth: span * COLUMN_WIDTH
             }}
           />
         )
       })}
 
       <col
-        style={{ width: UNUSED_COLUMN_WIDTH, minWidth: UNUSED_COLUMN_WIDTH }}
+        style={{
+          width: UNUSED_COLUMN_WIDTH,
+          minWidth: UNUSED_COLUMN_WIDTH,
+          maxWidth: UNUSED_COLUMN_WIDTH
+        }}
       />
     </colgroup>
   )
