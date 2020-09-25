@@ -17,6 +17,7 @@ interface ITableBody {
   cellMenu?: React.ReactElement<CellMenuProps>
   expandCell?: (data: any) => React.ReactNode
   allowCellSelect: boolean
+  allowCellMenu: boolean
 }
 const TableBody: React.FC<ITableBody> = (props) => {
   const {
@@ -26,7 +27,8 @@ const TableBody: React.FC<ITableBody> = (props) => {
     loading,
     cellMenu,
     expandCell,
-    allowCellSelect
+    allowCellSelect,
+    allowCellMenu
   } = props
 
   return (
@@ -92,7 +94,7 @@ const TableBody: React.FC<ITableBody> = (props) => {
         </motion.td>
       )}
       <TableBodyContext.Provider
-        value={{ cellMenu, allowCellSelect, expandCell }}
+        value={{ cellMenu, allowCellSelect, expandCell, allowCellMenu }}
       >
         {!loading &&
           !isEmpty(dataSource) &&

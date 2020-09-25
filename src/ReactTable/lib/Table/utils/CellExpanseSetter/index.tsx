@@ -5,21 +5,25 @@ import { clamp } from 'lodash'
 
 interface ICellExpanseSetter {
   columns: TableColumnProps
+  allowCellSelect: boolean
+  allowCellMenu: boolean
 }
 const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
-  const { columns } = props
+  const { columns, allowCellSelect } = props
 
   const UNUSED_COLUMN_WIDTH = 60
   const DEFAULT_COLUMN_WIDTH = 152
 
   return (
     <colgroup>
-      <col
-        style={{
-          width: UNUSED_COLUMN_WIDTH,
-          minWidth: UNUSED_COLUMN_WIDTH
-        }}
-      />
+      {allowCellSelect && (
+        <col
+          style={{
+            width: UNUSED_COLUMN_WIDTH,
+            minWidth: UNUSED_COLUMN_WIDTH
+          }}
+        />
+      )}
       {columns.selected.map((column: ColumnProps, index: any) => {
         const span = clamp(column?.columnSpan || 0, 1, 12)
         return (
@@ -32,6 +36,7 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
           />
         )
       })}
+
       <col
         style={{ width: UNUSED_COLUMN_WIDTH, minWidth: UNUSED_COLUMN_WIDTH }}
       />

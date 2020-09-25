@@ -4,7 +4,7 @@ import { Table as ReactTable } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import moment from 'moment'
 import { useState, useEffect } from 'react'
-import { Menu } from 'antd'
+// import { Menu } from 'antd'
 
 const db = {
   dataSource: [
@@ -373,7 +373,6 @@ const db = {
       key: 'name',
       type: 'text',
       autoComplete: true,
-      columnSpan: 1.5
     },
     {
       title: 'DOB',
@@ -390,7 +389,6 @@ const db = {
       key: 'cost',
       type: 'currency',
       currency: 'NGN',
-      columnSpan: 2
     },
     {
       title: 'Hobby',
@@ -412,7 +410,7 @@ const db = {
       dataIndex: 'food_type',
       key: 'food_type',
       type: 'boolean',
-      columnSpan: 3
+
     },
     {
       title: 'ID-1',
@@ -532,7 +530,7 @@ const App = () => {
   // TODO: add a confirmation to the select delete.
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
-  console.log(pageRenderOrder, onRenderOrderChange)
+  console.log(pageRenderOrder, onRenderOrderChange, selectMenu)
   return (
     <div style={{ padding: 20, background: '#f7f8fa' }}>
       <ReactTable
@@ -556,41 +554,11 @@ const App = () => {
           onPaginate={onPaginate}
           loader={'skeleton'}
           loading={isLoadingContent}
-          onCellSelect={(selectCount: number) => ({
-            onDelete: (source: any[]) => console.log(source, selectCount),
-            onPin: (source: any[]) => console.log(source, selectCount)
-          })}
-          cellMenu={
-            <ReactTable.CellMenu
-              onDelete={() => null}
-              onDuplicate={() => null}
-              onEdit={() => null}
-            >
-              {({ source }: { source: any }) => {
-                return (
-                  <Menu
-                    style={{
-                      border: 0,
-                      background: 'var(--background-primary)'
-                    }}
-                  >
-                    <Menu.Divider />
-                    {selectMenu.map(
-                      ({ onClick, icon, title }, index: number) => (
-                        <Menu.Item
-                          onClick={() => onClick(source)}
-                          icon={icon}
-                          key={title + index}
-                        >
-                          {title}
-                        </Menu.Item>
-                      )
-                    )}
-                  </Menu>
-                )
-              }}
-            </ReactTable.CellMenu>
-          }
+          // onCellSelect={(selectCount: number) => ({
+          //   onDelete: (source: any[]) => console.log(source, selectCount),
+          //   onPin: (source: any[]) => console.log(source, selectCount)
+          // })}
+
         />
       </ReactTable>
     </div>

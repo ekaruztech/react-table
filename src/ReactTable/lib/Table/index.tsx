@@ -93,7 +93,7 @@ class Table extends React.Component<ITable, any> {
                 >
                   <ScrollBar>
                     <table className='ReactTable___table'>
-                      <CellExpanseSetter columns={columns} />
+                      <CellExpanseSetter columns={columns} allowCellSelect={!!onCellSelect} allowCellMenu={!!cellMenu} />
                       <TableHead
                         columns={columns}
                         columnKeys={columnKeys}
@@ -113,6 +113,7 @@ class Table extends React.Component<ITable, any> {
                         cellMenu={cellMenu}
                         expandCell={expandCell}
                         allowCellSelect={!!onCellSelect}
+                        allowCellMenu={!!cellMenu}
                       />
                     </table>
                   </ScrollBar>

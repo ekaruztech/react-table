@@ -123,6 +123,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                       />
                     )
                   })}
+
                   <td className='ReactTable___table-row table-row-last'>
                     <div className='ReactTable___table-utility'>
                       {revisedCellMenu}
