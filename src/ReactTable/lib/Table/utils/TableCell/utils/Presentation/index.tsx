@@ -19,7 +19,7 @@ interface IPresentation {
   data: string | Moment | Date | number | undefined
   actionPresentationType: ActionPresentationType | undefined
   presentationType: PresentationType | undefined
-  presentationColor: PresentationColor | undefined
+  presentationColor: PresentationColor | ((value: string) => PresentationColor)
   actionCallback: undefined | ((source: any) => void)
   bold: boolean | undefined
   actionTitle?: string
