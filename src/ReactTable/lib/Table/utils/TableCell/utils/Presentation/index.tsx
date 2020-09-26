@@ -12,6 +12,7 @@ import {
 } from '../../../../../../../types'
 // eslint-disable-next-line no-unused-vars
 import moment, { Moment } from 'moment'
+import { isFunction } from 'lodash'
 
 interface IPresentation {
   columnType: ColumnType | undefined
@@ -34,12 +35,20 @@ const Presentation: React.FC<IPresentation> = (props) => {
     actionCallback,
     actionPresentationType,
     actionTitle,
-    presentationColor,
+    presentationColor: pColor,
     bold,
     source,
     dateFormat,
     currency: currencyType
   } = props
+
+  const fnPresentationColor =
+    pColor && isFunction(pColor) ? pColor(String(data).toLowerCase()) : pColor
+  const presentationColor =
+    typeof fnPresentationColor === 'string'
+      ? fnPresentationColor.toLowerCase()
+      : null
+
   switch (columnType) {
     case 'action':
       return (
@@ -54,7 +63,7 @@ const Presentation: React.FC<IPresentation> = (props) => {
       )
 
     case 'currency': {
-      const currency = Intl.NumberFormat('en-GB', {
+      const currency = Intl.NumberFormat('en-NG', {
         currency: currencyType || 'NGN',
         style: 'currency'
       }).format(Number(data) || 0)

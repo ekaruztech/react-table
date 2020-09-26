@@ -6,6 +6,21 @@ import moment from 'moment'
 import { useState, useEffect } from 'react'
 // import { Menu } from 'antd'
 
+export const evalStatusColor = (status: string) => {
+  switch (status) {
+    case 'baking':
+      return 'geekblue'
+    case 'coding':
+      return 'gold'
+    case 'biking':
+    case 'gymnastics':
+      return 'green'
+    case 'movies':
+      return 'volcano'
+    default:
+      return 'default'
+  }
+}
 const db = {
   dataSource: [
     {
@@ -372,8 +387,7 @@ const db = {
       dataIndex: 'name',
       key: 'name',
       type: 'text',
-      autoComplete: true,
-      columnSpan: 2
+      autoComplete: true
     },
     {
       title: 'DOB',
@@ -389,8 +403,8 @@ const db = {
       dataIndex: 'cost',
       key: 'cost',
       type: 'currency',
-      currency: 'GBP',
-      columnSpan: 1.5
+      currency: 'USD',
+      presentationColor: 'gold'
     },
     {
       title: 'Hobby',
@@ -398,6 +412,7 @@ const db = {
       key: 'hobby',
       type: 'list',
       presentationType: 'tag',
+      presentationColor: (value: string) => evalStatusColor(value),
       multiple: true,
       listMenu: [
         { label: 'Swimming', value: 'swimming' },
@@ -406,53 +421,53 @@ const db = {
         { label: 'Gaming', value: 'gaming' },
         { label: 'Movies', value: 'movies' }
       ]
-    },
-    {
-      title: 'Food type',
-      dataIndex: 'food_type',
-      key: 'food_type',
-      type: 'boolean',
-
-    },
-    {
-      title: 'ID-1',
-      dataIndex: 'id',
-      key: 'id',
-      type: 'action',
-      actionPresentationType: 'default',
-      actionCallback: (source: any) => console.log('action clicked id', source),
-      actionTitle: 'Print ID'
-    },
-
-    {
-      title: 'ID-2',
-      dataIndex: 'id',
-      key: 'id2',
-      type: 'action',
-      actionPresentationType: 'primary',
-      actionCallback: (source: any) =>
-        console.log('action clicked id2', source),
-      actionTitle: 'Print ID-2'
-    },
-    {
-      title: 'ID-5',
-      dataIndex: 'id',
-      key: 'id5',
-      type: 'text',
-      bold: true
-    },
-    {
-      title: 'ID-6',
-      dataIndex: 'id',
-      key: 'id6',
-      type: 'text'
-    },
-    {
-      title: 'ID-10',
-      dataIndex: 'id',
-      key: 'id10',
-      type: 'text'
     }
+    // {
+    //   title: 'Food type',
+    //   dataIndex: 'food_type',
+    //   key: 'food_type',
+    //   type: 'boolean',
+    //
+    // },
+    // {
+    //   title: 'ID-1',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   type: 'action',
+    //   actionPresentationType: 'default',
+    //   actionCallback: (source: any) => console.log('action clicked id', source),
+    //   actionTitle: 'Print ID'
+    // },
+    //
+    // {
+    //   title: 'ID-2',
+    //   dataIndex: 'id',
+    //   key: 'id2',
+    //   type: 'action',
+    //   actionPresentationType: 'primary',
+    //   actionCallback: (source: any) =>
+    //     console.log('action clicked id2', source),
+    //   actionTitle: 'Print ID-2'
+    // },
+    // {
+    //   title: 'ID-5',
+    //   dataIndex: 'id',
+    //   key: 'id5',
+    //   type: 'text',
+    //   bold: true
+    // },
+    // {
+    //   title: 'ID-6',
+    //   dataIndex: 'id',
+    //   key: 'id6',
+    //   type: 'text'
+    // },
+    // {
+    //   title: 'ID-10',
+    //   dataIndex: 'id',
+    //   key: 'id10',
+    //   type: 'text'
+    // }
   ],
   maxColumns: 8,
   minColumns: 4
@@ -560,7 +575,6 @@ const App = () => {
             onDelete: (source: any[]) => console.log(source, selectCount),
             onPin: (source: any[]) => console.log(source, selectCount)
           })}
-
         />
       </ReactTable>
     </div>

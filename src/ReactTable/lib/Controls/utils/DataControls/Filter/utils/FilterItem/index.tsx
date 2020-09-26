@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { Button, Select, Tag, Tooltip } from 'antd'
+import { motion } from 'framer-motion'
 import { toPercentage } from '../../../../../../../../hooks'
 import Align from '../../../../../../../../Align'
 import Margin from '../../../../../../../../Margin'
@@ -78,7 +79,7 @@ export default (props: FilterItemProps) => {
    * @param type
    */
   const evalType = (type: string): { value: string; label: string }[] => {
-    if (type === 'number') return numberFilters
+    if (type === 'number' || type === 'currency') return numberFilters
     if (type === 'boolean') return booleanFilters
     if (type === 'date' || type === 'datetime') return dateFilters
     if (type === 'list') return listFilters
@@ -202,7 +203,8 @@ export default (props: FilterItemProps) => {
         type === 'number' ||
         type === 'boolean' ||
         type === 'date' ||
-        type === 'datetime'
+        type === 'datetime' ||
+        type === 'currency'
       )
         return 'is'
       return null
@@ -218,13 +220,19 @@ export default (props: FilterItemProps) => {
   const SuffixStatement = () => {
     const suffix = () => {
       if (
-        (type === 'number' || type === 'date' || type === 'datetime') &&
+        (type === 'number' ||
+          type === 'date' ||
+          type === 'datetime' ||
+          type === 'currency') &&
         (filterType || '').includes('between')
       )
         return 'and'
       return null
     }
-    return (type === 'number' || type === 'date' || type === 'datetime') &&
+    return (type === 'number' ||
+      type === 'date' ||
+      type === 'datetime' ||
+      type === 'currency') &&
       (filterType || '').includes('between') ? (
       <Margin horizontal={20}>
         <Tag style={{ height: 32, lineHeight: '32px' }} color='processing'>
@@ -236,133 +244,150 @@ export default (props: FilterItemProps) => {
 
   return (
     <Align justifyCenter style={{ width: '100%' }} type='column'>
-      {isFirstIndex && (
-        <Align
-          justifyCenter
-          alignCenter
-          type='column'
-          style={{ width: 'fit-content' }}
-        >
-          <Tag color='processing'>FIND DATA WHERE</Tag>
-          <div
-            style={{
-              height: 20,
-              width: 5,
-              borderLeft: '1.5px solid var(--border)'
-            }}
-          />
-        </Align>
-      )}
-      <Margin style={{ width: '100%' }}>
-        <Align
-          alignCenter
-          style={{ width: '100%' }}
-          // id={"filter__field__container"}
-        >
-          <Margin right={20}>
-            <Select
-              showSearch
+      <motion.div
+        exit={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        style={{ overflow: 'hidden' }}
+      >
+        {isFirstIndex && (
+          <Align
+            justifyCenter
+            alignCenter
+            type='column'
+            style={{ width: 'fit-content' }}
+          >
+            <Tag color='processing'>FIND DATA WHERE</Tag>
+            <div
               style={{
-                width: toPercentage(
-                  dimension.width,
-                  type === 'boolean' ? 0.45 : 0.3
-                )
+                height: 20,
+                width: 5,
+                borderLeft: '1.5px solid var(--border)'
               }}
-              placeholder='Select a property'
-              onChange={handlePropertyChange}
-              value={property?.key}
-              filterOption
-            >
-              {(validColumns || [])?.map?.((value, index) => {
-                return (
-                  <Option value={value.key} key={index}>
-                    {value.title}
-                  </Option>
-                )
-              })}
-            </Select>
-          </Margin>
-          <Margin right={20}>
-            <Align alignCenter>
-              <PrefixStatement />
+            />
+          </Align>
+        )}
+        <Margin style={{ width: '100%' }}>
+          <Align
+            alignCenter
+            style={{ width: '100%' }}
+            // id={"filter__field__container"}
+          >
+            <Margin right={20}>
               <Select
+                showSearch
                 style={{
                   width: toPercentage(
                     dimension.width,
-                    type === 'boolean' ? 0.41 : 0.2
+                    type === 'boolean' ? 0.45 : 0.3
                   )
                 }}
-                onChange={(value) => setFilterType(value)}
-                value={filterType || ''}
+                placeholder='Select a property'
+                onChange={handlePropertyChange}
+                value={property?.key}
+                filterOption
               >
-                {(evalType(property?.type || 'text') || stringFilters).map(
-                  ({ value, label }, index) => {
-                    return (
-                      <Option value={value} key={index}>
-                        {label}
-                      </Option>
-                    )
-                  }
-                )}
+                {(validColumns || [])?.map?.((value, index) => {
+                  return (
+                    <Option value={value.key} key={index}>
+                      {value.title}
+                    </Option>
+                  )
+                })}
               </Select>
-            </Align>
-          </Margin>
-          {type !== 'boolean' && (
+            </Margin>
+            <Margin right={20}>
+              <Align alignCenter>
+                <PrefixStatement />
+                <Select
+                  style={{
+                    width: toPercentage(
+                      dimension.width,
+                      type === 'boolean' ? 0.41 : 0.2
+                    )
+                  }}
+                  onChange={(value) => setFilterType(value)}
+                  value={filterType || ''}
+                >
+                  {(evalType(property?.type || 'text') || stringFilters).map(
+                    ({ value, label }, index) => {
+                      return (
+                        <Option value={value} key={index}>
+                          {label}
+                        </Option>
+                      )
+                    }
+                  )}
+                </Select>
+              </Align>
+            </Margin>
+            {type !== 'boolean' && (
+              <Align
+                alignCenter
+                style={{ width: toPercentage(dimension.width, 0.5) }}
+              >
+                <RenderFilterType
+                  autoCompleteOptions={autoCompleteOptions}
+                  suffix={SuffixStatement}
+                  property={property}
+                  filterType={filterType}
+                  dimension={dimension}
+                  type={type}
+                  handleAutoComplete={handleAutoComplete}
+                  handleFilterValueChange={handleFilterValueChange}
+                  currentData={filterData}
+                />
+              </Align>
+            )}
+
+            <Tooltip title='Remove'>
+              <Button
+                type='link'
+                danger
+                onClick={() => handleFilterRemoval(filterData.filterIndex)}
+              >
+                <span className='anticon'>
+                  <i
+                    className='ri-delete-bin-2-line'
+                    style={{ fontSize: 16 }}
+                  />
+                </span>
+              </Button>
+            </Tooltip>
+          </Align>
+        </Margin>
+        {!isLastIndex && isMoreThanOne && (
+          <motion.div
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{ overflow: 'hidden' }}
+          >
             <Align
+              justifyCenter
               alignCenter
-              style={{ width: toPercentage(dimension.width, 0.5) }}
+              type='column'
+              style={{ width: 'fit-content' }}
             >
-              <RenderFilterType
-                autoCompleteOptions={autoCompleteOptions}
-                suffix={SuffixStatement}
-                property={property}
-                filterType={filterType}
-                dimension={dimension}
-                type={type}
-                handleAutoComplete={handleAutoComplete}
-                handleFilterValueChange={handleFilterValueChange}
-                currentData={filterData}
+              <motion.div
+                style={{
+                  height: 20,
+                  width: 5,
+                  borderLeft: '1.5px solid var(--border)'
+                }}
+              />
+              <Tag color='processing'>{(logicType || '')?.toUpperCase()}</Tag>
+              <div
+                style={{
+                  height: 20,
+                  width: 5,
+                  borderLeft: '1.5px solid var(--border)'
+                }}
               />
             </Align>
-          )}
-
-          <Tooltip title='Remove'>
-            <Button
-              type='link'
-              danger
-              onClick={() => handleFilterRemoval(filterData.filterIndex)}
-            >
-              <span className='anticon'>
-                <i className='ri-delete-bin-2-line' style={{ fontSize: 16 }} />
-              </span>
-            </Button>
-          </Tooltip>
-        </Align>
-      </Margin>
-      {!isLastIndex && isMoreThanOne && (
-        <Align
-          justifyCenter
-          alignCenter
-          type='column'
-          style={{ width: 'fit-content' }}
-        >
-          <div
-            style={{
-              height: 20,
-              width: 5,
-              borderLeft: '1.5px solid var(--border)'
-            }}
-          />
-          <Tag color='processing'>{(logicType || '')?.toUpperCase()}</Tag>
-          <div
-            style={{
-              height: 20,
-              width: 5,
-              borderLeft: '1.5px solid var(--border)'
-            }}
-          />
-        </Align>
-      )}
+          </motion.div>
+        )}
+      </motion.div>
     </Align>
   )
 }

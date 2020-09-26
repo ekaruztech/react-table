@@ -46,7 +46,7 @@ export interface ColumnProps {
   multiple?: boolean
   bold?: boolean
   presentationType?: PresentationType
-  presentationColor?: PresentationColor
+  presentationColor?: PresentationColor | ((value: string) => PresentationColor)
   actionPresentationType?: ActionPresentationType
   listMenu?: Array<{ label: string; value: string | number }>
   actionCallback?: (source: any) => void

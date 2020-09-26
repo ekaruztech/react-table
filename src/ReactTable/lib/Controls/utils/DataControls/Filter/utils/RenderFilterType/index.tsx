@@ -84,6 +84,7 @@ export default (props: RenderFilterTypeProps) => {
 
   switch (type) {
     case 'number':
+    case 'currency':
       return (
         <InputNumber
           defaultValue={0}

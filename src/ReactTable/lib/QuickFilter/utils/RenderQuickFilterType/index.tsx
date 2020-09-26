@@ -2,7 +2,7 @@ import { AutoComplete, DatePicker, InputNumber, Select, Input } from 'antd'
 import moment from 'moment'
 import { has, isDate, isEmpty, isNumber } from 'lodash'
 import React from 'react'
-import TagRender from '../../../Controls/utils/DataControls/Filter/_partials/TagRender'
+import TagRender from '../../../Controls/utils/DataControls/Filter/utils/TagRender'
 
 interface IRenderFilterType {
   type: string

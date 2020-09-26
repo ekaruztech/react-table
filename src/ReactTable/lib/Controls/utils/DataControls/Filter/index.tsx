@@ -12,7 +12,7 @@ import {
   // eslint-disable-next-line no-unused-vars
   TableFilterAction
 } from '../../../../../../types'
-import FilterItem from './_partials/FilterItem'
+import FilterItem from './utils/FilterItem'
 
 type FilterProps = {
   columns: TableColumnProps
@@ -31,7 +31,10 @@ export default (props: FilterProps) => {
     <ScrollBar>
       <Padding
         horizontal={20}
-        style={{ height: toPercentage(windowDimension.height, 0.65, 80) }}
+        style={{
+          height: toPercentage(windowDimension.height, 0.65, 80),
+          overflow: 'auto scroll'
+        }}
       >
         <Align alignCenter justifyCenter style={{ width: '100%' }}>
           <Padding bottom={20}>
