@@ -61,7 +61,6 @@ const Presentation: React.FC<IPresentation> = (props) => {
           {actionTitle || ''}
         </Button>
       )
-
     case 'currency': {
       const currency = Intl.NumberFormat('en-NG', {
         currency: currencyType || 'NGN',
