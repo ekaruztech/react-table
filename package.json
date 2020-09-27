@@ -1,6 +1,6 @@
 {
   "name": "@voomsway/react-table",
-  "version": "1.0.0-beta.19",
+  "version": "1.0.0-beta.20",
   "description": "React table for voomsway web application",
   "author": "Cmion",
   "license": "Apache-2.0",
@@ -22,7 +22,7 @@
     "test:watch": "react-scripts test --env=jsdom",
     "predeploy": "cd example && yarn install && yarn run build",
     "deploy": "gh-pages -d example/build",
-    "semantic-release": "semantic-release"
+    "release": "semantic-release --no-ci"
   },
   "peerDependencies": {
     "react": "^16.0.0"

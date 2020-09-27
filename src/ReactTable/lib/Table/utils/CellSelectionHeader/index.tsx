@@ -34,9 +34,9 @@ const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
             <Align
               style={{
                 width: '100%',
-                borderTop: '1px solid var(--border-color-split)',
-                borderLeft: '1px solid var(--border-color-split)',
-                borderRight: '1px solid var(--border-color-split)',
+                borderTop: '1px solid var(--border)',
+                borderLeft: '1px solid var(--border)',
+                borderRight: '1px solid var(--border)',
                 background: 'var(--background-primary)',
                 height: 60
               }}

@@ -16,7 +16,7 @@
         border-radius: 0 !important;
     }
     .ant-collapse-content {
-        border-top: 1px solid var(--border-color-split) !important;
+        border-top: 1px solid var(--border) !important;
     }
     .filter-container{
         width: 100%;
@@ -32,12 +32,12 @@
         margin-bottom: 34px;
     }
     .filter-header{
-        width: 100%; border-bottom: 1px solid var(--border-color-split);
+        width: 100%; border-bottom: 1px solid var(--border);
         padding: 10px;
     }
     .filter-footer{
         width: 100%;
-        border-top: 1px solid var(--border-color-split);
+        border-top: 1px solid var(--border);
         padding: 10px;
     }
     .filter-title{
