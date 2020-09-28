@@ -34,7 +34,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
     <ReactTableContext.Consumer>
       {({ onSelectedItemChange, selectedTableItems, columnKeys, columns }) => (
         <TableBodyContext.Consumer>
-          {({ expandedView: ExpandedView = null, allowCellSelect, cellMenu }) => {
+          {({ expandedView = null, allowCellSelect, cellMenu }) => {
             const cellSelected =
               find(selectedTableItems?.itemList, ['key', source?.key]) !==
               undefined
@@ -139,7 +139,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   key='Table-View-Drawer'
                   width='45%'
                 >
-                  {ExpandedView && <ExpandedView />}
+                  {expandedView && expandedView(source)}
                 </Drawer>
               </Fragment>
             )
