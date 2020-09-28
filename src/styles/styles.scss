@@ -103,9 +103,9 @@
 }
 
 .ReactTable___table-column-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  //display: flex;
+  //align-items: center;
+  //justify-content: space-between;
 }
 .ReactTable___table-container-header-arrow {
   display: flex;
@@ -133,7 +133,7 @@
 }
 
 .ReactTable___table-rows:not(.ReactTable___table-rows-search) {
-  cursor: pointer;
+  //cursor: pointer;
 }
 .ReactTable___table-rows-search {
   .ReactTable___table-rows-search-container {
@@ -152,7 +152,7 @@
   border-collapse: collapse;
 }
 .ReactTable___table-row {
-  padding: 0 16px;
+  padding: 0 10px;
   font-size: 12px;
   color: var(--text-color);
   //border-right: 1px solid var(--border);

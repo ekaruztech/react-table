@@ -34,7 +34,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
     <ReactTableContext.Consumer>
       {({ onSelectedItemChange, selectedTableItems, columnKeys, columns }) => (
         <TableBodyContext.Consumer>
-          {({ expandCell = null, allowCellSelect, cellMenu }) => {
+          {({ expandedView: ExpandedView = null, allowCellSelect, cellMenu }) => {
             const cellSelected =
               find(selectedTableItems?.itemList, ['key', source?.key]) !==
               undefined
@@ -101,7 +101,6 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     return presentationHOC({
                       extraColumnsLength,
                       columnKeys,
-                      columnType: retrieved?.type,
                       key: `presentation__${
                         source?.key || index
                       }__of__column_${columnIndex}`
@@ -138,9 +137,9 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   onClose={onClose}
                   visible={drawerVisible}
                   key='Table-View-Drawer'
-                  width='40%'
+                  width='45%'
                 >
-                  {expandCell}
+                  {ExpandedView && <ExpandedView />}
                 </Drawer>
               </Fragment>
             )

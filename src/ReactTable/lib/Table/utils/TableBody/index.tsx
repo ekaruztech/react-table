@@ -15,7 +15,7 @@ interface ITableBody {
   loading?: boolean
   loader?: 'skeleton' | 'spinner'
   cellMenu?: React.ReactElement<CellMenuProps>
-  expandCell?: (data: any) => React.ReactNode
+  expandedView?: React.ComponentType | null
   allowCellSelect: boolean
   allowCellMenu: boolean
 }
@@ -26,7 +26,7 @@ const TableBody: React.FC<ITableBody> = (props) => {
     loader = 'skeleton',
     loading,
     cellMenu,
-    expandCell,
+    expandedView,
     allowCellSelect,
     allowCellMenu
   } = props
@@ -94,7 +94,7 @@ const TableBody: React.FC<ITableBody> = (props) => {
         </motion.td>
       )}
       <TableBodyContext.Provider
-        value={{ cellMenu, allowCellSelect, expandCell, allowCellMenu }}
+        value={{ cellMenu, allowCellSelect, expandedView, allowCellMenu }}
       >
         {!loading &&
           !isEmpty(dataSource) &&

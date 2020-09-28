@@ -4,7 +4,7 @@ import { Table as ReactTable } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import moment from 'moment'
 import { useState, useEffect } from 'react'
-// import { Menu } from 'antd'
+import { Menu } from 'antd'
 
 export const evalStatusColor = (status: string) => {
   switch (status) {
@@ -575,6 +575,42 @@ const App = () => {
             onDelete: (source: any[]) => console.log(source, selectCount),
             onPin: (source: any[]) => console.log(source, selectCount)
           })}
+          expandedView={() => (
+            <div>
+              <span>Hello world</span>
+            </div>
+          )}
+          cellMenu={
+            <ReactTable.CellMenu
+              onDelete={() => null}
+              onDuplicate={() => null}
+              onEdit={() => null}
+            >
+              {({ source }: { source: any }) => {
+                return (
+                  <Menu
+                    style={{
+                      border: 0,
+                      background: 'var(--background-primary)'
+                    }}
+                  >
+                    <Menu.Divider />
+                    {selectMenu.map(
+                      ({ onClick, icon, title }, index: number) => (
+                        <Menu.Item
+                          onClick={() => onClick(source)}
+                          icon={icon}
+                          key={title + index}
+                        >
+                          {title}
+                        </Menu.Item>
+                      )
+                    )}
+                  </Menu>
+                )
+              }}
+            </ReactTable.CellMenu>
+          }
         />
       </ReactTable>
     </div>

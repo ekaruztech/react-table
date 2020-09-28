@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { Fragment, ReactNode, ReactElement } from 'react'
+import React, { Fragment, ComponentType, ReactElement } from 'react'
 import ScrollBar from 'react-perfect-scrollbar'
 import TableHead from './utils/TableHead'
 import TableBody from './utils/TableBody'
@@ -25,7 +25,7 @@ interface ITable {
   loader?: 'skeleton' | 'spinner'
   onCellSelect?: (selectCount: number) => OnCellSelect
   /* JSX element for displaying expanded data for table cell */
-  expandCell?: (data: any) => ReactNode
+  expandedView?: ComponentType | null
   /* JSX element for displaying menu for table cell */
   cellMenu?: ReactElement<CellMenuProps>
 }
@@ -49,7 +49,7 @@ class Table extends React.Component<ITable, any> {
       loading,
       loader,
       cellMenu,
-      expandCell,
+      expandedView,
       onCellSelect
     } = this.props
     return (
@@ -93,7 +93,11 @@ class Table extends React.Component<ITable, any> {
                 >
                   <ScrollBar>
                     <table className='ReactTable___table'>
-                      <CellExpanseSetter columns={columns} allowCellSelect={!!onCellSelect} allowCellMenu={!!cellMenu} />
+                      <CellExpanseSetter
+                        columns={columns}
+                        allowCellSelect={!!onCellSelect}
+                        allowCellMenu={!!cellMenu}
+                      />
                       <TableHead
                         columns={columns}
                         columnKeys={columnKeys}
@@ -111,7 +115,7 @@ class Table extends React.Component<ITable, any> {
                         loading={loading}
                         loader={loader}
                         cellMenu={cellMenu}
-                        expandCell={expandCell}
+                        expandedView={expandedView}
                         allowCellSelect={!!onCellSelect}
                         allowCellMenu={!!cellMenu}
                       />

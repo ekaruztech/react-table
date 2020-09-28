@@ -74,7 +74,8 @@ const Presentation: React.FC<IPresentation> = (props) => {
           <Tag
             color={presentationColor || 'gold'}
             style={{
-              fontWeight: bold ? 'bold' : 'normal'
+              fontWeight: bold ? 'bold' : 'normal',
+              marginRight: 0
             }}
           >
             {currency}
@@ -87,7 +88,9 @@ const Presentation: React.FC<IPresentation> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
+              marginRight: 0,
+              paddingLeft: 0
             }}
           >
             {currency}
@@ -117,7 +120,8 @@ const Presentation: React.FC<IPresentation> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
+              paddingLeft: 0
             }}
           >
             {date}
@@ -130,10 +134,11 @@ const Presentation: React.FC<IPresentation> = (props) => {
           <Tag
             color={presentationColor || 'orange'}
             style={{
-              fontWeight: bold ? 'bold' : 'normal'
+              fontWeight: bold ? 'bold' : 'normal',
+              marginRight: 0
             }}
           >
-            {data || '⏤⏤⏤'}
+            {data || '...........'}
           </Tag>
         )
       } else
@@ -143,10 +148,12 @@ const Presentation: React.FC<IPresentation> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              backgroundColor: 'transparent'
+              backgroundColor: 'transparent',
+              marginRight: 0,
+              paddingLeft: 0
             }}
           >
-            {data || '⏤⏤⏤'}
+            {data || '...........'}
           </Tag>
         )
   }

@@ -137,6 +137,6 @@ export interface ReactTableProviderProps {
 export interface TableBodyProviderProps {
   cellMenu?: ReactElement<CellMenuProps>
   allowCellSelect: boolean
-  expandCell?: (data: any) => React.ReactNode | null
+  expandedView?: React.ComponentType | null
   allowCellMenu: boolean
 }
