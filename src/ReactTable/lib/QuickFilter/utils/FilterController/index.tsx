@@ -129,10 +129,28 @@ const FilterController: React.FC<IFilterController> = (props) => {
   }
 
   const menu = (
-    <Menu onClick={({ key }) => addFilter(String(key))}>
-      {columns.all.map((value: ColumnProps, index: number) => {
-        return <Menu.Item key={index}>{value?.title || '_____'}</Menu.Item>
-      })}
+    <Menu
+      onClick={({ key }) => (key !== 'none' ? addFilter(String(key)) : null)}
+    >
+      {columns.all.map(
+        (value: ColumnProps, index: number, array: ColumnProps[]) => {
+          const isAlreadyAdded = state.filters.find(
+            (filter) => filter.key === value.key
+          )
+          return isAlreadyAdded ? (
+            index + 1 === array.length && (
+              <Menu.Item key={'none'}>
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description={"Oops!!! You've used all the filters"}
+                />
+              </Menu.Item>
+            )
+          ) : (
+            <Menu.Item key={index}>{value?.title || '_____'}</Menu.Item>
+          )
+        }
+      )}
     </Menu>
   )
 
@@ -168,7 +186,7 @@ const FilterController: React.FC<IFilterController> = (props) => {
                   }}
                   description='Please add a filter'
                 >
-                  <Dropdown overlay={menu} trigger={['click']}>
+                  <Dropdown overlay={menu} trigger={['click']} arrow>
                     <Button
                       type='default'
                       icon={

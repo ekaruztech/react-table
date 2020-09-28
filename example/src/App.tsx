@@ -393,7 +393,7 @@ const db = {
       title: 'DOB',
       dataIndex: 'dob',
       key: 'dob',
-      type: 'date',
+      type: 'datetime',
       presentationType: 'date',
       presentationColor: 'processing',
       dateFormat: 'lll'
