@@ -74,8 +74,11 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           // @ts-ignore
           value={
             Array.isArray(value)
-              ? [moment(value[0] || new Date()), moment(value[1] || new Date())]
-              : [moment(), moment().add(1, 'week').toDate()]
+              ? [
+                  moment(isDate(value[0]) ? value[0] : new Date()),
+                  moment(isDate(value[1]) ? value[1] : new Date())
+                ]
+              : [moment(), moment().add(1, 'week')]
           }
           onChange={(dates) =>
             handleFilterValueChange(
