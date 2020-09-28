@@ -15,7 +15,7 @@ interface ITableBody {
   loading?: boolean
   loader?: 'skeleton' | 'spinner'
   cellMenu?: React.ReactElement<CellMenuProps>
-  expandedView?: React.ComponentType | null
+  expandedView?: (source: any) => React.ReactNode
   allowCellSelect: boolean
   allowCellMenu: boolean
 }

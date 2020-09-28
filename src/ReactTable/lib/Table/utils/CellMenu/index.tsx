@@ -58,7 +58,7 @@ class CellMenu extends React.Component<ICellMenu> {
               onClick={showDrawer}
             >
               <Tooltip title='Expand column'>
-                <span className='anticon'>
+                <span className='anticon' style={{background: 'transparent'}}>
                   <i
                     className='ri-fullscreen-line'
                     style={{ fontSize: 16, cursor: 'pointer' }}

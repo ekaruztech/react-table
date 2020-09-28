@@ -575,11 +575,14 @@ const App = () => {
             onDelete: (source: any[]) => console.log(source, selectCount),
             onPin: (source: any[]) => console.log(source, selectCount)
           })}
-          expandedView={() => (
-            <div>
-              <span>Hello world</span>
-            </div>
-          )}
+          expandedView={(source: any) => {
+            console.log(source)
+            return (
+              <div>
+                <span>Hello world</span>
+              </div>
+            )
+          }}
           cellMenu={
             <ReactTable.CellMenu
               onDelete={() => null}

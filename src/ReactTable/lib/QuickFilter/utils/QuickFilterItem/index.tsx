@@ -20,6 +20,8 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
   const [autoCompleteProps, setAutoCompleteProps] = useState<string | null>(
     null
   )
+  const [toRangePicker, setToRangePicker] = useState<boolean>(false)
+
   const [autoCompleteOptions, setAutoCompleteOptions] = useState<
     Array<{ value: string }> | undefined
   >([])
@@ -72,7 +74,7 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
   }
 
   const handleFilterValueChange = (
-    value: null | string | boolean | number | Date | undefined
+    value: null | string | boolean | number | Date | undefined | Array<Date>
   ): null => {
     dispatch({
       type: 'UPDATE_FILTER',
@@ -91,18 +93,45 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
         <Align justifyCenter type='column' style={{ width: '100%' }}>
           <Padding bottom={10}>
             <Align style={{ width: '100%' }} justifyBetween alignCenter>
-              <span className='filter-title'>{property?.title || '⏤⏤⏤⏤'}</span>
-              <Tooltip title='Remove filter'>
-                <Button
-                  type='text'
-                  onClick={() => handleFilterRemoval(property.filterIndex)}
-                  icon={
-                    <span className='anticon'>
-                      <i className='ri-close-line' />
-                    </span>
-                  }
-                />
-              </Tooltip>
+              <span className='filter-title'>{property?.title || ''}</span>
+              <Align alignCenter>
+                {(type === 'date' || type === 'datetime') && (
+                  <Padding right={10}>
+                    <Tooltip
+                      title={
+                        toRangePicker
+                          ? 'Swith back to default'
+                          : 'Switch to range picker'
+                      }
+                    >
+                      <Button
+                        type='text'
+                        shape='circle'
+                        onClick={() =>
+                          setToRangePicker((prevState: boolean) => !prevState)
+                        }
+                        icon={
+                          <span className='anticon'>
+                            <i className='ri-arrow-left-right-line'></i>
+                          </span>
+                        }
+                      />
+                    </Tooltip>
+                  </Padding>
+                )}
+                <Tooltip title='Remove filter'>
+                  <Button
+                    type='text'
+                    shape='circle'
+                    onClick={() => handleFilterRemoval(property.filterIndex)}
+                    icon={
+                      <span className='anticon'>
+                        <i className='ri-close-line' />
+                      </span>
+                    }
+                  />
+                </Tooltip>
+              </Align>
             </Align>
           </Padding>
           <RenderQuickFilterType
@@ -111,6 +140,7 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
             type={type}
             handleAutoComplete={handleAutoComplete}
             handleFilterValueChange={handleFilterValueChange}
+            toRangePicker={toRangePicker}
           />
         </Align>
       </motion.div>

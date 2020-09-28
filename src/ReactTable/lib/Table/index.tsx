@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { Fragment, ComponentType, ReactElement } from 'react'
+import React, { Fragment, ReactElement } from 'react'
 import ScrollBar from 'react-perfect-scrollbar'
 import TableHead from './utils/TableHead'
 import TableBody from './utils/TableBody'
@@ -25,7 +25,7 @@ interface ITable {
   loader?: 'skeleton' | 'spinner'
   onCellSelect?: (selectCount: number) => OnCellSelect
   /* JSX element for displaying expanded data for table cell */
-  expandedView?: ComponentType | null
+  expandedView?: (source: any) => React.ReactNode
   /* JSX element for displaying menu for table cell */
   cellMenu?: ReactElement<CellMenuProps>
 }
