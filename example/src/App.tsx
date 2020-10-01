@@ -406,56 +406,56 @@ const db = {
       currency: 'USD',
       presentationColor: 'gold'
     },
-    {
-      title: 'Hobby',
-      dataIndex: 'hobby',
-      key: 'hobby',
-      type: 'list',
-      presentationType: 'tag',
-      presentationColor: (value: string) => evalStatusColor(value),
-      multiple: true,
-      listMenu: [
-        { label: 'Swimming', value: 'swimming' },
-        { label: 'Skipping', value: 'skipping' },
-        { label: 'Skiing', value: 'skiing' },
-        { label: 'Gaming', value: 'gaming' },
-        { label: 'Movies', value: 'movies' }
-      ]
-    },
-    {
-      title: 'Food type',
-      dataIndex: 'food_type',
-      key: 'food_type',
-      type: 'boolean',
-
-    },
-    {
-      title: 'ID-1',
-      dataIndex: 'id',
-      key: 'id',
-      type: 'action',
-      actionPresentationType: 'default',
-      actionCallback: (source: any) => console.log('action clicked id', source),
-      actionTitle: 'Print ID'
-    },
+    // {
+    //   title: 'Hobby',
+    //   dataIndex: 'hobby',
+    //   key: 'hobby',
+    //   type: 'list',
+    //   presentationType: 'tag',
+    //   presentationColor: (value: string) => evalStatusColor(value),
+    //   multiple: true,
+    //   listMenu: [
+    //     { label: 'Swimming', value: 'swimming' },
+    //     { label: 'Skipping', value: 'skipping' },
+    //     { label: 'Skiing', value: 'skiing' },
+    //     { label: 'Gaming', value: 'gaming' },
+    //     { label: 'Movies', value: 'movies' }
+    //   ]
+    // },
+    // {
+    //   title: 'Food type',
+    //   dataIndex: 'food_type',
+    //   key: 'food_type',
+    //   type: 'boolean',
     //
-    {
-      title: 'ID-2',
-      dataIndex: 'id',
-      key: 'id2',
-      type: 'action',
-      actionPresentationType: 'primary',
-      actionCallback: (source: any) =>
-        console.log('action clicked id2', source),
-      actionTitle: 'Print ID-2'
-    },
-    {
-      title: 'ID-5',
-      dataIndex: 'id',
-      key: 'id5',
-      type: 'text',
-      bold: true
-    },
+    // },
+    // {
+    //   title: 'ID-1',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   type: 'action',
+    //   actionPresentationType: 'default',
+    //   actionCallback: (source: any) => console.log('action clicked id', source),
+    //   actionTitle: 'Print ID'
+    // },
+    // //
+    // {
+    //   title: 'ID-2',
+    //   dataIndex: 'id',
+    //   key: 'id2',
+    //   type: 'action',
+    //   actionPresentationType: 'primary',
+    //   actionCallback: (source: any) =>
+    //     console.log('action clicked id2', source),
+    //   actionTitle: 'Print ID-2'
+    // },
+    // {
+    //   title: 'ID-5',
+    //   dataIndex: 'id',
+    //   key: 'id5',
+    //   type: 'text',
+    //   bold: true
+    // },
     // {
     //   title: 'ID-6',
     //   dataIndex: 'id',

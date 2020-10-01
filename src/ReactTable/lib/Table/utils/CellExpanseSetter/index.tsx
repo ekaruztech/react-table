@@ -17,26 +17,38 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
     'ReactTable___table_wrapper-identifier'
   )
 
-  const UNUSED_COLUMN_WIDTH = 60
-  const DEFAULT_COLUMN_WIDTH = 150
-  const COMPUTED_COLUMN_WIDTH =
-    dimension.width / columns.selected.length - UNUSED_COLUMN_WIDTH
+  const selectedColumnLength = columns.selected.length
+  // width for select column
+  const selectColumnWidth = 60
+  // min column width
+  const minColumnWidth = 150
+  // computes column width using the table width and enables resize on dimension change
+  // subs the selectColumnWidth from dimension width and divides by the length of selected columns + 1(action column)
+  const computedColumnWidth =
+    (dimension.width - selectColumnWidth) / (selectedColumnLength + 1)
 
-  const COLUMN_WIDTH = clamp(
-    COMPUTED_COLUMN_WIDTH,
-    DEFAULT_COLUMN_WIDTH,
-    DEFAULT_COLUMN_WIDTH * 12
+  // clamps the computed value withing the minColumnWidth and minColumnWidth * 2
+  let columnWidth = clamp(
+    computedColumnWidth,
+    minColumnWidth,
+    minColumnWidth * 2
   )
-  const ACTION_WIDTH = clamp(COLUMN_WIDTH, 120, 150)
+
+  // clamps the action width (within the columnWidth, 120 and minColumnWidth)
+  const actionColumnWidth = clamp(columnWidth, 120, minColumnWidth)
+
+  // Adds the remaining value from the clamped actionColumnWidth to the rest of the columns.
+  columnWidth =
+    columnWidth + (columnWidth - actionColumnWidth) / selectedColumnLength
 
   return (
     <colgroup>
       {allowCellSelect && (
         <col
           style={{
-            width: UNUSED_COLUMN_WIDTH,
-            minWidth: UNUSED_COLUMN_WIDTH,
-            maxWidth: UNUSED_COLUMN_WIDTH
+            width: selectColumnWidth,
+            minWidth: selectColumnWidth,
+            maxWidth: selectColumnWidth
           }}
         />
       )}
@@ -46,8 +58,8 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
           <col
             key={index}
             style={{
-              width: span * COLUMN_WIDTH,
-              minWidth: span * COLUMN_WIDTH
+              width: span * columnWidth,
+              minWidth: span * columnWidth
             }}
           />
         )
@@ -55,9 +67,9 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
 
       <col
         style={{
-          width: ACTION_WIDTH,
-          minWidth: ACTION_WIDTH,
-          maxWidth: ACTION_WIDTH
+          width: actionColumnWidth,
+          minWidth: actionColumnWidth,
+          maxWidth: actionColumnWidth
         }}
       />
     </colgroup>
