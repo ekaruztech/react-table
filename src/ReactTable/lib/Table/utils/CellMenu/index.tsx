@@ -57,10 +57,10 @@ class CellMenu extends React.Component<ICellMenu> {
               whileTap={{ scale: 0.85 }}
               onClick={showDrawer}
             >
-              <Tooltip title='Expand column'>
+              <Tooltip title='Quick view'>
                 <span className='anticon' style={{background: 'transparent'}}>
                   <i
-                    className='ri-fullscreen-line'
+                    className='ri-eye-2-line'
                     style={{ fontSize: 16, cursor: 'pointer' }}
                   />
                 </span>

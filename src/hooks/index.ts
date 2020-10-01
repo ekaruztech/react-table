@@ -75,4 +75,16 @@ const toPercentage = (
   add: number = 0
 ): number => size * expectedRatio - sub + add
 
-export { toPercentage, useDimension }
+const useScroll = (scrollEventCallback: () => void) => {
+  useEffect(() => {
+    const scrollFn = () => {
+      if (typeof scrollEventCallback === 'function') {
+        scrollEventCallback()
+      }
+    }
+    window.addEventListener('scroll', scrollFn)
+
+    return () => window.removeEventListener('scroll', scrollFn)
+  }, [])
+}
+export { toPercentage, useDimension, useScroll }

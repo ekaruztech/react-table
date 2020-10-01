@@ -421,41 +421,41 @@ const db = {
         { label: 'Gaming', value: 'gaming' },
         { label: 'Movies', value: 'movies' }
       ]
-    }
-    // {
-    //   title: 'Food type',
-    //   dataIndex: 'food_type',
-    //   key: 'food_type',
-    //   type: 'boolean',
+    },
+    {
+      title: 'Food type',
+      dataIndex: 'food_type',
+      key: 'food_type',
+      type: 'boolean',
+
+    },
+    {
+      title: 'ID-1',
+      dataIndex: 'id',
+      key: 'id',
+      type: 'action',
+      actionPresentationType: 'default',
+      actionCallback: (source: any) => console.log('action clicked id', source),
+      actionTitle: 'Print ID'
+    },
     //
-    // },
-    // {
-    //   title: 'ID-1',
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   type: 'action',
-    //   actionPresentationType: 'default',
-    //   actionCallback: (source: any) => console.log('action clicked id', source),
-    //   actionTitle: 'Print ID'
-    // },
-    //
-    // {
-    //   title: 'ID-2',
-    //   dataIndex: 'id',
-    //   key: 'id2',
-    //   type: 'action',
-    //   actionPresentationType: 'primary',
-    //   actionCallback: (source: any) =>
-    //     console.log('action clicked id2', source),
-    //   actionTitle: 'Print ID-2'
-    // },
-    // {
-    //   title: 'ID-5',
-    //   dataIndex: 'id',
-    //   key: 'id5',
-    //   type: 'text',
-    //   bold: true
-    // },
+    {
+      title: 'ID-2',
+      dataIndex: 'id',
+      key: 'id2',
+      type: 'action',
+      actionPresentationType: 'primary',
+      actionCallback: (source: any) =>
+        console.log('action clicked id2', source),
+      actionTitle: 'Print ID-2'
+    },
+    {
+      title: 'ID-5',
+      dataIndex: 'id',
+      key: 'id5',
+      type: 'text',
+      bold: true
+    },
     // {
     //   title: 'ID-6',
     //   dataIndex: 'id',

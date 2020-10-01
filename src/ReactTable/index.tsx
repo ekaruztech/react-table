@@ -35,9 +35,9 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   constructor(props: ReactTableProps) {
     super(props)
     /* Clamps min column to (3, 6) */
-    this.minColumns = clamp(this.props.minColumns || 3, 3, 6)
+    this.minColumns = clamp(this.props.minColumns || 3, 3, 10)
     /* Clamps max column to (min, 6) */
-    this.maxColumns = clamp(this.props.maxColumns || 3, this.minColumns, 6)
+    this.maxColumns = clamp(this.props.maxColumns || 3, this.minColumns, 10)
     this.state = {
       selectedTableItems: {
         itemList: [],

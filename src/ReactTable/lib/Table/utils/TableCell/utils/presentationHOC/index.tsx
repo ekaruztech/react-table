@@ -5,19 +5,23 @@ interface IHOC {
   extraColumnsLength: number
   columnKeys: string[]
   key: string
+  cellIndex: number
 }
 const presentationHOC = ({
   extraColumnsLength,
   columnKeys,
-  key
+  key,
+  cellIndex
 }: IHOC) => (Component: React.ReactNode) => (
   <motion.td
-    className='ReactTable___table-row'
+    className={`ReactTable___table-body-cell ${
+      cellIndex === 0 ? 'table-body-cell-fixed-left table-body-cell-fixed-left-apply-shadow' : ''
+    }`}
     key={key}
   >
     <div
       key={columnKeys.length + extraColumnsLength + Math.random()}
-      className='ReactTable___table-row-inner'
+      className='ReactTable___table-body-cell-inner'
     >
       {Component}
     </div>

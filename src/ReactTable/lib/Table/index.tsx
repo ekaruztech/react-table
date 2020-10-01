@@ -13,9 +13,8 @@ import {
   OnCellSelect
 } from '../../../types'
 import CellMenu, { CellMenuProps } from './utils/CellMenu'
-import { isEmpty } from 'lodash'
+import { isEmpty, last } from 'lodash'
 import CellExpanseSetter from './utils/CellExpanseSetter'
-// import { motion } from 'framer-motion'
 
 // TODO: Find a reasonable way to make a sticky header for table
 interface ITable {
@@ -32,6 +31,92 @@ interface ITable {
 class Table extends React.Component<ITable, any> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE =
     '$$REACT_TABLE_BODY'
+
+  scrollController = () => {
+    const tableScrollComponent = document.querySelector(
+      '.ReactTable___scroll-wrapper'
+    )
+
+    const scrollLeft = tableScrollComponent?.scrollLeft || 0
+    const scrollWidth = tableScrollComponent?.scrollWidth || 0
+    const clientWidth = tableScrollComponent?.clientWidth || 0
+
+    const fixedTableHeaderCellsLeft = document.querySelectorAll(
+      '.table-header-cell-fixed-left'
+    )
+    const fixedTableHeaderCellRight = document.querySelector(
+      '.table-header-cell-fixed-right'
+    )
+    const fixedTableBodyCellsLeft = Array.from(
+      document.querySelectorAll('.table-body-cell-fixed-left-apply-shadow')
+    )
+
+    const fixedTableBodyCellsRight = Array.from(
+      document.querySelectorAll('.table-body-cell-fixed-right')
+    )
+
+    if (
+      tableScrollComponent &&
+      !!fixedTableHeaderCellsLeft.length &&
+      !!fixedTableBodyCellsLeft.length
+    ) {
+      const shadowedHeaderCellLeft = last(fixedTableHeaderCellsLeft)
+      // const shadowedBodyCell
+
+      if (scrollLeft <= 0 && shadowedHeaderCellLeft) {
+        // @ts-ignore
+        shadowedHeaderCellLeft.classList.remove('table-cell-fixed-left-shadow')
+        for (const cell of fixedTableBodyCellsLeft) {
+          cell.classList.remove('table-cell-fixed-left-shadow')
+        }
+      }
+      if (scrollLeft > 0 && shadowedHeaderCellLeft) {
+        // @ts-ignore
+        shadowedHeaderCellLeft.classList.add('table-cell-fixed-left-shadow')
+        for (const cell of fixedTableBodyCellsLeft) {
+          cell.classList.add('table-cell-fixed-left-shadow')
+        }
+      }
+    }
+
+    if (
+      tableScrollComponent &&
+      !!fixedTableBodyCellsRight.length &&
+      fixedTableHeaderCellRight
+    ) {
+      if (scrollLeft + clientWidth >= scrollWidth) {
+        for (const cell of fixedTableBodyCellsRight) {
+          cell.classList.remove('table-cell-fixed-right-shadow')
+        }
+        fixedTableHeaderCellRight.classList.remove(
+          'table-cell-fixed-right-shadow'
+        )
+      } else {
+        for (const cell of fixedTableBodyCellsRight) {
+          cell.classList.add('table-cell-fixed-right-shadow')
+        }
+        fixedTableHeaderCellRight.classList.add('table-cell-fixed-right-shadow')
+      }
+    }
+  }
+
+  componentDidMount(): void {
+    const tableScrollComponent = document.querySelector(
+      '.ReactTable___scroll-wrapper'
+    )
+    if (tableScrollComponent) {
+      tableScrollComponent.addEventListener('scroll', this.scrollController)
+    }
+  }
+
+  componentWillMount(): void {
+    const tableScrollComponent = document.querySelector(
+      '.ReactTable___scroll-wrapper'
+    )
+    if (tableScrollComponent) {
+      tableScrollComponent.removeEventListener('scroll', this.scrollController)
+    }
+  }
 
   render():
     | React.ReactElement<any, string | React.JSXElementConstructor<any>>

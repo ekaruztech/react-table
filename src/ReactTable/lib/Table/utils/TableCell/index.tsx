@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef, useState, Fragment } from 'react'
-import { Checkbox, Drawer } from 'antd'
+import { Checkbox, Drawer, Button, Tooltip } from 'antd'
 import { motion } from 'framer-motion'
 import presentationHOC from './utils/presentationHOC'
 import Presentation from './utils/Presentation'
 import { ReactTableContext } from '../../../ReactTableContext'
 import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
+import Padding from '../../../../../Padding'
 import { find } from 'lodash'
 
 interface ITableCell {
@@ -21,6 +22,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
 
   const trRef = useRef()
   const [drawerVisible, setDrawerVisible] = useState(false)
+  const [showHoverActions, setShowHoverActions] = useState(false)
   const showDrawer = () => {
     setDrawerVisible(true)
   }
@@ -52,12 +54,18 @@ const TableCell: React.FC<ITableCell> = (props) => {
               <Fragment>
                 <motion.tr
                   // layout
+                  onMouseOver={() => {
+                    setShowHoverActions(true)
+                  }}
+                  onMouseLeave={() => {
+                    setShowHoverActions(false)
+                  }}
                   // @ts-ignore
                   ref={trRef}
                   className={`${
                     cellSelected
-                      ? 'ReactTable___table-rows-checked '
-                      : 'ReactTable___table-rows'
+                      ? 'ReactTable___table-body-row-checked '
+                      : 'ReactTable___table-body-row'
                   }`}
                   key={source?.key}
                   initial={{ opacity: 0 }}
@@ -71,8 +79,8 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   }}
                 >
                   {allowCellSelect && (
-                    <td className='ReactTable___table-row table-row-first'>
-                      <div className='ReactTable___table-row-checkbox-container'>
+                    <td className='ReactTable___table-body-cell table-body-cell-fixed-left'>
+                      <div className='ReactTable___table-body-cell-checkbox-container'>
                         <Checkbox
                           key={source?.key}
                           onChange={(e) => {
@@ -90,7 +98,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     </td>
                   )}
 
-                  {columnKeys.map((value, columnIndex) => {
+                  {columnKeys.map((value, cellIndex) => {
                     const retrieved = columns.all.find((c) => c?.key === value)
                     // const retrievedIsAnObject = isObject(retrieved);
                     const presentationType = retrieved?.presentationType
@@ -103,7 +111,8 @@ const TableCell: React.FC<ITableCell> = (props) => {
                       columnKeys,
                       key: `presentation__${
                         source?.key || index
-                      }__of__column_${columnIndex}`
+                      }__of__column_${cellIndex}`,
+                      cellIndex,
                     })(
                       <Presentation
                         data={data}
@@ -123,8 +132,60 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     )
                   })}
 
-                  <td className='ReactTable___table-row table-row-last'>
+                  <td className='ReactTable___table-body-cell table-body-cell-fixed-right'>
                     <div className='ReactTable___table-utility'>
+                      {showHoverActions && (
+                        <Fragment>
+                          <motion.div
+                            exit={{ opacity: 0, y: 10 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            whileHover={{ scale: 1.2 }}
+                          >
+                            <Padding right={10}>
+                              <Tooltip placement='top' title={'Quick view'}>
+                                <Button
+                                  type='text'
+                                  shape='circle'
+                                  icon={
+                                    <span className='anticon'>
+                                      <i
+                                        className='ri-eye-2-line'
+                                        style={{ fontSize: 16 }}
+                                      />
+                                    </span>
+                                  }
+                                />
+                              </Tooltip>
+                            </Padding>
+                          </motion.div>
+                          <motion.div
+                            exit={{ opacity: 0, y: 10 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            whileHover={{ scale: 1.2 }}
+                          >
+                            <Padding right={10}>
+                              <Tooltip placement='top' title={'Edit'}>
+                                <Button
+                                  type='text'
+                                  shape='circle'
+                                  icon={
+                                    <span className='anticon'>
+                                      <i
+                                        className='ri-pencil-line'
+                                        style={{ fontSize: 16 }}
+                                      />
+                                    </span>
+                                  }
+                                />
+                              </Tooltip>
+                            </Padding>
+                          </motion.div>
+                        </Fragment>
+                      )}
                       {revisedCellMenu}
                     </div>
                   </td>

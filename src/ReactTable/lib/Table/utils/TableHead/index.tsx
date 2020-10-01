@@ -38,10 +38,10 @@ const TableHead: React.FC<ITableHead> = (props) => {
       className='ReactTable___table-header'
       transition={{ type: 'inertia' }}
     >
-      <tr className='ReactTable___table-columns'>
+      <tr className='ReactTable___table-header-row'>
         {allowCellSelect && (
           <motion.th
-            className='ReactTable___table-column table-column-first'
+            className='ReactTable___table-header-cell table-header-cell-fixed-left'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -73,11 +73,13 @@ const TableHead: React.FC<ITableHead> = (props) => {
                 stiffness: 100,
                 damping: 13
               }}
-              className='ReactTable___table-column'
+              className={`ReactTable___table-header-cell ${
+                index === 0 ? 'table-header-cell-fixed-left' : ''
+              }`}
               key={value?.key}
             >
-              <div className='ReactTable___table-column-container'>
-                <div className='ReactTable___table-column-title'>
+              <div className='ReactTable___table-header-cell-container'>
+                <div className='ReactTable___table-header-cell-title'>
                   {value?.title}
                 </div>
               </div>
@@ -94,11 +96,11 @@ const TableHead: React.FC<ITableHead> = (props) => {
             stiffness: 100,
             damping: 13
           }}
-          className='ReactTable___table-column selectable-columns  table-column-last'
+          className='ReactTable___table-header-cell selectable-header-cell table-header-cell-fixed-right'
         >
           <motion.div
             whileHover={{ scale: 1.1 }}
-            className='ReactTable___table-selectable-columns-child-container'
+            className='ReactTable___table-selectable-header-cell-child-container'
           >
             <Popover
               placement='bottomRight'

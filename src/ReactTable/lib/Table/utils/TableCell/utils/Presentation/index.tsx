@@ -88,7 +88,7 @@ const Presentation: React.FC<IPresentation> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              backgroundColor: 'transparent',
+              background: 'transparent !important',
               marginRight: 0,
               paddingLeft: 0
             }}
@@ -120,7 +120,7 @@ const Presentation: React.FC<IPresentation> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              backgroundColor: 'transparent',
+              background: 'transparent !important',
               paddingLeft: 0
             }}
           >
@@ -148,7 +148,7 @@ const Presentation: React.FC<IPresentation> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              backgroundColor: 'transparent',
+              background: 'transparent !important',
               marginRight: 0,
               paddingLeft: 0
             }}

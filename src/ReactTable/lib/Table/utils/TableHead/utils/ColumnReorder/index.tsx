@@ -19,9 +19,9 @@ const ColumnReorder: React.FC<IColumnReorder> = (props) => {
   const { setColumns, columns, maxColumns, minColumns, defaultColumns } = props
 
   return (
-    <div className='ReactTable___table-column-filter'>
-      <div className='ReactTable___table-column-filter-header'>
-        <span className='ReactTable___table-column-filter-header-text'>
+    <div className='ReactTable___table-header-cell-filter'>
+      <div className='ReactTable___table-header-cell-filter-header'>
+        <span className='ReactTable___table-header-cell-filter-header-text'>
           Customize Column
         </span>
       </div>
@@ -33,7 +33,7 @@ const ColumnReorder: React.FC<IColumnReorder> = (props) => {
           minColumns={minColumns}
         />
       </PerfectScrollbar>
-      <div className='ReactTable___table-column-filter-footer'>
+      <div className='ReactTable___table-header-cell-filter-footer'>
         <Button
           type='primary'
           onClick={() => null}

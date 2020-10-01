@@ -27,6 +27,7 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
     DEFAULT_COLUMN_WIDTH,
     DEFAULT_COLUMN_WIDTH * 12
   )
+  const ACTION_WIDTH = clamp(COLUMN_WIDTH, 120, 150)
 
   return (
     <colgroup>
@@ -54,9 +55,9 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
 
       <col
         style={{
-          width: UNUSED_COLUMN_WIDTH,
-          minWidth: UNUSED_COLUMN_WIDTH,
-          maxWidth: UNUSED_COLUMN_WIDTH
+          width: ACTION_WIDTH,
+          minWidth: ACTION_WIDTH,
+          maxWidth: ACTION_WIDTH
         }}
       />
     </colgroup>
