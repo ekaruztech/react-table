@@ -109,7 +109,19 @@ class Table extends React.Component<ITable, any> {
     }
   }
 
-  componentWillMount(): void {
+  componentDidUpdate(): void {
+    const tableScrollComponent = document.querySelector(
+      '.ReactTable___scroll-wrapper'
+    )
+    if (tableScrollComponent) {
+      // Check if element is scrollable on render.
+      if (tableScrollComponent.scrollWidth > tableScrollComponent.clientWidth) {
+        this.scrollController()
+      }
+    }
+  }
+
+  componentWillUnmount(): void {
     const tableScrollComponent = document.querySelector(
       '.ReactTable___scroll-wrapper'
     )

@@ -24802,6 +24802,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
   --empty-img-simple-g: #d9d9d9;
   --empty-img-simple-path: #fafafa;
   --content-header-background: rgba(255, 255, 255, 0.5);
+  --table-cell-fixed-shadow: rgba(32, 41, 50, 0.15);
 }
 -notice {
   color: var(--shade-40-text-color-secondary);

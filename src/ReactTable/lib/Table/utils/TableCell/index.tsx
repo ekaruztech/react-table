@@ -8,6 +8,7 @@ import { ReactTableContext } from '../../../ReactTableContext'
 import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
 import Padding from '../../../../../Padding'
 import { find } from 'lodash'
+import './styles.scss';
 
 interface ITableCell {
   /** DataSource item. */
@@ -112,7 +113,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                       key: `presentation__${
                         source?.key || index
                       }__of__column_${cellIndex}`,
-                      cellIndex,
+                      cellIndex
                     })(
                       <Presentation
                         data={data}
@@ -136,54 +137,59 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     <div className='ReactTable___table-utility'>
                       {showHoverActions && (
                         <Fragment>
-                          <motion.div
-                            exit={{ opacity: 0, y: 10 }}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1 }}
-                            whileHover={{ scale: 1.2 }}
-                          >
-                            <Padding right={10}>
-                              <Tooltip placement='top' title={'Quick view'}>
-                                <Button
-                                  type='text'
-                                  shape='circle'
-                                  icon={
-                                    <span className='anticon'>
-                                      <i
-                                        className='ri-eye-2-line'
-                                        style={{ fontSize: 16 }}
-                                      />
-                                    </span>
-                                  }
-                                />
-                              </Tooltip>
-                            </Padding>
-                          </motion.div>
-                          <motion.div
-                            exit={{ opacity: 0, y: 10 }}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                            whileHover={{ scale: 1.2 }}
-                          >
-                            <Padding right={10}>
-                              <Tooltip placement='top' title={'Edit'}>
-                                <Button
-                                  type='text'
-                                  shape='circle'
-                                  icon={
-                                    <span className='anticon'>
-                                      <i
-                                        className='ri-pencil-line'
-                                        style={{ fontSize: 16 }}
-                                      />
-                                    </span>
-                                  }
-                                />
-                              </Tooltip>
-                            </Padding>
-                          </motion.div>
+                          <Padding right={10}>
+                            <Tooltip placement='top' title='Quick view'>
+                              <Button
+                                type='text'
+                                shape='circle'
+                                icon={
+                                  <motion.span
+                                    exit={{ opacity: 0, y: 10 }}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 0.7, y: 0 }}
+                                    transition={{ delay: 0.1 }}
+                                    whileHover={{
+                                      scale: 1.2,
+                                      opacity: 1
+                                    }}
+                                    className='anticon table-cell-hover-actions-icon'
+                                  >
+                                    <i
+                                      className='ri-eye-2-line'
+                                      style={{ fontSize: 16 }}
+                                    />
+                                  </motion.span>
+                                }
+                              />
+                            </Tooltip>
+                          </Padding>
+
+                          <Padding right={10}>
+                            <Tooltip placement='top' title={'Edit'}>
+                              <Button
+                                type='text'
+                                shape='circle'
+                                icon={
+                                  <motion.span
+                                    exit={{ opacity: 0, y: 10 }}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 0.7, y: 0 }}
+                                    transition={{ delay: 0.1 }}
+                                    whileHover={{
+                                      scale: 1.2,
+                                      opacity: 1
+                                    }}
+                                    className='anticon table-cell-hover-actions-icon'
+                                  >
+                                    <i
+                                      className='ri-pencil-line'
+                                      style={{ fontSize: 16 }}
+                                    />
+                                  </motion.span>
+                                }
+                              />
+                            </Tooltip>
+                          </Padding>
                         </Fragment>
                       )}
                       {revisedCellMenu}

@@ -87,7 +87,6 @@
   position: sticky;
   left: 0;
   z-index: 3;
-  //border-left: 1.3px solid var(--table-header-border);
   background: var(--background-secondary);
   &:nth-child(1) {
     border-left: 1.3px solid var(--table-header-border);
@@ -103,7 +102,7 @@
   position: absolute;
   left: 100%;
   top: 0;
-  box-shadow: inset 10px 0 8px -8px rgba(32, 41, 50, .15);
+  box-shadow: inset 10px 0 8px -8px var(--table-cell-fixed-shadow);
   transition: box-shadow 150ms ease-in;
 }
 
@@ -125,7 +124,7 @@
   position: absolute;
   right: 100%;
   top: 0;
-  box-shadow: inset -10px 0 8px -8px rgba(32, 41, 50, .15);
+  box-shadow: inset -10px 0 8px -8px var(--table-cell-fixed-shadow);
   transition: box-shadow 150ms ease-in;
 }
 
@@ -222,7 +221,7 @@
   position: absolute;
   left: 100%;
   top: 0;
-  box-shadow: inset 10px 0 8px -8px rgba(32, 41, 50, .15);
+  box-shadow: inset 10px 0 8px -8px var(--table-cell-fixed-shadow);
   transition: box-shadow 150ms ease-in;
 }
 .ReactTable___table-body-cell.table-body-cell-fixed-right {
@@ -239,7 +238,7 @@
   position: absolute;
   right: 100%;
   top: 0;
-  box-shadow: inset -10px 0 8px -8px rgba(32, 41, 50, .15);
+  box-shadow: inset -10px 0 8px -8px var(--table-cell-fixed-shadow);
   transition: box-shadow 150ms ease-in;
 }
 .ReactTable___table-header-checkbox-container {

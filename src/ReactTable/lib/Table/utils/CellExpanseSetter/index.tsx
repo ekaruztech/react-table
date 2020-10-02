@@ -58,8 +58,8 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
           <col
             key={index}
             style={{
-              width: span * columnWidth,
-              minWidth: span * columnWidth
+              width: span * columnWidth - 1,
+              minWidth: span * columnWidth - 1
             }}
           />
         )
