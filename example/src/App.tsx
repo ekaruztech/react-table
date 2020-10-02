@@ -560,6 +560,7 @@ const App = () => {
         <ReactTable.Controls
           renderOrder={pageRenderOrder}
           onRenderOrderChange={onRenderOrderChange}
+          onRefresh={() => null}
         />
         <ReactTable.QuickFilter
           onApply={(value: any) => console.log(value)}

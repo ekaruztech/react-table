@@ -1,4 +1,4 @@
-import ColumnDensity from './ColumnDensity'
+import TableRefresh from './TableRefresh'
 import RenderOrder from './RenderOrder'
 import ControlActions from './ControlActions'
-export { ColumnDensity, RenderOrder, ControlActions }
+export { TableRefresh, RenderOrder, ControlActions }

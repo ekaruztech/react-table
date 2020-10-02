@@ -3,7 +3,7 @@ import { Button, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
 import DataManagement from './utils/DataControls'
 import {
-  ColumnDensity,
+  TableRefresh,
   ControlActions,
   RenderOrder
 } from './utils/TableControls'
@@ -12,6 +12,7 @@ import { ReactTableContext } from '../ReactTableContext'
 interface IReactTableControls {
   renderOrder: number
   onRenderOrderChange: (renderOrder: number) => void
+  onRefresh?: () => void
 }
 
 interface IReactTableControlsState {
@@ -54,7 +55,11 @@ class Controls extends React.Component<
     | boolean
     | null
     | undefined {
-    const { renderOrder: pageRenderOrder, onRenderOrderChange } = this.props
+    const {
+      renderOrder: pageRenderOrder,
+      onRenderOrderChange,
+      onRefresh
+    } = this.props
 
     // const [filterColumn, setFilterColumn] = useState({ visible: false })
 
@@ -100,7 +105,7 @@ class Controls extends React.Component<
               </div>
 
               <div className='ReactTable___table-container-header-inner-right'>
-                <ColumnDensity />
+                <TableRefresh onRefresh={onRefresh} />
                 <RenderOrder
                   renderOrder={pageRenderOrder}
                   setRenderOrder={onRenderOrderChange}
