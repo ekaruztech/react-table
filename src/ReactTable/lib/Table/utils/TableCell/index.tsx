@@ -196,7 +196,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                                     className='anticon table-cell-hover-actions-icon'
                                   >
                                     <i
-                                      className='ri-pencil-line'
+                                      className='ri-edit-line'
                                       style={{ fontSize: 16 }}
                                     />
                                   </motion.span>

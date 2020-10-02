@@ -58,12 +58,21 @@ class CellMenu extends React.Component<ICellMenu> {
               onClick={showDrawer}
             >
               <Tooltip title='Quick view'>
-                <span className='anticon' style={{background: 'transparent'}}>
-                  <i
-                    className='ri-eye-2-line'
-                    style={{ fontSize: 16, cursor: 'pointer' }}
-                  />
-                </span>
+                <Button
+                  shape={'circle'}
+                  type={'text'}
+                  icon={
+                    <span
+                      className='anticon'
+                      style={{ background: 'transparent' }}
+                    >
+                      <i
+                        className='ri-eye-2-line'
+                        style={{ fontSize: 16, cursor: 'pointer' }}
+                      />
+                    </span>
+                  }
+                />
               </Tooltip>
             </motion.div>
           </Menu.Item>
@@ -81,12 +90,18 @@ class CellMenu extends React.Component<ICellMenu> {
               }
             >
               <Tooltip title='Edit'>
-                <span className='anticon'>
-                  <i
-                    className='ri-edit-line'
-                    style={{ fontSize: 16, cursor: 'pointer' }}
-                  />
-                </span>
+                <Button
+                  shape={'circle'}
+                  type={'text'}
+                  icon={
+                    <span className='anticon'>
+                      <i
+                        className='ri-edit-line'
+                        style={{ fontSize: 16, cursor: 'pointer' }}
+                      />
+                    </span>
+                  }
+                />
               </Tooltip>
             </motion.div>
           </Menu.Item>
@@ -106,12 +121,18 @@ class CellMenu extends React.Component<ICellMenu> {
               }
             >
               <Tooltip title='Duplicate'>
-                <span className='anticon'>
-                  <i
-                    className='ri-file-copy-line'
-                    style={{ fontSize: 16, cursor: 'pointer' }}
-                  />
-                </span>
+                <Button
+                  shape={'circle'}
+                  type={'text'}
+                  icon={
+                    <span className='anticon'>
+                      <i
+                        className='ri-file-copy-line'
+                        style={{ fontSize: 16, cursor: 'pointer' }}
+                      />
+                    </span>
+                  }
+                />
               </Tooltip>
             </motion.div>
           </Menu.Item>
@@ -127,16 +148,22 @@ class CellMenu extends React.Component<ICellMenu> {
               }
             >
               <Tooltip title='Delete'>
-                <span className='anticon'>
-                  <i
-                    className='ri-delete-bin-line'
-                    style={{
-                      fontSize: 16,
-                      cursor: 'pointer',
-                      color: 'red'
-                    }}
-                  />
-                </span>
+                <Button
+                  shape={'circle'}
+                  type={'text'}
+                  icon={
+                    <span className='anticon'>
+                      <i
+                        className='ri-delete-bin-line'
+                        style={{
+                          fontSize: 16,
+                          cursor: 'pointer',
+                          color: 'red'
+                        }}
+                      />
+                    </span>
+                  }
+                />
               </Tooltip>
             </motion.div>
           </Menu.Item>
