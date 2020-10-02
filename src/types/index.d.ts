@@ -139,4 +139,7 @@ export interface TableBodyProviderProps {
   allowCellSelect: boolean
   expandedView?: (source: any) => React.ReactNode
   allowCellMenu: boolean
+  hoverActions?: {
+    onEdit: (source: any) => void
+  }
 }

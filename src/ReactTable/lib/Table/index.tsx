@@ -27,6 +27,10 @@ interface ITable {
   expandedView?: (source: any) => React.ReactNode
   /* JSX element for displaying menu for table cell */
   cellMenu?: ReactElement<CellMenuProps>
+  /* Functions to be called on hover actions */
+  hoverActions?: {
+    onEdit: (source: any) => void
+  }
 }
 class Table extends React.Component<ITable, any> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE =
@@ -147,7 +151,8 @@ class Table extends React.Component<ITable, any> {
       loader,
       cellMenu,
       expandedView,
-      onCellSelect
+      onCellSelect,
+      hoverActions
     } = this.props
     return (
       <ReactTableContext.Consumer>
@@ -215,6 +220,7 @@ class Table extends React.Component<ITable, any> {
                         expandedView={expandedView}
                         allowCellSelect={!!onCellSelect}
                         allowCellMenu={!!cellMenu}
+                        hoverActions={hoverActions}
                       />
                     </table>
                   </ScrollBar>

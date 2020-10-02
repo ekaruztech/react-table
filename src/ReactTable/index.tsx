@@ -122,7 +122,6 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
             `An unknown component was found as a child of ReactTable. \nReactTable expects one or all of the following [ReactTable.Controls, ReactTable.QuickFilter] and ReactTable.Body`
           )
         }
-        console.log(isExpectedChild, componentType === '$$REACT_TABLE_CONTROLS')
         if (isExpectedChild) {
           if (componentType === '$$REACT_TABLE_CONTROLS') {
             this.setState((prev) => ({

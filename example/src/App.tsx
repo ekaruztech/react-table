@@ -383,6 +383,15 @@ const db = {
   ],
   columns: [
     {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      type: 'action',
+      actionPresentationType: 'default',
+      actionCallback: (source: any) => console.log('action clicked id', source),
+      actionTitle: 'Print ID'
+    },
+    {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
@@ -406,38 +415,29 @@ const db = {
       currency: 'USD',
       presentationColor: 'gold'
     },
-    // {
-    //   title: 'Hobby',
-    //   dataIndex: 'hobby',
-    //   key: 'hobby',
-    //   type: 'list',
-    //   presentationType: 'tag',
-    //   presentationColor: (value: string) => evalStatusColor(value),
-    //   multiple: true,
-    //   listMenu: [
-    //     { label: 'Swimming', value: 'swimming' },
-    //     { label: 'Skipping', value: 'skipping' },
-    //     { label: 'Skiing', value: 'skiing' },
-    //     { label: 'Gaming', value: 'gaming' },
-    //     { label: 'Movies', value: 'movies' }
-    //   ]
-    // },
-    // {
-    //   title: 'Food type',
-    //   dataIndex: 'food_type',
-    //   key: 'food_type',
-    //   type: 'boolean',
-    //
-    // },
-    // {
-    //   title: 'ID-1',
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   type: 'action',
-    //   actionPresentationType: 'default',
-    //   actionCallback: (source: any) => console.log('action clicked id', source),
-    //   actionTitle: 'Print ID'
-    // },
+    {
+      title: 'Hobby',
+      dataIndex: 'hobby',
+      key: 'hobby',
+      type: 'list',
+      presentationType: 'tag',
+      presentationColor: (value: string) => evalStatusColor(value),
+      multiple: true,
+      listMenu: [
+        { label: 'Swimming', value: 'swimming' },
+        { label: 'Skipping', value: 'skipping' },
+        { label: 'Skiing', value: 'skiing' },
+        { label: 'Gaming', value: 'gaming' },
+        { label: 'Movies', value: 'movies' }
+      ]
+    },
+    {
+      title: 'Food type',
+      dataIndex: 'food_type',
+      key: 'food_type',
+      type: 'boolean'
+    }
+
     // //
     // {
     //   title: 'ID-2',

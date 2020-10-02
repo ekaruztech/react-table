@@ -8,7 +8,7 @@ import { ReactTableContext } from '../../../ReactTableContext'
 import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
 import Padding from '../../../../../Padding'
 import { find } from 'lodash'
-import './styles.scss';
+import './styles.scss'
 
 interface ITableCell {
   /** DataSource item. */
@@ -37,7 +37,12 @@ const TableCell: React.FC<ITableCell> = (props) => {
     <ReactTableContext.Consumer>
       {({ onSelectedItemChange, selectedTableItems, columnKeys, columns }) => (
         <TableBodyContext.Consumer>
-          {({ expandedView = null, allowCellSelect, cellMenu }) => {
+          {({
+            expandedView = null,
+            allowCellSelect,
+            cellMenu,
+            hoverActions
+          }) => {
             const cellSelected =
               find(selectedTableItems?.itemList, ['key', source?.key]) !==
               undefined
@@ -142,6 +147,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                               <Button
                                 type='text'
                                 shape='circle'
+                                onClick={showDrawer}
                                 icon={
                                   <motion.span
                                     exit={{ opacity: 0, y: 10 }}
@@ -169,6 +175,14 @@ const TableCell: React.FC<ITableCell> = (props) => {
                               <Button
                                 type='text'
                                 shape='circle'
+                                onClick={() => {
+                                  if (
+                                    typeof hoverActions?.onEdit === 'function'
+                                  ) {
+                                    const onEdit = hoverActions.onEdit
+                                    onEdit(source)
+                                  }
+                                }}
                                 icon={
                                   <motion.span
                                     exit={{ opacity: 0, y: 10 }}
