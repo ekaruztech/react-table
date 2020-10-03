@@ -20,7 +20,7 @@
 
 .ant-modal-mask,
 .ant-drawer-mask {
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(10px);
   /*background-color: rgba(32, 41, 50, 0.35) !important;*/
 }
 
@@ -115,7 +115,18 @@
 .ant-input-number-handler-down:hover .ant-input-number-handler-down-inner {
   color: var(--text-color) !important;
 }
-
+.ant-empty-img-simple-ellipse {
+  fill: var(--empty-img-simple-ellipse);
+}
+.ant-empty-img-simple-g {
+  stroke: var(--empty-img-simple-g);
+}
+.ant-empty-img-simple-path {
+  fill: var(--empty-img-simple-path);
+}
+.ant-picker-separator {
+  color: var(--checkbox-disabled) !important;
+}
 /*React perfect scrollbar*/
 .ps__thumb-y,
 .ps__thumb-x {

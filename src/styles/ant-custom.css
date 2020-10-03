@@ -21247,6 +21247,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   z-index: 3;
   display: flex;
   align-items: center;
+  background: var(--border-color-split);
   border-top: 1px solid var(--border-color-split);
   opacity: 0.6;
 }
@@ -24744,6 +24745,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
   --foreground: white;
   --background-primary: #ffffff;
   --background-secondary: #f7f8fa;
+  --table-header-border: #f0f0f0;
   --border-color-base: #d9d9d9;
   --border-color-split: #f0f0f0;
   --picker-cell-color: rgba(0, 0, 0, 0.25);
@@ -24795,6 +24797,12 @@ div.ant-typography-edit-content.ant-typography-rtl {
   --sbmenu-border: var(--border);
   --draggable-background-1: var(--background-secondary);
   --draggable-background-2: var(--background-primary);
+  --checkbox-disabled: rgba(0, 0, 0, 0.25);
+  --empty-img-simple-ellipse: #f5f5f5;
+  --empty-img-simple-g: #d9d9d9;
+  --empty-img-simple-path: #fafafa;
+  --content-header-background: rgba(255, 255, 255, 0.5);
+  --table-cell-fixed-shadow: rgba(32, 41, 50, 0.15);
 }
 -notice {
   color: var(--shade-40-text-color-secondary);

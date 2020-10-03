@@ -1,5 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import React, { ReactNode } from 'react'
+import React, { ReactElement } from 'react'
+// eslint-disable-next-line no-unused-vars
+import { CellMenuProps } from '../ReactTable/lib/Table/utils/CellMenu'
 
 export declare type PresentationColor =
   | 'magenta'
@@ -44,12 +46,14 @@ export interface ColumnProps {
   multiple?: boolean
   bold?: boolean
   presentationType?: PresentationType
-  presentationColor?: PresentationColor
+  presentationColor?: PresentationColor | ((value: string) => PresentationColor)
   actionPresentationType?: ActionPresentationType
   listMenu?: Array<{ label: string; value: string | number }>
   actionCallback?: (source: any) => void
   actionTitle?: string
   dateFormat?: string
+  currency?: string
+  columnSpan?: number
 }
 export interface TableColumnProps {
   all: Array<ColumnProps>
@@ -92,11 +96,6 @@ export type TableFilterAction =
   | { type: 'UPDATE_FILTER'; payload: FilterProps }
   | { type: 'ADD_OR_UPDATE_SEARCH'; payload: any }
 
-export interface OnCellMenu {
-  onEdit: (record: any) => void
-  onDelete: (record: any) => void
-  onDuplicate: (record: any) => void
-}
 export interface OnCellSelect {
   onPin: (source: any) => void
   onDelete: (source: any) => void
@@ -110,6 +109,7 @@ export interface SelectedTableItems {
 export interface ReactTableState {
   columns: TableColumnProps
   selectedTableItems: SelectedTableItems
+  isControlsPresent: boolean
 }
 export interface ReactTableProps {
   columns: ColumnProps[]
@@ -135,7 +135,11 @@ export interface ReactTableProviderProps {
 }
 
 export interface TableBodyProviderProps {
-  cellMenu?: ReactNode
+  cellMenu?: ReactElement<CellMenuProps>
   allowCellSelect: boolean
-  expandCell?: (data: any) => React.ReactNode | null
+  expandedView?: (source: any) => React.ReactNode
+  allowCellMenu: boolean
+  hoverActions?: {
+    onEdit: (source: any) => void
+  }
 }

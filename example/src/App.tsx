@@ -1,11 +1,26 @@
 import React from 'react'
 
-import { Table as ReactTable } from '@voomsway/react-table/dist'
+import { Table as ReactTable } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import moment from 'moment'
 import { useState, useEffect } from 'react'
 import { Menu } from 'antd'
 
+export const evalStatusColor = (status: string) => {
+  switch (status) {
+    case 'baking':
+      return 'geekblue'
+    case 'coding':
+      return 'gold'
+    case 'biking':
+    case 'gymnastics':
+      return 'green'
+    case 'movies':
+      return 'volcano'
+    default:
+      return 'default'
+  }
+}
 const db = {
   dataSource: [
     {
@@ -368,6 +383,15 @@ const db = {
   ],
   columns: [
     {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      type: 'action',
+      actionPresentationType: 'default',
+      actionCallback: (source: any) => console.log('action clicked id', source),
+      actionTitle: 'Print ID'
+    },
+    {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
@@ -378,7 +402,7 @@ const db = {
       title: 'DOB',
       dataIndex: 'dob',
       key: 'dob',
-      type: 'date',
+      type: 'datetime',
       presentationType: 'date',
       presentationColor: 'processing',
       dateFormat: 'lll'
@@ -387,7 +411,9 @@ const db = {
       title: 'Cost',
       dataIndex: 'cost',
       key: 'cost',
-      type: 'currency'
+      type: 'currency',
+      currency: 'USD',
+      presentationColor: 'gold'
     },
     {
       title: 'Hobby',
@@ -395,6 +421,7 @@ const db = {
       key: 'hobby',
       type: 'list',
       presentationType: 'tag',
+      presentationColor: (value: string) => evalStatusColor(value),
       multiple: true,
       listMenu: [
         { label: 'Swimming', value: 'swimming' },
@@ -410,16 +437,8 @@ const db = {
       key: 'food_type',
       type: 'boolean'
     },
-    {
-      title: 'ID-1',
-      dataIndex: 'id',
-      key: 'id',
-      type: 'action',
-      actionPresentationType: 'default',
-      actionCallback: (source: any) => console.log('action clicked id', source),
-      actionTitle: 'Print ID'
-    },
 
+    // //
     {
       title: 'ID-2',
       dataIndex: 'id',
@@ -435,24 +454,28 @@ const db = {
       dataIndex: 'id',
       key: 'id5',
       type: 'text',
-      bold: true
+      bold: true,
+      presentationColor: 'volcano'
     },
     {
       title: 'ID-6',
       dataIndex: 'id',
       key: 'id6',
-      type: 'text'
+      type: 'text',
+      presentationColor: 'lime'
     },
     {
       title: 'ID-10',
       dataIndex: 'id',
       key: 'id10',
-      type: 'text'
+      type: 'text',
+      presentationColor: 'geekblue'
     }
   ],
-  maxColumns: 8,
+  maxColumns: 10,
   minColumns: 4
 }
+
 const App = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingContent, setIsLoadingContent] = useState(true)
@@ -481,7 +504,7 @@ const App = () => {
     all: db.dataSource.length,
     currentPage: 1
   })
-  console.log(setPagination, pagination)
+  // console.log(() setPagination, pagination)
 
   const onPaginate = (page: number) => {
     setDataSource(() => {
@@ -527,6 +550,7 @@ const App = () => {
   // TODO: add a confirmation to the select delete.
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
+  console.log(pageRenderOrder, onRenderOrderChange, selectMenu)
   return (
     <div style={{ padding: 20, background: '#f7f8fa' }}>
       <ReactTable
@@ -539,11 +563,13 @@ const App = () => {
         <ReactTable.Controls
           renderOrder={pageRenderOrder}
           onRenderOrderChange={onRenderOrderChange}
+          onRefresh={() => null}
         />
         <ReactTable.QuickFilter
           onApply={(value: any) => console.log(value)}
           onClear={() => console.log('cleared')}
         />
+
         <ReactTable.Body
           pagination={pagination}
           onPaginate={onPaginate}
@@ -553,6 +579,13 @@ const App = () => {
             onDelete: (source: any[]) => console.log(source, selectCount),
             onPin: (source: any[]) => console.log(source, selectCount)
           })}
+          expandedView={(source: any) => {
+            return (
+              <div>
+                <span>Hello {source?.name}</span>
+              </div>
+            )
+          }}
           cellMenu={
             <ReactTable.CellMenu
               onDelete={() => null}
