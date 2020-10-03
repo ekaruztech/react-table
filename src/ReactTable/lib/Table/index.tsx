@@ -38,7 +38,9 @@ class Table extends React.Component<ITable, any> {
 
   private scrollComponentRef: HTMLElement
 
-  scrollController = (scrollComponent: HTMLElement) => {
+  protected readonly scrollController = (
+    scrollComponent: HTMLElement
+  ): void => {
     /* Current scroll position */
     const scrollLeft: number = scrollComponent?.scrollLeft || 0
     /* Component total width including hidden elements visible only through scrolling */
