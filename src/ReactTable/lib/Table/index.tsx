@@ -33,47 +33,57 @@ interface ITable {
   }
 }
 class Table extends React.Component<ITable, any> {
-  protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE =
+  protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE: string =
     '$$REACT_TABLE_BODY'
 
-  scrollController = () => {
-    const tableScrollComponent = document.querySelector(
-      '.ReactTable___scroll-wrapper'
-    )
+  private scrollComponentRef: HTMLElement
 
-    const scrollLeft = tableScrollComponent?.scrollLeft || 0
-    const scrollWidth = tableScrollComponent?.scrollWidth || 0
-    const clientWidth = tableScrollComponent?.clientWidth || 0
+  scrollController = (scrollComponent: HTMLElement) => {
+    /* Current scroll position */
+    const scrollLeft: number = scrollComponent?.scrollLeft || 0
+    /* Component total width including hidden elements visible only through scrolling */
+    const scrollWidth: number = scrollComponent?.scrollWidth || 0
+    /* Total visible width of scroll component, does not include width of hidden elements */
+    const clientWidth: number = scrollComponent?.clientWidth || 0
 
-    const fixedTableHeaderCellsLeft = document.querySelectorAll(
+    // used when collapsing shadow to prevent glitches expecially on MAC OS
+    const scrollOffset: number = 5
+
+    const fixedTableHeaderCellsLeft: NodeList = document.querySelectorAll(
       '.table-header-cell-fixed-left'
     )
-    const fixedTableHeaderCellRight = document.querySelector(
+    const fixedTableHeaderCellRight: HTMLElement | null = document.querySelector(
       '.table-header-cell-fixed-right'
     )
-    const fixedTableBodyCellsLeft = Array.from(
+    const fixedTableBodyCellsLeft: HTMLElement[] = Array.from(
       document.querySelectorAll('.table-body-cell-fixed-left-apply-shadow')
     )
 
-    const fixedTableBodyCellsRight = Array.from(
+    const fixedTableBodyCellsRight: HTMLElement[] = Array.from(
       document.querySelectorAll('.table-body-cell-fixed-right')
     )
 
     if (
-      tableScrollComponent &&
+      scrollComponent &&
       !!fixedTableHeaderCellsLeft.length &&
       !!fixedTableBodyCellsLeft.length
     ) {
-      const shadowedHeaderCellLeft = last(fixedTableHeaderCellsLeft)
+      // You want to select the last td element from the left, if there's a checkbox.
+      const shadowedHeaderCellLeft: Node | undefined = last(
+        fixedTableHeaderCellsLeft
+      )
       // const shadowedBodyCell
 
-      if (scrollLeft <= 0 && shadowedHeaderCellLeft) {
+      // If the less-than or equal to the scrollLeft of the scroll-component remove shadow.
+      if (scrollLeft <= scrollOffset && shadowedHeaderCellLeft) {
         // @ts-ignore
         shadowedHeaderCellLeft.classList.remove('table-cell-fixed-left-shadow')
         for (const cell of fixedTableBodyCellsLeft) {
           cell.classList.remove('table-cell-fixed-left-shadow')
         }
       }
+
+      // If the greater-than the scrollLeft of the scroll-component remove shadow.
       if (scrollLeft > 0 && shadowedHeaderCellLeft) {
         // @ts-ignore
         shadowedHeaderCellLeft.classList.add('table-cell-fixed-left-shadow')
@@ -84,11 +94,13 @@ class Table extends React.Component<ITable, any> {
     }
 
     if (
-      tableScrollComponent &&
+      scrollComponent &&
       !!fixedTableBodyCellsRight.length &&
       fixedTableHeaderCellRight
     ) {
-      if (scrollLeft + clientWidth >= scrollWidth) {
+      // Removes shadow from the action cell(right)
+      // if the current scroll position + the clientWidth is equal or greater-than the scroll component scrollOffset
+      if (scrollLeft + clientWidth >= scrollWidth - scrollOffset) {
         for (const cell of fixedTableBodyCellsRight) {
           cell.classList.remove('table-cell-fixed-right-shadow')
         }
@@ -105,32 +117,18 @@ class Table extends React.Component<ITable, any> {
   }
 
   componentDidMount(): void {
-    const tableScrollComponent = document.querySelector(
-      '.ReactTable___scroll-wrapper'
-    )
-    if (tableScrollComponent) {
-      tableScrollComponent.addEventListener('scroll', this.scrollController)
+    if (this.scrollComponentRef) {
+      this.scrollComponentRef.addEventListener('scroll', () => {
+        this.scrollController(this.scrollComponentRef)
+      })
     }
   }
 
   componentDidUpdate(): void {
-    const tableScrollComponent = document.querySelector(
-      '.ReactTable___scroll-wrapper'
-    )
-    if (tableScrollComponent) {
-      // Check if element is scrollable on render.
-      if (tableScrollComponent.scrollWidth > tableScrollComponent.clientWidth) {
-        this.scrollController()
-      }
-    }
-  }
-
-  componentWillUnmount(): void {
-    const tableScrollComponent = document.querySelector(
-      '.ReactTable___scroll-wrapper'
-    )
-    if (tableScrollComponent) {
-      tableScrollComponent.removeEventListener('scroll', this.scrollController)
+    if (this.scrollComponentRef) {
+      this.scrollComponentRef.addEventListener('scroll', () => {
+        this.scrollController(this.scrollComponentRef)
+      })
     }
   }
 
@@ -189,50 +187,59 @@ class Table extends React.Component<ITable, any> {
                 {/*  /> */}
                 {/*  <tbody /> */}
                 {/* </FixHeader> */}
-                <div
+
+                <ScrollBar
+                  component='section'
                   style={{ overflow: 'auto hidden' }}
                   className='ReactTable___scroll-wrapper'
+                  containerRef={(ref: HTMLElement) => {
+                    this.scrollComponentRef = ref
+                  }}
+                  onXReachEnd={(container) => {
+                    this.scrollController(container)
+                  }}
+                  onXReachStart={(container) => {
+                    this.scrollController(container)
+                  }}
                 >
-                  <ScrollBar>
-                    <table className='ReactTable___table'>
-                      <CellExpanseSetter
-                        columns={columns}
-                        allowCellSelect={!!onCellSelect}
-                        allowCellMenu={!!cellMenu}
-                      />
-                      <TableHead
-                        columns={columns}
-                        columnKeys={columnKeys}
-                        onSelectAll={onSelectAll}
-                        setColumns={setColumns}
-                        selectedTableItems={selectedTableItems}
-                        maxColumns={maxColumns}
-                        minColumns={minColumns}
-                        defaultColumns={defaultColumns}
-                        allowCellSelect={!!onCellSelect}
-                      />
-                      <TableBody
-                        columnKeys={columnKeys}
-                        dataSource={dataSource}
-                        loading={loading}
-                        loader={loader}
-                        cellMenu={cellMenu}
-                        expandedView={expandedView}
-                        allowCellSelect={!!onCellSelect}
-                        allowCellMenu={!!cellMenu}
-                        hoverActions={hoverActions}
-                      />
-                    </table>
-                  </ScrollBar>
-                </div>
-                <TableFooter
-                  currentPage={pagination?.currentPage || 1}
-                  handlePagination={onPaginate}
-                  total={pagination?.all || 0}
-                  loading={!!loading}
-                  isAnEmptyContent={isEmpty(dataSource)}
-                />
+                  <table className='ReactTable___table'>
+                    <CellExpanseSetter
+                      columns={columns}
+                      allowCellSelect={!!onCellSelect}
+                      allowCellMenu={!!cellMenu}
+                    />
+                    <TableHead
+                      columns={columns}
+                      columnKeys={columnKeys}
+                      onSelectAll={onSelectAll}
+                      setColumns={setColumns}
+                      selectedTableItems={selectedTableItems}
+                      maxColumns={maxColumns}
+                      minColumns={minColumns}
+                      defaultColumns={defaultColumns}
+                      allowCellSelect={!!onCellSelect}
+                    />
+                    <TableBody
+                      columnKeys={columnKeys}
+                      dataSource={dataSource}
+                      loading={loading}
+                      loader={loader}
+                      cellMenu={cellMenu}
+                      expandedView={expandedView}
+                      allowCellSelect={!!onCellSelect}
+                      allowCellMenu={!!cellMenu}
+                      hoverActions={hoverActions}
+                    />
+                  </table>
+                </ScrollBar>
               </div>
+              <TableFooter
+                currentPage={pagination?.currentPage || 1}
+                handlePagination={onPaginate}
+                total={pagination?.all || 0}
+                loading={!!loading}
+                isAnEmptyContent={isEmpty(dataSource)}
+              />
             </Fragment>
           )
         }}

@@ -436,40 +436,43 @@ const db = {
       dataIndex: 'food_type',
       key: 'food_type',
       type: 'boolean'
-    }
+    },
 
     // //
-    // {
-    //   title: 'ID-2',
-    //   dataIndex: 'id',
-    //   key: 'id2',
-    //   type: 'action',
-    //   actionPresentationType: 'primary',
-    //   actionCallback: (source: any) =>
-    //     console.log('action clicked id2', source),
-    //   actionTitle: 'Print ID-2'
-    // },
-    // {
-    //   title: 'ID-5',
-    //   dataIndex: 'id',
-    //   key: 'id5',
-    //   type: 'text',
-    //   bold: true
-    // },
-    // {
-    //   title: 'ID-6',
-    //   dataIndex: 'id',
-    //   key: 'id6',
-    //   type: 'text'
-    // },
-    // {
-    //   title: 'ID-10',
-    //   dataIndex: 'id',
-    //   key: 'id10',
-    //   type: 'text'
-    // }
+    {
+      title: 'ID-2',
+      dataIndex: 'id',
+      key: 'id2',
+      type: 'action',
+      actionPresentationType: 'primary',
+      actionCallback: (source: any) =>
+        console.log('action clicked id2', source),
+      actionTitle: 'Print ID-2'
+    },
+    {
+      title: 'ID-5',
+      dataIndex: 'id',
+      key: 'id5',
+      type: 'text',
+      bold: true,
+      presentationColor: 'volcano'
+    },
+    {
+      title: 'ID-6',
+      dataIndex: 'id',
+      key: 'id6',
+      type: 'text',
+      presentationColor: 'lime'
+    },
+    {
+      title: 'ID-10',
+      dataIndex: 'id',
+      key: 'id10',
+      type: 'text',
+      presentationColor: 'geekblue'
+    }
   ],
-  maxColumns: 8,
+  maxColumns: 10,
   minColumns: 4
 }
 
@@ -577,10 +580,9 @@ const App = () => {
             onPin: (source: any[]) => console.log(source, selectCount)
           })}
           expandedView={(source: any) => {
-            console.log(source)
             return (
               <div>
-                <span>Hello world</span>
+                <span>Hello {source?.name}</span>
               </div>
             )
           }}
