@@ -3,6 +3,7 @@ export { default as Margin } from './Margin'
 export { default as Align } from './Align'
 export { default as Position } from './Position'
 export { Table } from './ReactTable'
+export { useDimension, toPercentage } from './hooks'
 
 // Types
 export { MarginProps } from './Margin'

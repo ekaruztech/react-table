@@ -158,7 +158,7 @@ class CellMenu extends React.Component<ICellMenu> {
                         style={{
                           fontSize: 16,
                           cursor: 'pointer',
-                          color: 'red'
+                          color: '#bd1d26'
                         }}
                       />
                     </span>
