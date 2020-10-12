@@ -598,9 +598,9 @@ const App = () => {
             }}
             cellMenu={
               <ReactTable.CellMenu
-                onDelete={() => null}
-                onDuplicate={() => null}
-                onEdit={() => null}
+                // onDelete={() => null}
+                // onDuplicate={() => null}
+                // onEdit={() => null}
               >
                 {({ source }: { source: any }) => {
                   return (

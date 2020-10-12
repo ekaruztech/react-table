@@ -10,10 +10,11 @@ interface ICellMenu {
     | ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
     | undefined
   source?: any
-  onDelete: (source: any) => void
-  onDuplicate: (source: any) => void
-  onEdit: (source: any) => void
+  onDelete?: (source: any) => void
+  onDuplicate?: (source: any) => void
+  onEdit?: (source: any) => void
   children: ({ source }: { source: any }) => React.ReactElement
+  showExpandedView?: boolean
 }
 
 class CellMenu extends React.Component<ICellMenu> {
@@ -36,7 +37,8 @@ class CellMenu extends React.Component<ICellMenu> {
       children,
       onDelete,
       onDuplicate,
-      onEdit
+      onEdit,
+      showExpandedView
     } = this.props
     const menu = (
       <Menu
@@ -53,14 +55,21 @@ class CellMenu extends React.Component<ICellMenu> {
                 cursor: 'pointer',
                 opacity: 0.5
               }}
-              whileHover={{ scale: 1.25, opacity: 1 }}
-              whileTap={{ scale: 0.85 }}
-              onClick={showDrawer}
+              whileHover={
+                showExpandedView
+                  ? {
+                      scale: 1.25
+                    }
+                  : {}
+              }
+              whileTap={showExpandedView ? { scale: 0.85 } : {}}
             >
               <Tooltip title='Quick view'>
                 <Button
-                  shape={'circle'}
-                  type={'text'}
+                  shape='circle'
+                  type='text'
+                  disabled={!showExpandedView}
+                  onClick={showDrawer}
                   icon={
                     <span
                       className='anticon'
@@ -76,23 +85,28 @@ class CellMenu extends React.Component<ICellMenu> {
               </Tooltip>
             </motion.div>
           </Menu.Item>
-          <Menu.Item key='edit'>
+          <Menu.Item key='edit' disabled={!isFunction(onEdit)}>
             <motion.div
               initial={{
-                color: 'var(--text-color)',
-                cursor: 'pointer',
                 opacity: 0.5
               }}
-              whileHover={{ scale: 1.25, opacity: 1 }}
-              whileTap={{ scale: 0.85 }}
-              onClick={() =>
-                onEdit && isFunction(onEdit) ? onEdit(source) : null
+              whileHover={
+                isFunction(onEdit)
+                  ? {
+                      scale: 1.25
+                    }
+                  : {}
               }
+              whileTap={isFunction(onEdit) ? { scale: 0.85 } : {}}
             >
               <Tooltip title='Edit'>
                 <Button
-                  shape={'circle'}
-                  type={'text'}
+                  shape='circle'
+                  type='text'
+                  disabled={!isFunction(onEdit)}
+                  onClick={() =>
+                    onEdit && isFunction(onEdit) ? onEdit(source) : null
+                  }
                   icon={
                     <span className='anticon'>
                       <i
@@ -105,25 +119,32 @@ class CellMenu extends React.Component<ICellMenu> {
               </Tooltip>
             </motion.div>
           </Menu.Item>
-          <Menu.Item key='duplicate'>
+          <Menu.Item key='duplicate' disabled={!isFunction(onDuplicate)}>
             <motion.div
               initial={{
                 color: 'var(--text-color)',
                 cursor: 'pointer',
                 opacity: 0.5
               }}
-              whileHover={{ scale: 1.25, opacity: 1 }}
-              whileTap={{ scale: 0.85 }}
-              onClick={() =>
-                onDuplicate && isFunction(onDuplicate)
-                  ? onDuplicate(source)
-                  : null
+              whileHover={
+                isFunction(onDuplicate)
+                  ? {
+                      scale: 1.25
+                    }
+                  : {}
               }
+              whileTap={isFunction(onDuplicate) ? { scale: 0.85 } : {}}
             >
               <Tooltip title='Duplicate'>
                 <Button
-                  shape={'circle'}
-                  type={'text'}
+                  disabled={!isFunction(onDuplicate)}
+                  onClick={() =>
+                    onDuplicate && isFunction(onDuplicate)
+                      ? onDuplicate(source)
+                      : null
+                  }
+                  shape='circle'
+                  type='text'
                   icon={
                     <span className='anticon'>
                       <i
@@ -136,21 +157,28 @@ class CellMenu extends React.Component<ICellMenu> {
               </Tooltip>
             </motion.div>
           </Menu.Item>
-          <Menu.Item key='delete'>
+          <Menu.Item key='delete' disabled={!isFunction(onDelete)}>
             <motion.div
-              initial={{ color: 'var(--text-color)', cursor: 'pointer' }}
-              whileHover={{ scale: 1.25 }}
-              whileTap={{ scale: 0.85 }}
-              onClick={() =>
-                onDelete && isFunction(onDelete)
-                  ? onDelete(source?.key || null)
-                  : null
+              initial={{ cursor: 'pointer' }}
+              whileHover={
+                isFunction(onDelete)
+                  ? {
+                      scale: 1.25
+                    }
+                  : {}
               }
+              whileTap={isFunction(onDelete) ? { scale: 0.85 } : {}}
             >
               <Tooltip title='Delete'>
                 <Button
-                  shape={'circle'}
-                  type={'text'}
+                  shape='circle'
+                  type='text'
+                  onClick={() =>
+                    onDelete && isFunction(onDelete)
+                      ? onDelete(source?.key || null)
+                      : null
+                  }
+                  disabled={!isFunction(onDelete)}
                   icon={
                     <span className='anticon'>
                       <i
@@ -158,7 +186,7 @@ class CellMenu extends React.Component<ICellMenu> {
                         style={{
                           fontSize: 16,
                           cursor: 'pointer',
-                          color: '#bd1d26'
+                          ...(isFunction(onDelete) ? { color: '#ef3b4f' } : {})
                         }}
                       />
                     </span>

@@ -47,20 +47,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
             const cellSelected =
               find(selectedTableItems?.itemList, ['key', source?.key]) !==
               undefined
-            const cellMenuCallback = (child: React.ReactElement<any>) => {
-              if (React.isValidElement(child)) {
-                // Adds showDrawer as a property for cellmenu to enable showing of drawer.
-                return React.cloneElement(child as React.ReactElement<any>, {
-                  showDrawer,
-                  source
-                })
-              }
-              return null
-            }
-            const revisedCellMenu = React.Children.map(
-              cellMenu,
-              cellMenuCallback
-            )
+
             const enableExpandedViewHoverAction =
               (Array.isArray(enableHoverActions) &&
                 first(enableHoverActions)) ||
@@ -71,6 +58,21 @@ const TableCell: React.FC<ITableCell> = (props) => {
                 enableHoverActions.length === 2 &&
                 last(enableHoverActions)) ||
               (isBoolean(enableHoverActions) && enableHoverActions)
+            const cellMenuCallback = (child: React.ReactElement<any>) => {
+              if (React.isValidElement(child)) {
+                // Adds showDrawer as a property for cellmenu to enable showing of drawer.
+                return React.cloneElement(child as React.ReactElement<any>, {
+                  showDrawer,
+                  source,
+                  showExpandedView: enableExpandedViewHoverAction
+                })
+              }
+              return null
+            }
+            const revisedCellMenu = React.Children.map(
+              cellMenu,
+              cellMenuCallback
+            )
 
             return (
               <Fragment>
