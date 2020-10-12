@@ -142,4 +142,5 @@ export interface TableBodyProviderProps {
   hoverActions?: {
     onEdit: (source: any) => void
   }
+  enableHoverActions?: [boolean, boolean] | [boolean] | boolean
 }

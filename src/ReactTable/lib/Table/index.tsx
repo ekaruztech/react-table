@@ -31,6 +31,7 @@ interface ITable {
   hoverActions?: {
     onEdit: (source: any) => void
   }
+  enableHoverActions?: [boolean, boolean] | [boolean] | boolean
 }
 class Table extends React.Component<ITable, any> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE: string =
@@ -118,11 +119,16 @@ class Table extends React.Component<ITable, any> {
     }
   }
 
+  resizeFunction = (): void => {
+    this.scrollController(this.scrollComponentRef)
+  }
+
   componentDidMount(): void {
     if (this.scrollComponentRef) {
       this.scrollComponentRef.addEventListener('scroll', () => {
         this.scrollController(this.scrollComponentRef)
       })
+      window.addEventListener('resize', this.resizeFunction)
     }
   }
 
@@ -132,6 +138,10 @@ class Table extends React.Component<ITable, any> {
         this.scrollController(this.scrollComponentRef)
       })
     }
+  }
+
+  componentWillUnmount(): void {
+    window.removeEventListener('resize', this.resizeFunction)
   }
 
   render():
@@ -152,7 +162,8 @@ class Table extends React.Component<ITable, any> {
       cellMenu,
       expandedView,
       onCellSelect,
-      hoverActions
+      hoverActions,
+      enableHoverActions
     } = this.props
     return (
       <ReactTableContext.Consumer>
@@ -209,6 +220,7 @@ class Table extends React.Component<ITable, any> {
                       columns={columns}
                       allowCellSelect={!!onCellSelect}
                       allowCellMenu={!!cellMenu}
+                      enableHoverActions={enableHoverActions}
                     />
                     <TableHead
                       columns={columns}
@@ -231,6 +243,7 @@ class Table extends React.Component<ITable, any> {
                       allowCellSelect={!!onCellSelect}
                       allowCellMenu={!!cellMenu}
                       hoverActions={hoverActions}
+                      enableHoverActions={enableHoverActions}
                     />
                   </table>
                 </ScrollBar>

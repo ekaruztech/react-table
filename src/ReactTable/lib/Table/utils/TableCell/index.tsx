@@ -7,7 +7,7 @@ import Presentation from './utils/Presentation'
 import { ReactTableContext } from '../../../ReactTableContext'
 import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
 import Padding from '../../../../../Padding'
-import { find } from 'lodash'
+import { find, isBoolean, first, last } from 'lodash'
 import './styles.scss'
 
 interface ITableCell {
@@ -41,13 +41,15 @@ const TableCell: React.FC<ITableCell> = (props) => {
             expandedView = null,
             allowCellSelect,
             cellMenu,
-            hoverActions
+            hoverActions,
+            enableHoverActions
           }) => {
             const cellSelected =
               find(selectedTableItems?.itemList, ['key', source?.key]) !==
               undefined
-            const cb = (child: React.ReactElement<any>) => {
+            const cellMenuCallback = (child: React.ReactElement<any>) => {
               if (React.isValidElement(child)) {
+                // Adds showDrawer as a property for cellmenu to enable showing of drawer.
                 return React.cloneElement(child as React.ReactElement<any>, {
                   showDrawer,
                   source
@@ -55,7 +57,21 @@ const TableCell: React.FC<ITableCell> = (props) => {
               }
               return null
             }
-            const revisedCellMenu = React.Children.map(cellMenu, cb)
+            const revisedCellMenu = React.Children.map(
+              cellMenu,
+              cellMenuCallback
+            )
+            const enableExpandedViewHoverAction =
+              (Array.isArray(enableHoverActions) &&
+                first(enableHoverActions)) ||
+              (isBoolean(enableHoverActions) && enableHoverActions)
+
+            const enableEditHoverAction =
+              (Array.isArray(enableHoverActions) &&
+                enableHoverActions.length === 2 &&
+                last(enableHoverActions)) ||
+              (isBoolean(enableHoverActions) && enableHoverActions)
+
             return (
               <Fragment>
                 <motion.tr
@@ -142,68 +158,72 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     <div className='ReactTable___table-utility'>
                       {showHoverActions && (
                         <Fragment>
-                          <Padding right={10}>
-                            <Tooltip placement='top' title='Quick view'>
-                              <Button
-                                type='text'
-                                shape='circle'
-                                onClick={showDrawer}
-                                icon={
-                                  <motion.span
-                                    exit={{ opacity: 0, y: 10 }}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 0.7, y: 0 }}
-                                    transition={{ delay: 0.1 }}
-                                    whileHover={{
-                                      scale: 1.2,
-                                      opacity: 1
-                                    }}
-                                    className='anticon table-cell-hover-actions-icon'
-                                  >
-                                    <i
-                                      className='ri-eye-2-line'
-                                      style={{ fontSize: 16 }}
-                                    />
-                                  </motion.span>
-                                }
-                              />
-                            </Tooltip>
-                          </Padding>
-
-                          <Padding right={10}>
-                            <Tooltip placement='top' title={'Edit'}>
-                              <Button
-                                type='text'
-                                shape='circle'
-                                onClick={() => {
-                                  if (
-                                    typeof hoverActions?.onEdit === 'function'
-                                  ) {
-                                    const onEdit = hoverActions.onEdit
-                                    onEdit(source)
+                          {enableExpandedViewHoverAction && (
+                            <Padding right={10}>
+                              <Tooltip placement='top' title='Quick view'>
+                                <Button
+                                  type='text'
+                                  shape='circle'
+                                  onClick={showDrawer}
+                                  icon={
+                                    <motion.span
+                                      exit={{ opacity: 0, y: 10 }}
+                                      initial={{ opacity: 0, y: 10 }}
+                                      animate={{ opacity: 0.7, y: 0 }}
+                                      transition={{ delay: 0.1 }}
+                                      whileHover={{
+                                        scale: 1.2,
+                                        opacity: 1
+                                      }}
+                                      className='anticon table-cell-hover-actions-icon'
+                                    >
+                                      <i
+                                        className='ri-eye-2-line'
+                                        style={{ fontSize: 16 }}
+                                      />
+                                    </motion.span>
                                   }
-                                }}
-                                icon={
-                                  <motion.span
-                                    exit={{ opacity: 0, y: 10 }}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 0.7, y: 0 }}
-                                    transition={{ delay: 0.1 }}
-                                    whileHover={{
-                                      scale: 1.2,
-                                      opacity: 1
-                                    }}
-                                    className='anticon table-cell-hover-actions-icon'
-                                  >
-                                    <i
-                                      className='ri-edit-line'
-                                      style={{ fontSize: 16 }}
-                                    />
-                                  </motion.span>
-                                }
-                              />
-                            </Tooltip>
-                          </Padding>
+                                />
+                              </Tooltip>
+                            </Padding>
+                          )}
+
+                          {enableEditHoverAction && (
+                            <Padding right={10}>
+                              <Tooltip placement='top' title={'Edit'}>
+                                <Button
+                                  type='text'
+                                  shape='circle'
+                                  onClick={() => {
+                                    if (
+                                      typeof hoverActions?.onEdit === 'function'
+                                    ) {
+                                      const onEdit = hoverActions.onEdit
+                                      onEdit(source)
+                                    }
+                                  }}
+                                  icon={
+                                    <motion.span
+                                      exit={{ opacity: 0, y: 10 }}
+                                      initial={{ opacity: 0, y: 10 }}
+                                      animate={{ opacity: 0.7, y: 0 }}
+                                      transition={{ delay: 0.1 }}
+                                      whileHover={{
+                                        scale: 1.2,
+                                        opacity: 1
+                                      }}
+                                      className='anticon table-cell-hover-actions-icon'
+                                    >
+                                      <i
+                                        className='ri-edit-line'
+                                        style={{ fontSize: 16 }}
+                                      />
+                                    </motion.span>
+                                  }
+                                />
+                              </Tooltip>
+                            </Padding>
+                          )}
                         </Fragment>
                       )}
                       {revisedCellMenu}
@@ -211,17 +231,19 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   </td>
                 </motion.tr>
 
-                <Drawer
-                  title={'Expanded View'}
-                  placement='left'
-                  closable
-                  onClose={onClose}
-                  visible={drawerVisible}
-                  key='Table-View-Drawer'
-                  width='45%'
-                >
-                  {expandedView && expandedView(source)}
-                </Drawer>
+                {enableExpandedViewHoverAction && (
+                  <Drawer
+                    title={'Expanded View'}
+                    placement='left'
+                    closable
+                    onClose={onClose}
+                    visible={drawerVisible}
+                    key='Table-View-Drawer'
+                    width='45%'
+                  >
+                    {expandedView && expandedView(source)}
+                  </Drawer>
+                )}
               </Fragment>
             )
           }}

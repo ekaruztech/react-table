@@ -472,13 +472,14 @@ const db = {
       presentationColor: 'geekblue'
     }
   ],
-  maxColumns: 10,
+  maxColumns: 6,
   minColumns: 4
 }
 
 const App = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingContent, setIsLoadingContent] = useState(true)
+  // const [show, setShow] = useState(true)
 
   useEffect(() => {
     setIsLoadingContent(true)
@@ -552,73 +553,83 @@ const App = () => {
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
   console.log(pageRenderOrder, onRenderOrderChange, selectMenu)
   return (
-    <div style={{ padding: 20, background: '#f7f8fa' }}>
-      <ReactTable
-        name={'TestTable'}
-        columns={db.columns}
-        dataSource={dataSource.data}
-        maxColumns={db.maxColumns}
-        minColumns={db.minColumns}
-      >
-        <ReactTable.Controls
-          renderOrder={pageRenderOrder}
-          onRenderOrderChange={onRenderOrderChange}
-          onRefresh={() => null}
-        />
-        <ReactTable.QuickFilter
-          onApply={(value: any) => console.log(value)}
-          onClear={() => console.log('cleared')}
-        />
+    <div
+      style={{
+        padding: 20,
+        background: '#f7f8fa',
+        display: 'flex',
+        overflow: 'hidden'
+      }}
+    >
+      <div style={{ width: `100%` }}>
+        <ReactTable
+          name={'TestTable'}
+          columns={db.columns}
+          dataSource={dataSource.data}
+          maxColumns={db.maxColumns}
+          minColumns={db.minColumns}
+        >
+          <ReactTable.Controls
+            renderOrder={pageRenderOrder}
+            onRenderOrderChange={onRenderOrderChange}
+            onRefresh={() => null}
+          />
+          <ReactTable.QuickFilter
+            onApply={(value: any) => console.log(value)}
+            onClear={() => console.log('cleared')}
+          />
 
-        <ReactTable.Body
-          pagination={pagination}
-          onPaginate={onPaginate}
-          loader={'skeleton'}
-          loading={isLoadingContent}
-          onCellSelect={(selectCount: number) => ({
-            onDelete: (source: any[]) => console.log(source, selectCount),
-            onPin: (source: any[]) => console.log(source, selectCount)
-          })}
-          expandedView={(source: any) => {
-            return (
-              <div>
-                <span>Hello {source?.name}</span>
-              </div>
-            )
-          }}
-          cellMenu={
-            <ReactTable.CellMenu
-              onDelete={() => null}
-              onDuplicate={() => null}
-              onEdit={() => null}
-            >
-              {({ source }: { source: any }) => {
-                return (
-                  <Menu
-                    style={{
-                      border: 0,
-                      background: 'var(--background-primary)'
-                    }}
-                  >
-                    <Menu.Divider />
-                    {selectMenu.map(
-                      ({ onClick, icon, title }, index: number) => (
-                        <Menu.Item
-                          onClick={() => onClick(source)}
-                          icon={icon}
-                          key={title + index}
-                        >
-                          {title}
-                        </Menu.Item>
-                      )
-                    )}
-                  </Menu>
-                )
-              }}
-            </ReactTable.CellMenu>
-          }
-        />
-      </ReactTable>
+          <ReactTable.Body
+            pagination={pagination}
+            onPaginate={onPaginate}
+            loader={'skeleton'}
+            loading={isLoadingContent}
+            onCellSelect={(selectCount: number) => ({
+              onDelete: (source: any[]) => console.log(source, selectCount),
+              onPin: (source: any[]) => console.log(source, selectCount)
+            })}
+            enableHoverActions={true}
+            expandedView={(source: any) => {
+              return (
+                <div>
+                  <span>Hello {source?.name}</span>
+                </div>
+              )
+            }}
+            cellMenu={
+              <ReactTable.CellMenu
+                onDelete={() => null}
+                onDuplicate={() => null}
+                onEdit={() => null}
+              >
+                {({ source }: { source: any }) => {
+                  return (
+                    <Menu
+                      style={{
+                        border: 0,
+                        background: 'var(--background-primary)'
+                      }}
+                    >
+                      <Menu.Divider />
+                      {selectMenu.map(
+                        ({ onClick, icon, title }, index: number) => (
+                          <Menu.Item
+                            onClick={() => onClick(source)}
+                            icon={icon}
+                            key={title + index}
+                          >
+                            {title}
+                          </Menu.Item>
+                        )
+                      )}
+                    </Menu>
+                  )
+                }}
+              </ReactTable.CellMenu>
+            }
+          />
+        </ReactTable>
+      </div>
     </div>
   )
 }

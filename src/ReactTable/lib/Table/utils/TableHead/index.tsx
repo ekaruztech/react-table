@@ -99,7 +99,6 @@ const TableHead: React.FC<ITableHead> = (props) => {
           className='ReactTable___table-header-cell selectable-header-cell table-header-cell-fixed-right'
         >
           <motion.div
-            whileHover={{ scale: 1.1 }}
             className='ReactTable___table-selectable-header-cell-child-container'
           >
             <Popover
@@ -118,16 +117,14 @@ const TableHead: React.FC<ITableHead> = (props) => {
             >
               <Tooltip title='Customize columns' placement='left'>
                 <Button
-                  type='link'
-                  style={{ background: 'transaparent' }}
+                  type='text'
+                  shape={'circle'}
                   icon={
                     <span className='anticon'>
-                      <span className='anticon'>
-                        <i
-                          className='ri-list-settings-line'
-                          style={{ fontSize: 17 }}
-                        />
-                      </span>
+                      <i
+                        className='ri-list-settings-line column-reorder-button'
+                        style={{ fontSize: 17 }}
+                      />
                     </span>
                   }
                 />

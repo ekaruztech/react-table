@@ -1,16 +1,17 @@
 import React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { ColumnProps, TableColumnProps } from '../../../../../types'
-import { clamp } from 'lodash'
+import { clamp, first, isBoolean, last } from 'lodash'
 import { useDimension } from '../../../../../hooks'
 
 interface ICellExpanseSetter {
   columns: TableColumnProps
   allowCellSelect: boolean
   allowCellMenu: boolean
+  enableHoverActions?: [boolean, boolean] | [boolean] | boolean
 }
 const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
-  const { columns, allowCellSelect } = props
+  const { columns, allowCellSelect, enableHoverActions = [true] } = props
 
   const dimension = useDimension(
     'element',
@@ -34,8 +35,37 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
     minColumnWidth * 2
   )
 
-  // clamps the action width (within the columnWidth, 120 and minColumnWidth)
-  const actionColumnWidth = clamp(columnWidth, 120, minColumnWidth)
+  // if enableHoverActions is an array (and) its length is equal to 2, and either the first or the last item in a truthy | falsy value
+  // or if enableHoverActions is a boolean
+  const allowAllHoverActions =
+    (Array.isArray(enableHoverActions) &&
+      enableHoverActions.length === 2 &&
+      first(enableHoverActions) &&
+      last(enableHoverActions)) ||
+    (isBoolean(enableHoverActions) && enableHoverActions)
+
+  // If EnableHoverActions is an array (and) the first item is a boolean
+  // or the length of enableHoverActions is equal to 2 and the last item is a boolean
+  const allowOneHoverAction =
+    Array.isArray(enableHoverActions) &&
+    (first(enableHoverActions) ||
+      (enableHoverActions.length === 2 && last(enableHoverActions)))
+
+  const oneOrAllAllowedMin = allowAllHoverActions
+    ? 120
+    : allowOneHoverAction
+    ? 90
+    : 60
+  const oneOrAllAllowedMax = allowAllHoverActions
+    ? 140
+    : allowOneHoverAction
+    ? 90
+    : 60
+  const actionColumnWidth = clamp(
+    columnWidth,
+    oneOrAllAllowedMin,
+    oneOrAllAllowedMax
+  )
 
   // Adds the remaining value from the clamped actionColumnWidth to the rest of the columns.
   columnWidth =

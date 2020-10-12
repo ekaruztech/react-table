@@ -22,6 +22,7 @@ interface ITableBody {
   hoverActions?: {
     onEdit: (source: any) => void
   }
+  enableHoverActions?: [boolean, boolean] | [boolean] | boolean
 }
 const TableBody: React.FC<ITableBody> = (props) => {
   const {
@@ -33,7 +34,8 @@ const TableBody: React.FC<ITableBody> = (props) => {
     expandedView,
     allowCellSelect,
     allowCellMenu,
-    hoverActions
+    hoverActions,
+    enableHoverActions = [true]
   } = props
 
   return (
@@ -99,7 +101,7 @@ const TableBody: React.FC<ITableBody> = (props) => {
         </motion.td>
       )}
       <TableBodyContext.Provider
-        value={{ cellMenu, allowCellSelect, expandedView, allowCellMenu, hoverActions }}
+        value={{ cellMenu, allowCellSelect, expandedView, allowCellMenu, hoverActions, enableHoverActions }}
       >
         {!loading &&
           !isEmpty(dataSource) &&
