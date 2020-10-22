@@ -10,18 +10,19 @@
   //color: var(--text-dark)
 }
 .ReactTable___table-container {
-  border-bottom: 1.3px solid var(--border);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   width: 100%;
 }
-.ReactTable___table-container.no-header-present {
-  padding-top: 40px;
+.ReactTable__table-no-header-present {
+  height: 40px;
+  border: 1.3px solid var(--border);
+  border-bottom: 0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   background: var(--background-primary);
 }
-.ReactTable___table-container.no-header-present.pt5 {
+.ReactTable___table-container.ReactTable___pt5 {
   padding-top: 5px;
 }
 .ReactTable___table-wrapper {
@@ -91,9 +92,11 @@
   background: var(--background-secondary);
   &:nth-child(1) {
     border-left: 1.3px solid var(--table-header-border);
+
   }
   &:nth-child(2) {
     left: 60px;
+
   }
 }
 .ReactTable___table-header-cell.table-header-cell-fixed-left.table-cell-fixed-left-shadow::before {
@@ -109,7 +112,7 @@
 
 .ReactTable___table-header-cell.table-header-cell-fixed-right {
   position: sticky;
-  right: -1px;
+  right: 0;
   z-index: 3;
   border-right: 1.3px solid var(--table-header-border);
   background: var(--background-secondary);
@@ -294,6 +297,7 @@
   padding: 16px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  border-bottom: 1.3px solid var(--border);
   .page-item.active .page-link {
     background-color: var(--accent);
     border-color: var(--accent);

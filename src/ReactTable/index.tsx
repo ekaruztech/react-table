@@ -192,17 +192,16 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     const childrenLength = React.Children.count(children)
     return (
       <div
-        style={
-          !this.state.isControlsPresent
-            ? { borderTop: '1.3px solid var(--border)' }
-            : {}
-        }
         className={`ReactTable___table-container${
-          this.state.isControlsPresent
-            ? ''
-            : ` no-header-present${childrenLength > 1 ? ' pt5' : ''}`
+          !this.state.isControlsPresent && childrenLength > 1
+            ? ' ReactTable___pt5'
+            : ''
         }`}
+        id='ReactTable___table-container'
       >
+        {!this.state.isControlsPresent && (
+          <div className='ReactTable__table-no-header-present' />
+        )}
         <ReactTableContext.Provider value={providerValue}>
           {children}
         </ReactTableContext.Provider>

@@ -184,6 +184,9 @@ class Table extends React.Component<ITable, any> {
               <div
                 className='ReactTable___table-wrapper'
                 id='ReactTable___table_wrapper-identifier'
+                style={{
+                  overflow: isEmpty(dataSource) || loading ? 'hidden' : 'unset'
+                }}
               >
                 {/* <FixHeader> */}
                 {/*  <CellExpanseSetter columns={columns} /> */}
@@ -203,7 +206,10 @@ class Table extends React.Component<ITable, any> {
 
                 <ScrollBar
                   component='section'
-                  style={{ overflow: 'auto hidden' }}
+                  style={{
+                    overflow:
+                      isEmpty(dataSource) || loading ? 'unset' : 'auto hidden'
+                  }}
                   className='ReactTable___scroll-wrapper'
                   containerRef={(ref: HTMLElement) => {
                     this.scrollComponentRef = ref

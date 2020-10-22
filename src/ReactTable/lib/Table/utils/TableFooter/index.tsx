@@ -17,7 +17,7 @@ const TableFooter: React.FC<ITableFooter> = (props) => {
     loading,
     isAnEmptyContent
   } = props
-  return !loading && !isAnEmptyContent ? (
+  return (
     <motion.div
       className='ReactTable___table-footer'
       initial={{ opacity: 0 }}
@@ -25,15 +25,17 @@ const TableFooter: React.FC<ITableFooter> = (props) => {
       exit={{ opacity: 0 }}
     >
       <div className='ReactTable___table-pagination-container'>
-        <Pagination
-          defaultCurrent={currentPage}
-          showQuickJumper
-          total={total}
-          current={currentPage}
-          onChange={handlePagination}
-        />
+        {!loading && !isAnEmptyContent && (
+          <Pagination
+            defaultCurrent={currentPage}
+            showQuickJumper
+            total={total}
+            current={currentPage}
+            onChange={handlePagination}
+          />
+        )}
       </div>
     </motion.div>
-  ) : null
+  )
 }
 export default TableFooter

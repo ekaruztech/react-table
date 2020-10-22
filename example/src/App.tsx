@@ -551,7 +551,7 @@ const App = () => {
   // TODO: add a confirmation to the select delete.
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
-  console.log(pageRenderOrder, onRenderOrderChange, selectMenu)
+  console.log(pageRenderOrder, onRenderOrderChange, selectMenu, dataSource)
   return (
     <div
       style={{
@@ -565,19 +565,19 @@ const App = () => {
         <ReactTable
           name={'TestTable'}
           columns={db.columns}
-          dataSource={dataSource.data}
+          dataSource={[]}
           maxColumns={db.maxColumns}
           minColumns={db.minColumns}
         >
-          <ReactTable.Controls
-            renderOrder={pageRenderOrder}
-            onRenderOrderChange={onRenderOrderChange}
-            onRefresh={() => null}
-          />
-          <ReactTable.QuickFilter
-            onApply={(value: any) => console.log(value)}
-            onClear={() => console.log('cleared')}
-          />
+          {/*<ReactTable.Controls*/}
+          {/*  renderOrder={pageRenderOrder}*/}
+          {/*  onRenderOrderChange={onRenderOrderChange}*/}
+          {/*  onRefresh={() => null}*/}
+          {/*/>*/}
+          {/*<ReactTable.QuickFilter*/}
+          {/*  onApply={(value: any) => console.log(value)}*/}
+          {/*  onClear={() => console.log('cleared')}*/}
+          {/*/>*/}
 
           <ReactTable.Body
             pagination={pagination}

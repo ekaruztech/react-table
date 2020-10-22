@@ -1,10 +1,12 @@
 import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { Button } from 'antd'
+import { Button, Checkbox } from 'antd'
 import './_style.scss'
 import Sortable from './utils/Sortable'
 // eslint-disable-next-line no-unused-vars
 import { ColumnProps, TableColumnProps } from '../../../../../../../types'
+// eslint-disable-next-line no-unused-vars
+import { CheckboxChangeEvent } from 'antd/es/checkbox'
 
 interface IColumnReorder {
   setColumns: (
@@ -17,6 +19,10 @@ interface IColumnReorder {
 }
 const ColumnReorder: React.FC<IColumnReorder> = (props) => {
   const { setColumns, columns, maxColumns, minColumns, defaultColumns } = props
+
+  const saveAsPreset = (value: CheckboxChangeEvent) => {
+    console.log(value)
+  }
 
   return (
     <div className='ReactTable___table-header-cell-filter'>
@@ -34,15 +40,7 @@ const ColumnReorder: React.FC<IColumnReorder> = (props) => {
         />
       </PerfectScrollbar>
       <div className='ReactTable___table-header-cell-filter-footer'>
-        <Button
-          type='primary'
-          onClick={() => null}
-          style={{
-            marginRight: 10
-          }}
-        >
-          Save as preset
-        </Button>
+        <Checkbox onChange={saveAsPreset}>Save as preset</Checkbox>
         <Button
           type='dashed'
           onClick={() => {

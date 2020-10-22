@@ -8,6 +8,8 @@ import Padding from '../../../../../Padding'
 import { TableBodyContext } from './utils/TableBodyContext'
 import { LoadingOutlined } from '@ant-design/icons'
 import { CellMenuProps } from '../CellMenu'
+import './styles.scss'
+import { useDimension } from '../../../../../hooks'
 
 interface ITableBody {
   columnKeys: string[]
@@ -38,6 +40,8 @@ const TableBody: React.FC<ITableBody> = (props) => {
     enableHoverActions = [true]
   } = props
 
+  const dimensions = useDimension('element', 'ReactTable___table-container')
+
   return (
     <motion.tbody className='ReactTable___table-body'>
       {loading && (
@@ -47,30 +51,35 @@ const TableBody: React.FC<ITableBody> = (props) => {
           initial={{ opacity: 0 }}
           style={{ width: '100%', padding: 10 }}
         >
-          <motion.td colSpan={columnKeys.length + 2}>
-            <Padding horizontal={10} top={10} bottom={30}>
-              {loader === 'skeleton' && (
-                <div style={{ height: 450 }}>
-                  <Skeleton active />
-                  <Skeleton active />
-                  <Skeleton active />
-                </div>
-              )}
-              {loader === 'spinner' && (
-                <Align
-                  alignCenter
-                  justifyCenter
-                  style={{ height: 450 }}
-                  children={[
-                    <LoadingOutlined
-                      key='loading-0'
-                      style={{ fontSize: 40, color: 'var(--accent)' }}
-                      spin
-                    />
-                  ]}
-                />
-              )}
-            </Padding>
+          <motion.td
+            className={'ReactTable___table-body-td'}
+            style={{
+              maxWidth: dimensions.width,
+              width: dimensions.width,
+              minWidth: dimensions.width
+            }}
+          >
+            {loader === 'skeleton' && (
+              <div className={'ReactTable___table-body-loader'}>
+                <Skeleton active />
+                <Skeleton active />
+                <Skeleton active />
+              </div>
+            )}
+            {loader === 'spinner' && (
+              <Align
+                alignCenter
+                justifyCenter
+                className={'ReactTable___table-body-loader'}
+                children={[
+                  <LoadingOutlined
+                    key='loading-0'
+                    style={{ fontSize: 40, color: 'var(--accent)' }}
+                    spin
+                  />
+                ]}
+              />
+            )}
           </motion.td>
         </motion.tr>
       )}
@@ -79,11 +88,16 @@ const TableBody: React.FC<ITableBody> = (props) => {
           exit={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
-          style={{ width: '100%', padding: 10 }}
           colSpan={columnKeys.length + 2}
+          className={'ReactTable___table-body-td'}
+          style={{
+            maxWidth: dimensions.width,
+            width: dimensions.width,
+            minWidth: dimensions.width
+          }}
         >
           <Align
-            style={{ height: 450 }}
+            className={'ReactTable___table-body-empty'}
             alignCenter
             justifyCenter
             children={[
@@ -101,7 +115,14 @@ const TableBody: React.FC<ITableBody> = (props) => {
         </motion.td>
       )}
       <TableBodyContext.Provider
-        value={{ cellMenu, allowCellSelect, expandedView, allowCellMenu, hoverActions, enableHoverActions }}
+        value={{
+          cellMenu,
+          allowCellSelect,
+          expandedView,
+          allowCellMenu,
+          hoverActions,
+          enableHoverActions
+        }}
       >
         {!loading &&
           !isEmpty(dataSource) &&

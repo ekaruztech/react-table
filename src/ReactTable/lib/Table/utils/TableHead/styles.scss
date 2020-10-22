@@ -1,0 +1,20 @@
+.ReactTable___table-header-cell-filter {
+  //padding: 10px 10px 0 10px;
+}
+
+.ReactTable__table-selectable-header-popover {
+  .ant-popover-inner-content {
+    padding: 0 !important;
+    border: 1.3px solid var(--border-color-split);
+    border-top: 0;
+  }
+  .ant-popover-title {
+    border: 1.3px solid var(--border-color-split);
+    border-radius: 5px 5px 0 0;
+  }
+  .ant-popover-arrow {
+    border-left: 1.3px solid var(--border-color-split);
+    border-right: 1.3px solid var(--border-color-split);
+    z-index: -1;
+  }
+}

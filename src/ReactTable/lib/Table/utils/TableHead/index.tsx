@@ -1,6 +1,6 @@
 import { Button, Checkbox, Popover, Tooltip } from 'antd'
 import ColumnReorder from './utils/ColumnReorder'
-
+import './styles.scss'
 import React from 'react'
 import { motion } from 'framer-motion'
 // eslint-disable-next-line no-unused-vars
@@ -112,6 +112,7 @@ const TableHead: React.FC<ITableHead> = (props) => {
                   defaultColumns={defaultColumns}
                 />
               )}
+              overlayClassName={'ReactTable__table-selectable-header-popover'}
               trigger='click'
               style={{ borderRadius: 10 }}
             >

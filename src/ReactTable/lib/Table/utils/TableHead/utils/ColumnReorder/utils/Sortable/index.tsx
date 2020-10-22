@@ -79,8 +79,8 @@ const Sortable: React.FC<ISortable> = (props) => {
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
-    padding: '8px',
     margin: `10px 0`,
+    padding: '8px 0',
 
     // change background colour if dragging
     background: isDragging
@@ -93,7 +93,8 @@ const Sortable: React.FC<ISortable> = (props) => {
   })
 
   const getListStyle = () => ({
-    width: '100%'
+    width: '100%',
+    padding: '0 10px'
   })
 
   // See react-beautiful-dnd for more usage documentation.
@@ -144,7 +145,7 @@ const Sortable: React.FC<ISortable> = (props) => {
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'space-between'
+                          justifyContent: 'space-between',
                         }}
                       >
                         <Checkbox
