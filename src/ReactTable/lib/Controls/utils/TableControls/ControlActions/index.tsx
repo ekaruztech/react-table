@@ -6,19 +6,6 @@ export default () => {
   const menu = (
     <Menu className='CtrlActions__menu'>
       <Menu.Item
-        key='0'
-        icon={
-          <span className='anticon'>
-            <i
-              className='ri-refresh-line'
-              style={{ color: 'var(--accent)', paddingRight: 10, fontSize: 17 }}
-            />
-          </span>
-        }
-      >
-        Refresh
-      </Menu.Item>
-      <Menu.Item
         key='1'
         icon={
           <span className='anticon'>

@@ -565,19 +565,19 @@ const App = () => {
         <ReactTable
           name={'TestTable'}
           columns={db.columns}
-          dataSource={[]}
+          dataSource={dataSource.data}
           maxColumns={db.maxColumns}
           minColumns={db.minColumns}
         >
-          {/*<ReactTable.Controls*/}
-          {/*  renderOrder={pageRenderOrder}*/}
-          {/*  onRenderOrderChange={onRenderOrderChange}*/}
-          {/*  onRefresh={() => null}*/}
-          {/*/>*/}
-          {/*<ReactTable.QuickFilter*/}
-          {/*  onApply={(value: any) => console.log(value)}*/}
-          {/*  onClear={() => console.log('cleared')}*/}
-          {/*/>*/}
+          <ReactTable.Controls
+            renderOrder={pageRenderOrder}
+            onRenderOrderChange={onRenderOrderChange}
+            onRefresh={() => null}
+          />
+          <ReactTable.QuickFilter
+            onApply={(value: any) => console.log(value)}
+            onClear={() => console.log('cleared')}
+          />
 
           <ReactTable.Body
             pagination={pagination}
@@ -598,9 +598,9 @@ const App = () => {
             }}
             cellMenu={
               <ReactTable.CellMenu
-                // onDelete={() => null}
-                // onDuplicate={() => null}
-                // onEdit={() => null}
+              // onDelete={() => null}
+              // onDuplicate={() => null}
+              // onEdit={() => null}
               >
                 {({ source }: { source: any }) => {
                   return (

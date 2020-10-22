@@ -23,6 +23,7 @@ import '../styles/ant-custom.css'
 import 'remixicon/fonts/remixicon.css'
 import '../styles/override.scss'
 import '../styles/styles.scss'
+import Model from '../_utils/model'
 
 class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   static Controls = Controls
@@ -154,6 +155,9 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       // name
     } = this.props
 
+    if (!this.props.name) {
+      invariant(false, 'Name property is required')
+    }
     if (!Array.isArray(this.props.columns)) {
       invariant(
         false,
@@ -175,6 +179,7 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       (value: ColumnProps) => value?.key
     )
 
+    const model = Model.instantiate(this.props.name)
     const providerValue = {
       columnKeys: columnKeys,
       columns: this.state.columns,
@@ -186,7 +191,8 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       onSelectedItemChange: this.onSelectedItemChange,
       selectedTableItems: this.state.selectedTableItems,
       setSelectedTableItems: this.setSelectedTableItems,
-      defaultColumns: this.props.columns
+      defaultColumns: this.props.columns,
+      model
     }
 
     const childrenLength = React.Children.count(children)
