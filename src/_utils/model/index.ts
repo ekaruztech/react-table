@@ -116,18 +116,22 @@ class Model {
   ) {
     if (field && this[field] && this.storage) {
       if (isPlainObject(this[field]) && isPlainObject(value)) {
-        this.storage.update({ [field]: Object.assign({}, this[field], value) })
+        const newValue = Object.assign({}, this[field], value)
+        this.storage.update({ [field]: newValue })
+        this[field] = newValue
       }
       if (Array.isArray(this[field]) && Array.isArray(value)) {
         // @ts-ignore
-        this.storage.update({ [field]: [...this[field], ...value] })
+        const newValue = [...this[field], ...value]
+        this.storage.update({ [field]: newValue })
       }
-      if (!isPlainObject(this[field]) && !Array.isArray(this[field])) {
+      if (
+        !isPlainObject(this[field]) &&
+        !Array.isArray(this[field]) &&
+        (Array.isArray(value) || isPlainObject(value))
+      ) {
         this.storage.update({ [field]: value })
       }
-    }
-    if (field && this[field]) {
-      this[field] = value
     }
   }
 }

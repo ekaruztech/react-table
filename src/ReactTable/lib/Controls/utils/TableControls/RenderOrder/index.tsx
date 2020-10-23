@@ -34,10 +34,14 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
             type: 'custom'
           }
         ].sort((a, b) => (b.value > a.value ? -1 : 1))
+
+        console.log(model)
         // Persist data
         model.store('renderOrder', {
           items: newData
         })
+
+
         return newData
       })
     }
@@ -59,10 +63,11 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
         (prevItem: Item) => prevItem.value !== item.value
       )
       // Persist data
-      model.store('renderOrder', {
-        items: newData
-      })
-
+      // model.store('renderOrder', {
+      //
+      //   items: newData
+      // })
+      console.log(item, model)
       if (item.value === model.renderOrder.selected) {
         onChange(15)
       }
@@ -77,6 +82,11 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
   }> = (props) => {
     const { item, type } = props
     const [hovered, setHovered] = useState(false)
+    const onClose = (event: React.MouseEvent<HTMLSpanElement>) => {
+      // Prevent event from bubbling up to parent
+      event.stopPropagation()
+      removeCustomItem(item)
+    }
     return (
       <motion.span
         onHoverStart={() => setHovered(true)}
@@ -85,8 +95,8 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
         <Align alignCenter justifyBetween>
           <span>{item.label}</span>
           {type === 'custom' && hovered && (
-            <Tooltip title={'Remove'}>
-              <span className='anticon' onClick={() => removeCustomItem(item)}>
+            <Tooltip title='Remove'>
+              <span className='anticon' onClick={onClose}>
                 <i className='ri-close-line' />
               </span>
             </Tooltip>
