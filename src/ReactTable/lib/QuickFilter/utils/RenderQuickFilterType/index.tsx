@@ -1,7 +1,7 @@
 import { AutoComplete, DatePicker, InputNumber, Select, Input } from 'antd'
 // eslint-disable-next-line no-unused-vars
 import moment, { Moment } from 'moment'
-import { has, isDate, isEmpty, isNumber } from 'lodash'
+import { has, isDate as _isDate, isEmpty, isNumber } from 'lodash'
 import React from 'react'
 import TagRender from '../../../Controls/utils/DataControls/Filter/utils/TagRender'
 
@@ -25,6 +25,12 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
     toRangePicker
   } = props
 
+  const isDate = (date: Date): boolean => {
+    return (
+      _isDate(date) &&
+      new Date(date).toString().toLowerCase() !== 'invalid date'
+    )
+  }
   const value = property?.value
 
   switch (type) {
@@ -38,45 +44,17 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
         />
       )
     case 'date':
-      return toRangePicker ? (
-        <DatePicker.RangePicker
-          style={{ width: '100%' }}
-          // @ts-ignore
-          value={
-            Array.isArray(value)
-              ? [
-                  moment(isDate(value[0]) ? value[0] : new Date()),
-                  moment(isDate(value[1]) ? value[1] : new Date())
-                ]
-              : [moment(), moment().add(1, 'week')]
-          }
-          onChange={(dates) =>
-            handleFilterValueChange(
-              // @ts-ignore
-              (dates || []).map((value: Moment) => value.toDate())
-            )
-          }
-        />
-      ) : (
-        <DatePicker
-          style={{ width: '100%' }}
-          value={moment(isDate(value) ? value : new Date())}
-          onChange={(date) =>
-            handleFilterValueChange(moment(date || new Date()).toDate())
-          }
-        />
-      )
     case 'datetime':
       return toRangePicker ? (
         <DatePicker.RangePicker
-          showTime
+          showTime={type === 'datetime'}
           style={{ width: '100%' }}
           // @ts-ignore
           value={
             Array.isArray(value)
               ? [
-                  moment(isDate(value[0]) ? value[0] : new Date()),
-                  moment(isDate(value[1]) ? value[1] : new Date())
+                  moment(isDate(new Date(value[0])) ? value[0] : new Date()),
+                  moment(isDate(new Date(value[1])) ? value[1] : new Date())
                 ]
               : [moment(), moment().add(1, 'week')]
           }
@@ -89,9 +67,9 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
         />
       ) : (
         <DatePicker
-          showTime
+          showTime={type === 'datetime'}
           style={{ width: '100%' }}
-          value={moment(isDate(value) ? value : new Date())}
+          value={moment(isDate(value && new Date(value)) ? value : new Date())}
           onChange={(date) =>
             handleFilterValueChange(moment(date || new Date()).toDate())
           }
@@ -125,6 +103,7 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
             options={autoCompleteOptions}
             onSelect={(value) => handleFilterValueChange(value)}
             onSearch={handleAutoComplete}
+            defaultValue={value}
             style={{ width: '100%' }}
             placeholder={
               property?.title

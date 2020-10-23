@@ -25,9 +25,7 @@ const ColumnReorder: FC<IColumnReorder> = (props) => {
 
   const Renderer: FC<{ model: Model }> = (props) => {
     const { model } = props
-    const [saveAsPreset, setSaveAsPreset] = useState(
-      model.columnReorder.save
-    )
+    const [saveAsPreset, setSaveAsPreset] = useState(model.columnReorder.save)
 
     const handleSaveAsPreset = (value: CheckboxChangeEvent) => {
       model.store('columnReorder', {
@@ -61,7 +59,9 @@ const ColumnReorder: FC<IColumnReorder> = (props) => {
             onClick={() => {
               if (model.columnReorder.save) {
                 model.store('columnReorder', {
-                  presets: defaultColumns?.slice?.(0, maxColumns)
+                  presets: defaultColumns
+                    ?.slice?.(0, maxColumns)
+                    .map((column) => column.key)
                 })
               }
               setColumns({

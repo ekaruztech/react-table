@@ -31,13 +31,14 @@ class QuickFilter extends React.Component<IQuickFilter> {
 
     return (
       <ReactTableContext.Consumer>
-        {({ dataSource, columns }) => {
+        {({ dataSource, columns, model }) => {
           return (
             <FilterController
               dataSource={dataSource}
               columns={columns}
               onClear={onClear}
               onApply={onApply}
+              model={model}
             />
           )
         }}

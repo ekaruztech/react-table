@@ -11,6 +11,7 @@ import '../../_styles.scss'
 // eslint-disable-next-line no-unused-vars
 import { TableColumnProps, ColumnProps } from '../../../../../types'
 import { quickFilterReducer, initQuickFilterState } from '../../reducer'
+import Model from '../../../../../_utils/model'
 
 const { Panel } = Collapse
 
@@ -45,8 +46,8 @@ const EmptyImage = (
       <g
         transform='translate(31.08 19.98)'
         fill='none'
-        stroke-linejoin='round'
-        stroke-miterlimit='10'
+        strokeLinejoin='round'
+        strokeMiterlimit='10'
       >
         <path
           d='M7.075,1.509A2.22,2.22,0,0,1,9.178,0H51.5a2.22,2.22,0,0,1,2.1,1.509L60.68,22.427V42.18a2.22,2.22,0,0,1-2.22,2.22H2.22A2.22,2.22,0,0,1,0,42.18V22.427Z'
@@ -63,26 +64,26 @@ const EmptyImage = (
         transform='translate(50.871 42.179)'
         fill='none'
         stroke='#75a4fe'
-        stroke-linecap='round'
-        stroke-linejoin='round'
-        stroke-miterlimit='10'
-        stroke-width='2.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeMiterlimit='10'
+        strokeWidth='2.5'
       />
       <path
         d='M38.553,3.184,30.34,12.4ZM19.314,0V0ZM0,3.184,8.214,12.4Z'
         transform='translate(41.44)'
         fill='none'
         stroke='#a4c3fe'
-        stroke-linecap='round'
-        stroke-linejoin='round'
-        stroke-miterlimit='10'
-        stroke-width='2.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        strokeMiterlimit='10'
+        strokeWidth='2.5'
       />
     </g>
   </svg>
 )
 
-interface IFilterController {
+interface FilterControllerProps {
   onApply: (
     value: {
       property: string
@@ -92,16 +93,18 @@ interface IFilterController {
   onClear: () => void
   columns: TableColumnProps
   dataSource: Array<any>
+  model: Model
 }
 
-const FilterController: React.FC<IFilterController> = (props) => {
-  const { columns, dataSource, onApply, onClear } = props
+const FilterController: React.FC<FilterControllerProps> = (props) => {
+  const { columns, dataSource, onApply, onClear, model } = props
   // @ts-ignore
   const [state, dispatch] = useReducer(
-    quickFilterReducer,
+    quickFilterReducer(model),
     columns.selected,
-    initQuickFilterState
+    initQuickFilterState(model)
   )
+
   const addFilter = (propertyIndex: string) => {
     const columnProperty = columns.all[parseInt(propertyIndex, 10)]
     dispatch({
@@ -115,6 +118,7 @@ const FilterController: React.FC<IFilterController> = (props) => {
   }
   const clearFilter = () => {
     dispatch({ type: 'RESET' })
+
     if (onClear && isFunction(onClear)) {
       onClear()
     }

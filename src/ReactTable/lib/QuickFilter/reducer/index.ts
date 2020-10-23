@@ -1,25 +1,46 @@
-import { filter } from 'lodash'
-// eslint-disable-next-line no-unused-vars
-import { QuickFilterState, QuickFilterAction } from './reducer'
+import { filter, isEmpty, pick, map, find } from 'lodash'
+import {
+  // eslint-disable-next-line no-unused-vars
+  QuickFilterState,
+  // eslint-disable-next-line no-unused-vars
+  QuickFilterAction,
+  // eslint-disable-next-line no-unused-vars
+  QuickFilterProps
+} from './reducer'
 // eslint-disable-next-line no-unused-vars
 import { ColumnProps } from '../../../../types'
+// eslint-disable-next-line no-unused-vars
+import Model, {
+  // eslint-disable-next-line no-unused-vars
+  QuickFilterModel,
+  // eslint-disable-next-line no-unused-vars
+  QuickFilterObject
+} from '../../../../_utils/model'
 
-const initialState = {
-  filters: [{ filterIndex: 0, property: 'source', value: ['0', '2'] }]
-}
-const initQuickFilterState = (columns: ColumnProps[]) => {
-  return {
-    filters: columns.slice(0, 4).map((value, index) => {
-      return {
-        ...value,
-        filterIndex: index,
-        property: value?.key,
-        value: null
-      }
-    })
+const initQuickFilterState = (model: Model) => (columns: ColumnProps[]) => {
+  const persistedFilters: QuickFilterModel = model.quickFilter
+  if (!isEmpty(persistedFilters)) {
+    return {
+      filters: map(
+        persistedFilters,
+        (filter: QuickFilterObject, index: number) => {
+          const findInColumns = find(
+            columns,
+            (column: ColumnProps) => column.key === filter.property
+          )
+          return Object.assign({}, findInColumns, filter, {
+            filterIndex: index
+          })
+        }
+      )
+    }
+  } else {
+    return {
+      filters: []
+    }
   }
 }
-const quickFilterReducer = (
+const quickFilterReducer = (model: Model) => (
   state: QuickFilterState,
   action: QuickFilterAction
 ): QuickFilterState => {
@@ -31,25 +52,42 @@ const quickFilterReducer = (
         filters: state.filters.concat({ ...action.payload, filterIndex })
       }
     }
-    case 'REMOVE_FILTER':
+    case 'REMOVE_FILTER': {
+      const newFilterState = filter(
+        state.filters,
+        (o: QuickFilterProps) => o.filterIndex !== action.payload?.filterIndex
+      )
+      model.store(
+        'quickFilter',
+        map(newFilterState, (o: QuickFilterProps) =>
+          pick(o, ['property', 'value'])
+        ),
+        { override: true }
+      )
       return {
         ...state,
-        filters: filter(
-          state.filters,
-          (o) => o.filterIndex !== action.payload?.filterIndex
-        )
+        filters: newFilterState
       }
+    }
     case 'UPDATE_FILTER': {
       const filters = state.filters
       const filterIndex = action.payload?.filterIndex
       filters[filterIndex] = action.payload
+      // Persist data.
+      model.store(
+        'quickFilter',
+        map(filters, (o: QuickFilterProps) => pick(o, ['property', 'value'])),
+        { override: true }
+      )
       return { ...state, filters }
     }
     case 'RESET':
+      // Persist data.
+      model.store('quickFilter', [], { override: true })
       return { filters: [] }
     default:
       return state
   }
 }
 
-export { quickFilterReducer, initialState, initQuickFilterState }
+export { quickFilterReducer, initQuickFilterState }

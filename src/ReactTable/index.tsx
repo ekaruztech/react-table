@@ -24,6 +24,7 @@ import 'remixicon/fonts/remixicon.css'
 import '../styles/override.scss'
 import '../styles/styles.scss'
 import Model from '../_utils/model'
+import { enumeratePresets } from '../_utils'
 
 class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   static Controls = Controls
@@ -47,6 +48,13 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     const model = Model.instantiate(
       `persisted-model--${this.props.name.toLowerCase()}`
     )
+
+    const presets = enumeratePresets(
+      model,
+      this.props.columns,
+      this.maxColumns,
+      this.minColumns
+    )
     this.state = {
       selectedTableItems: {
         itemList: [],
@@ -54,19 +62,9 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
         checkAll: false
       },
       columns: {
-        all: this.props.columns || [],
-        selected:
-          model?.columnReorder?.presets &&
-          !!model?.columnReorder?.presets?.length
-            ? model.columnReorder.presets
-            : this.props.columns?.slice?.(0, this.maxColumns) || [],
-        unselected:
-          this.props.columns?.length > this.maxColumns
-            ? this.props.columns?.slice?.(
-                this.maxColumns,
-                this.props.columns.length
-              )
-            : []
+        all: presets.selected.concat(presets.unselected),
+        selected: presets.selected,
+        unselected: presets.unselected
       },
       isControlsPresent: false
       // isTableOnly: false,

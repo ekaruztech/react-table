@@ -7,6 +7,7 @@ import { isEmpty, find } from 'lodash'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 // eslint-disable-next-line no-unused-vars
 import { TableColumnProps, ColumnProps } from '../../../../../../../../../types'
+// eslint-disable-next-line no-unused-vars
 import Model from '../../../../../../../../../_utils/model'
 
 interface SortableProvider {
@@ -31,7 +32,9 @@ const Sortable: React.FC<SortableProvider> = (props) => {
         const selected = prev.selected.filter((o) => o?.key !== value?.key)
         // Store value to local storage
         if (model.columnReorder.save) {
-          model.store('columnReorder', { presets: selected })
+          model.store('columnReorder', {
+            presets: selected.map((column) => column.key)
+          })
         }
         return {
           selected,
@@ -45,7 +48,9 @@ const Sortable: React.FC<SortableProvider> = (props) => {
 
         // Store value to local storage
         if (model.columnReorder.save) {
-          model.store('columnReorder', { presets: selected })
+          model.store('columnReorder', {
+            presets: selected.map((column) => column.key)
+          })
         }
 
         return {
@@ -85,7 +90,9 @@ const Sortable: React.FC<SortableProvider> = (props) => {
 
       // Store value to local storage
       if (model.columnReorder.save) {
-        model.store('columnReorder', { presets: selected })
+        model.store('columnReorder', {
+          presets: selected.map((column) => column.key)
+        })
       }
 
       return {
@@ -113,7 +120,7 @@ const Sortable: React.FC<SortableProvider> = (props) => {
   })
 
   const getListStyle = () => ({
-    width: '100%',
+    width: '100%'
   })
 
   // See react-beautiful-dnd for more usage documentation.

@@ -35,12 +35,10 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
           }
         ].sort((a, b) => (b.value > a.value ? -1 : 1))
 
-        console.log(model)
         // Persist data
         model.store('renderOrder', {
           items: newData
         })
-
 
         return newData
       })
@@ -63,11 +61,10 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
         (prevItem: Item) => prevItem.value !== item.value
       )
       // Persist data
-      // model.store('renderOrder', {
-      //
-      //   items: newData
-      // })
-      console.log(item, model)
+      model.store('renderOrder', {
+        items: newData
+      })
+
       if (item.value === model.renderOrder.selected) {
         onChange(15)
       }

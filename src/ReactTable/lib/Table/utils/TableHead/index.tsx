@@ -98,9 +98,7 @@ const TableHead: React.FC<ITableHead> = (props) => {
           }}
           className='ReactTable___table-header-cell selectable-header-cell table-header-cell-fixed-right'
         >
-          <motion.div
-            className='ReactTable___table-selectable-header-cell-child-container'
-          >
+          <motion.div className='ReactTable___table-selectable-header-cell-child-container'>
             <Popover
               placement='bottomRight'
               content={() => (
@@ -123,7 +121,7 @@ const TableHead: React.FC<ITableHead> = (props) => {
                   icon={
                     <span className='anticon'>
                       <i
-                        className='ri-list-settings-line column-reorder-button'
+                        className='ri-order-play-line column-reorder-button'
                         style={{ fontSize: 17 }}
                       />
                     </span>

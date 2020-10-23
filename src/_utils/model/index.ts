@@ -1,18 +1,17 @@
 // eslint-disable-next-line no-unused-vars
-import { ColumnProps } from '../../types'
-// eslint-disable-next-line no-unused-vars
 import { Storage, StorageAPI } from '../storage'
 import { isPlainObject } from 'lodash'
 
 export type ColumnReorderModel = {
   save: boolean
-  presets: ColumnProps[]
+  presets: string[]
 }
 
-export type QuickFilterModel = Array<{
+export type QuickFilterObject = {
   property: string
   value: any
-}> | null
+}
+export type QuickFilterModel = Array<QuickFilterObject> | null
 
 export type AdvancedFilterModel = {
   queryType: string
@@ -55,7 +54,7 @@ class Model {
       save: true,
       presets: []
     },
-    quickFilter: null,
+    quickFilter: [],
     renderOrder: {
       items: [
         { label: `15 per page`, value: 15, type: 'default' },
@@ -71,7 +70,7 @@ class Model {
     },
     advancedFilter: {
       queryType: 'or',
-      filters: null
+      filters: []
     },
     advancedSearch: null
   }
@@ -112,7 +111,8 @@ class Model {
       | 'quickFilter'
       | 'advancedSearch'
       | 'advancedFilter',
-    value: any
+    value: any,
+    options?: { override?: boolean }
   ) {
     if (field && this[field] && this.storage) {
       if (isPlainObject(this[field]) && isPlainObject(value)) {
@@ -121,9 +121,18 @@ class Model {
         this[field] = newValue
       }
       if (Array.isArray(this[field]) && Array.isArray(value)) {
-        // @ts-ignore
-        const newValue = [...this[field], ...value]
-        this.storage.update({ [field]: newValue })
+        if (options?.override) {
+          this.storage.update({ [field]: value })
+
+          // @ts-ignore
+          this[field] = value
+        } else {
+          // @ts-ignore
+          const newValue = [...this[field], ...value]
+          this.storage.update({ [field]: newValue })
+          // @ts-ignore
+          this[field] = newValue
+        }
       }
       if (
         !isPlainObject(this[field]) &&
@@ -131,6 +140,8 @@ class Model {
         (Array.isArray(value) || isPlainObject(value))
       ) {
         this.storage.update({ [field]: value })
+        // @ts-ignore
+        this[field] = value
       }
     }
   }

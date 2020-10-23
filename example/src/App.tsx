@@ -30,7 +30,7 @@ const db = {
       address: '10 Downing Street',
       hobby: 'coding',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9iopp785der0011',
       id2: 'World',
       dob: moment([
@@ -49,7 +49,7 @@ const db = {
       address: '30 Downing Avenue',
       hobby: 'hunting',
 
-      food_type: 'Meaty',
+      food_choice: 'Meaty',
       id: '#990uiopcfe11',
       id2: 'World',
       dob: moment([
@@ -67,7 +67,7 @@ const db = {
       cost: 22001,
       address: '40 Floor Street',
       hobby: 'baking',
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99vvgty88031',
       id2: 'World',
       dob: moment([
@@ -85,7 +85,7 @@ const db = {
       cost: 30,
       address: '4 14th Avenue',
       hobby: 'Biking',
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9x70tyu31',
       id2: 'World',
       dob: moment([
@@ -103,7 +103,7 @@ const db = {
       cost: 27,
       address: '45 Boston Avenue',
       hobby: 'Gymnastics',
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99bg831',
       id2: 'World',
       dob: moment([
@@ -121,7 +121,7 @@ const db = {
       cost: 42,
       address: '1 Main Street',
       hobby: 'teaching',
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#90bgg431',
       id2: 'World',
       dob: moment([
@@ -140,7 +140,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#999nhh31',
       id2: 'World',
       dob: moment([
@@ -159,7 +159,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99@6770111',
       id2: 'World',
       dob: moment([
@@ -178,7 +178,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '12',
       id2: 'World',
       dob: moment([
@@ -197,7 +197,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#4599r931',
       id2: 'World',
       dob: moment([
@@ -216,7 +216,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9s99vbb31',
       id2: 'World',
       dob: moment([
@@ -235,7 +235,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9vb993f1',
       id2: 'World',
       dob: moment([
@@ -254,7 +254,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99f931',
       id2: 'World',
       dob: moment([
@@ -273,7 +273,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9d99g31',
       id2: 'World',
       dob: moment([
@@ -292,7 +292,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99d931',
       id2: 'World',
       dob: moment([
@@ -311,7 +311,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99h931',
       id2: 'World',
       dob: moment([
@@ -330,7 +330,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
+      food_choice: 'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
       id: '#99v931',
       id2: 'World',
       dob: moment([
@@ -349,7 +349,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9993100',
       id2: 'World',
       dob: moment([
@@ -368,7 +368,7 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9vbb99u31',
       id2: 'World',
       dob: moment([
@@ -402,7 +402,7 @@ const db = {
       title: 'DOB',
       dataIndex: 'dob',
       key: 'dob',
-      type: 'datetime',
+      type: 'date',
       presentationType: 'date',
       presentationColor: 'processing',
       dateFormat: 'lll'
@@ -432,9 +432,9 @@ const db = {
       ]
     },
     {
-      title: 'Food type',
-      dataIndex: 'food_type',
-      key: 'food_type',
+      title: 'Food choice',
+      dataIndex: 'food_choice',
+      key: 'food_choice',
       type: 'boolean'
     },
 

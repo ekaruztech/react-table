@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-
+import { isDate } from 'lodash'
 import { Button, Col, Tooltip } from 'antd'
 import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
@@ -20,7 +20,13 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
   const [autoCompleteProps, setAutoCompleteProps] = useState<string | null>(
     null
   )
-  const [toRangePicker, setToRangePicker] = useState<boolean>(false)
+
+  const [toRangePicker, setToRangePicker] = useState<boolean>(
+    (property.type === 'date' || property.type === 'datetime') &&
+      Array.isArray(property.value) &&
+      isDate(new Date(property.value[0])) &&
+      isDate(new Date(property.value[1]))
+  )
 
   const [autoCompleteOptions, setAutoCompleteOptions] = useState<
     Array<{ value: string }> | undefined
@@ -112,7 +118,7 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
                         }
                         icon={
                           <span className='anticon'>
-                            <i className='ri-arrow-left-right-line'></i>
+                            <i className='ri-arrow-left-right-line' />
                           </span>
                         }
                       />
