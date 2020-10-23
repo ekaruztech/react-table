@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 import { Button, Select, Tag, Tooltip } from 'antd'
 import { motion } from 'framer-motion'
-import { toPercentage } from '../../../../../../../../hooks'
+import { toPercentage, useDimension } from '../../../../../../../../hooks'
 import Align from '../../../../../../../../Align'
 import Margin from '../../../../../../../../Margin'
 import {
@@ -10,7 +10,7 @@ import {
   // eslint-disable-next-line no-unused-vars
   TableColumnProps,
   // eslint-disable-next-line no-unused-vars
-  TableFilterAction,
+  DateManagementAction,
   // eslint-disable-next-line no-unused-vars
   TableFilterProps
 } from '../../../../../../../../types'
@@ -25,8 +25,7 @@ type FilterItemProps = {
   isMoreThanOne: boolean
   isFirstIndex: boolean
   dataSource: any
-  dispatch: React.Dispatch<TableFilterAction>
-  dimension: { height: number; width: number }
+  dispatch: React.Dispatch<DateManagementAction>
 }
 export default (props: FilterItemProps) => {
   const {
@@ -38,8 +37,9 @@ export default (props: FilterItemProps) => {
     isFirstIndex,
     dataSource,
     dispatch,
-    dimension
   } = props
+
+  const dimension = useDimension('element', 'filter__field__container')
 
   const validColumns = useMemo(
     () => columns.selected.filter((o: ColumnProps) => o.type !== 'action'),
@@ -268,11 +268,7 @@ export default (props: FilterItemProps) => {
           </Align>
         )}
         <Margin style={{ width: '100%' }}>
-          <Align
-            alignCenter
-            style={{ width: '100%' }}
-            // id={"filter__field__container"}
-          >
+          <Align alignCenter style={{ width: '100%' }}>
             <Margin right={20}>
               <Select
                 showSearch
@@ -341,18 +337,21 @@ export default (props: FilterItemProps) => {
             )}
 
             <Tooltip title='Remove'>
-              <Button
-                type='link'
-                danger
-                onClick={() => handleFilterRemoval(filterData.filterIndex)}
-              >
-                <span className='anticon'>
-                  <i
-                    className='ri-delete-bin-2-line'
-                    style={{ fontSize: 16 }}
-                  />
-                </span>
-              </Button>
+              <motion.div whileTap={{ scale: 0.8 }}>
+                <Button
+                  type='text'
+                  danger
+                  shape={'circle'}
+                  onClick={() => handleFilterRemoval(filterData.filterIndex)}
+                >
+                  <span className='anticon'>
+                    <i
+                      className='ri-delete-bin-2-line'
+                      style={{ fontSize: 16 }}
+                    />
+                  </span>
+                </Button>
+              </motion.div>
             </Tooltip>
           </Align>
         </Margin>

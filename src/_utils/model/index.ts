@@ -14,7 +14,7 @@ export type QuickFilterObject = {
 export type QuickFilterModel = Array<QuickFilterObject> | null
 
 export type AdvancedFilterModel = {
-  queryType: string
+  queryType: 'or' | 'and'
   filters: Array<{
     type: string
     property: string

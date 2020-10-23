@@ -74,7 +74,7 @@ export interface FilterProps {
 
 export type TableFilterProps = ColumnProps & FilterProps
 
-export interface TableFilterState {
+export interface DateManagementState {
   filters: Array<FilterProps>
   sorts: []
   search: {
@@ -83,7 +83,7 @@ export interface TableFilterState {
   }
 }
 
-export type TableFilterAction =
+export type DateManagementAction =
   | {
       type: 'ADD_FILTER'
       payload: {
@@ -97,6 +97,7 @@ export type TableFilterAction =
   | { type: 'REMOVE_FILTER'; payload: { filterIndex: number } }
   | { type: 'UPDATE_FILTER'; payload: FilterProps }
   | { type: 'ADD_OR_UPDATE_SEARCH'; payload: any }
+  | { type: 'RESET_FILTER' }
 
 export interface OnCellSelect {
   onPin: (source: any) => void

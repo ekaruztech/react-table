@@ -1,10 +1,11 @@
-import  Align  from '../../../../../../../../Align'
+import Align from '../../../../../../../../Align'
 import { AutoComplete, DatePicker, InputNumber, Select, Input } from 'antd'
 import moment from 'moment'
-import { has, isDate, isEmpty, isNumber } from 'lodash'
+import { has, isEmpty, isNumber } from 'lodash'
 import { toPercentage } from '../../../../../../../../hooks'
 import React from 'react'
 import TagRender from '../TagRender'
+import { isDate } from '../../../../../../../../_utils'
 
 type RenderFilterTypeProps = {
   type: string
@@ -41,7 +42,12 @@ export default (props: RenderFilterTypeProps) => {
         {type === 'date' || type === 'datetime' ? (
           <DatePicker
             style={{ width: '45%' }}
-            value={moment(isDate(value?.start) ? value?.start : new Date())}
+            showTime={type === 'datetime'}
+            value={moment(
+              isDate(value?.start && new Date(value?.start))
+                ? value?.start
+                : new Date()
+            )}
             onChange={(date) =>
               handleFilterValueChange(
                 moment(date || new Date()).toDate(),
@@ -62,7 +68,12 @@ export default (props: RenderFilterTypeProps) => {
         {type === 'date' || type === 'datetime' ? (
           <DatePicker
             style={{ width: '45%' }}
-            value={moment(isDate(value?.end) ? value?.end : new Date())}
+            showTime={type === 'datetime'}
+            value={moment(
+              isDate(value?.end && new Date(value?.end))
+                ? value?.end
+                : new Date()
+            )}
             onChange={(date) =>
               handleFilterValueChange(
                 moment(date || new Date()).toDate(),
@@ -97,7 +108,7 @@ export default (props: RenderFilterTypeProps) => {
       return (
         <DatePicker
           style={{ width: '100%' }}
-          value={moment(isDate(value) ? value : new Date())}
+          value={moment(value && isDate(new Date(value)) ? value : new Date())}
           onChange={(date) =>
             handleFilterValueChange(moment(date || new Date()).toDate())
           }
@@ -108,7 +119,7 @@ export default (props: RenderFilterTypeProps) => {
         <DatePicker
           showTime
           style={{ width: '100%' }}
-          value={moment(isDate(value) ? value : new Date())}
+          value={moment(value && isDate(new Date(value)) ? value : new Date())}
           onChange={(date) =>
             handleFilterValueChange(moment(date || new Date()).toDate())
           }
@@ -142,6 +153,7 @@ export default (props: RenderFilterTypeProps) => {
             options={autoCompleteOptions}
             onSelect={(value) => handleFilterValueChange(value)}
             onSearch={handleAutoComplete}
+            defaultValue={value}
             style={{ width: '100%' }}
             placeholder={
               property?.title

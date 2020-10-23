@@ -4,90 +4,54 @@ import Margin from '../../../../../Margin'
 import Align from '../../../../../Align'
 import { Button, Modal, Popover, Tabs, Tooltip } from 'antd'
 import { initDataManagementState, dataManagementReducer } from './reducer'
-import Search from './Search'
 import Filter from './Filter'
 import Sort from './Sort'
 import {
   // eslint-disable-next-line no-unused-vars
   TableColumnProps,
   // eslint-disable-next-line no-unused-vars
-  TableFilterAction,
+  DateManagementAction,
   // eslint-disable-next-line no-unused-vars
-  TableFilterState
+  DateManagementState
 } from '../../../../../types'
-import { motion } from 'framer-motion'
+// eslint-disable-next-line no-unused-vars
+import Model from '../../../../../_utils/model'
 
 const { TabPane } = Tabs
 
-type DataManagementProps = {
+interface DataManagementProps {
   visible: boolean
   handleCancel:
     | ((e: React.MouseEvent<HTMLElement, MouseEvent>) => void)
     | undefined
   columns: TableColumnProps
   dataSource: any
+  model: Model
 }
 
-type ModalFooterProps = {
+interface ModalFooterProps {
   activeTab: string
-  dispatch: React.Dispatch<TableFilterAction>
-  state: TableFilterState
+  dispatch: React.Dispatch<DateManagementAction>
+  state: DateManagementState
 }
 
-export default (props: DataManagementProps) => {
-  const { visible, handleCancel, columns, dataSource } = props
+const DataManagement: React.FC<DataManagementProps> = (props) => {
+  const { visible, handleCancel, columns, dataSource, model } = props
   const [activeTab, setActiveTab] = useState('filter')
 
   const [state, dispatch] = useReducer<
-    React.Reducer<TableFilterState, TableFilterAction>
+    React.Reducer<DateManagementState, DateManagementAction>
   >(
-    dataManagementReducer,
+    dataManagementReducer(model),
     // @ts-ignore
     columns.selected,
-    initDataManagementState
+    initDataManagementState(model)
   )
 
   const dimension = useDimension()
 
-  const ModalFooter = (props: ModalFooterProps) => {
+  const ModalFooter: React.FC<ModalFooterProps> = (props) => {
     const { activeTab, dispatch, state } = props
-    if (activeTab === 'search') {
-      return (
-        <Align style={{ width: '100%' }} alignCenter justifyBetween>
-          <Popover
-            style={{ width: 240 }}
-            title={
-              <strong style={{ color: 'var(--text-color)' }}>
-                Using the search
-              </strong>
-            }
-            content={
-              <p
-                style={{
-                  width: 240,
-                  fontSize: 13,
-                  color: 'var(--text-color)'
-                }}
-              >
-                We supply a series of design principles, practical patterns and
-                high quality design resources (Sketch and Axure), to help people
-                create their product prototypes beautifully and efficiently.
-              </p>
-            }
-            trigger='click'
-          >
-            <Tooltip title='Help'>
-              <Button type='link'>
-                <span className='anticon'>
-                  <i className='ri-question-line' style={{ fontSize: 20 }} />
-                </span>
-              </Button>
-            </Tooltip>
-          </Popover>
-          <Button>Clear search</Button>
-        </Align>
-      )
-    }
     if (activeTab === 'filter') {
       const addFilter = () => {
         dispatch({
@@ -104,10 +68,14 @@ export default (props: DataManagementProps) => {
       const applyFilter = () => {
         console.log(state?.filters)
       }
+      const clearFilters = () => {
+        dispatch({ type: 'RESET_FILTER' })
+      }
       return (
         <Align style={{ width: '100%' }} alignCenter justifyBetween>
           <Align alignCenter>
             <Popover
+              placement='rightBottom'
               style={{ width: 240 }}
               title={
                 <strong style={{ color: 'var(--text-color)' }}>
@@ -122,10 +90,8 @@ export default (props: DataManagementProps) => {
                     color: 'var(--text-color)'
                   }}
                 >
-                  We supply a series of design principles, practical patterns
-                  and high quality design resources (Sketch and Axure), to help
-                  people create their product prototypes beautifully and
-                  efficiently.
+                  This Filter allows you to assign filtering parameters to
+                  specific columns.
                 </p>
               }
               trigger='click'
@@ -153,8 +119,7 @@ export default (props: DataManagementProps) => {
             </Margin>
           </Align>
           <Align>
-            {' '}
-            <Button>Clear filter</Button>
+            <Button onClick={clearFilters}>Clear filter</Button>
             <Margin left={20}>
               <Button
                 icon={
@@ -251,7 +216,6 @@ export default (props: DataManagementProps) => {
       width='75%'
       bodyStyle={{ height: dimension.height * 0.65, padding: 0 }}
       footer={[
-        // Todo: move inline-styles to css file.
         <ModalFooter
           key='modal-footer'
           activeTab={activeTab}
@@ -267,17 +231,13 @@ export default (props: DataManagementProps) => {
         tabBarGutter={40}
         onChange={(key) => setActiveTab(key)}
       >
-        <TabPane tab='Search' key='search'>
-          <motion.div layout>
-            <Search columns={columns} />
-          </motion.div>
-        </TabPane>
         <TabPane tab='Filter' key='filter'>
           <Filter
             columns={columns}
             dataSource={dataSource}
             dispatch={dispatch}
             state={state}
+            model={model}
           />
         </TabPane>
         <TabPane tab='Sort' key='sort'>
@@ -287,3 +247,5 @@ export default (props: DataManagementProps) => {
     </Modal>
   )
 }
+
+export default DataManagement

@@ -1,9 +1,10 @@
 import { AutoComplete, DatePicker, InputNumber, Select, Input } from 'antd'
 // eslint-disable-next-line no-unused-vars
 import moment, { Moment } from 'moment'
-import { has, isDate as _isDate, isEmpty, isNumber } from 'lodash'
+import { has, isEmpty, isNumber } from 'lodash'
 import React from 'react'
 import TagRender from '../../../Controls/utils/DataControls/Filter/utils/TagRender'
+import { isDate } from '../../../../../_utils'
 
 interface IRenderFilterType {
   type: string
@@ -25,12 +26,6 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
     toRangePicker
   } = props
 
-  const isDate = (date: Date): boolean => {
-    return (
-      _isDate(date) &&
-      new Date(date).toString().toLowerCase() !== 'invalid date'
-    )
-  }
   const value = property?.value
 
   switch (type) {

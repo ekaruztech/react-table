@@ -94,6 +94,7 @@ class Controls extends React.Component<
                     handleCancel={this.handleFilterColumnCancel}
                     columns={columns}
                     dataSource={dataSource}
+                    model={model}
                   />
                 </div>
 

@@ -39,8 +39,8 @@ const useDimension = (
       if (elementId) {
         const element = document.getElementById(elementId)
         setDimension({
-          height: element?.offsetHeight || 0,
-          width: element?.offsetWidth || 0
+          height: element?.clientWidth || 0,
+          width: element?.clientWidth || 0
         })
       }
     }
