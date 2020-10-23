@@ -209,7 +209,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                                       exit={{ opacity: 0, y: 10 }}
                                       initial={{ opacity: 0, y: 10 }}
                                       animate={{ opacity: 0.7, y: 0 }}
-                                      transition={{ delay: 0.1 }}
+                                      transition={{ delay: 0.2 }}
                                       whileHover={{
                                         scale: 1.2,
                                         opacity: 1

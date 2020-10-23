@@ -570,7 +570,6 @@ const App = () => {
           minColumns={db.minColumns}
         >
           <ReactTable.Controls
-            renderOrder={pageRenderOrder}
             onRenderOrderChange={onRenderOrderChange}
             onRefresh={() => null}
           />

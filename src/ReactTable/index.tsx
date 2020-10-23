@@ -39,6 +39,14 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     this.minColumns = clamp(this.props.minColumns || 3, 3, 10)
     /* Clamps max column to (min, 6) */
     this.maxColumns = clamp(this.props.maxColumns || 3, this.minColumns, 10)
+
+    if (!this.props.name) {
+      invariant(false, 'Name property is required')
+    }
+
+    const model = Model.instantiate(
+      `persisted-model--${this.props.name.toLowerCase()}`
+    )
     this.state = {
       selectedTableItems: {
         itemList: [],
@@ -47,7 +55,11 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       },
       columns: {
         all: this.props.columns || [],
-        selected: this.props.columns?.slice?.(0, this.maxColumns) || [],
+        selected:
+          model?.columnReorder?.presets &&
+          !!model?.columnReorder?.presets?.length
+            ? model.columnReorder.presets
+            : this.props.columns?.slice?.(0, this.maxColumns) || [],
         unselected:
           this.props.columns?.length > this.maxColumns
             ? this.props.columns?.slice?.(
@@ -155,9 +167,6 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       // name
     } = this.props
 
-    if (!this.props.name) {
-      invariant(false, 'Name property is required')
-    }
     if (!Array.isArray(this.props.columns)) {
       invariant(
         false,
@@ -179,7 +188,11 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       (value: ColumnProps) => value?.key
     )
 
-    const model = Model.instantiate(this.props.name)
+    // Instantiates Model
+    const model = Model.instantiate(
+      `persisted-model--${this.props.name.toLowerCase()}`
+    )
+
     const providerValue = {
       columnKeys: columnKeys,
       columns: this.state.columns,

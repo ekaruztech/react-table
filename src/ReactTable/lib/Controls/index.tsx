@@ -10,7 +10,6 @@ import {
 import { ReactTableContext } from '../ReactTableContext'
 
 interface IReactTableControls {
-  renderOrder: number
   onRenderOrderChange: (renderOrder: number) => void
   onRefresh?: () => void
 }
@@ -56,7 +55,6 @@ class Controls extends React.Component<
     | null
     | undefined {
     const {
-      renderOrder: pageRenderOrder,
       onRenderOrderChange,
       onRefresh
     } = this.props
@@ -65,7 +63,7 @@ class Controls extends React.Component<
 
     return (
       <ReactTableContext.Consumer>
-        {({ dataSource, columns }) => {
+        {({ dataSource, columns, model }) => {
           return (
             <div className='ReactTable___table-container-header'>
               <div className='ReactTable___table-container-header-inner-left'>
@@ -107,8 +105,8 @@ class Controls extends React.Component<
               <div className='ReactTable___table-container-header-inner-right'>
                 <TableRefresh onRefresh={onRefresh} />
                 <RenderOrder
-                  renderOrder={pageRenderOrder}
-                  setRenderOrder={onRenderOrderChange}
+                  onRenderOrderChange={onRenderOrderChange}
+                  model={model}
                 />
               </div>
             </div>

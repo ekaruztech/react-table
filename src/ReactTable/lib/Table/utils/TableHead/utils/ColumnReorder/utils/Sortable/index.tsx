@@ -7,17 +7,19 @@ import { isEmpty, find } from 'lodash'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 // eslint-disable-next-line no-unused-vars
 import { TableColumnProps, ColumnProps } from '../../../../../../../../../types'
+import Model from '../../../../../../../../../_utils/model'
 
-interface ISortable {
+interface SortableProvider {
   setColumns: (
     state: ((prev: TableColumnProps) => TableColumnProps) | TableColumnProps
   ) => void
   columns: TableColumnProps
   maxColumns: number
   minColumns: number
+  model: Model
 }
-const Sortable: React.FC<ISortable> = (props) => {
-  const { setColumns, columns, maxColumns, minColumns } = props
+const Sortable: React.FC<SortableProvider> = (props) => {
+  const { setColumns, columns, maxColumns, minColumns, model } = props
 
   const onChange = (
     value: ColumnProps,
@@ -26,16 +28,28 @@ const Sortable: React.FC<ISortable> = (props) => {
     setColumns((prev: TableColumnProps) => {
       // Value is already existing in the selected array.
       if (isSelected) {
+        const selected = prev.selected.filter((o) => o?.key !== value?.key)
+        // Store value to local storage
+        if (model.columnReorder.save) {
+          model.store('columnReorder', { presets: selected })
+        }
         return {
-          selected: prev.selected.filter((o) => o?.key !== value?.key),
+          selected,
           unselected: prev.unselected.concat(value),
           all: prev.selected
             .filter((o) => o?.key !== value?.key)
             .concat(prev.unselected.concat(value))
         }
       } else {
+        const selected = prev.selected.concat(value)
+
+        // Store value to local storage
+        if (model.columnReorder.save) {
+          model.store('columnReorder', { presets: selected })
+        }
+
         return {
-          selected: prev.selected.concat(value),
+          selected,
           unselected: prev.unselected.filter((f) => f?.key !== value?.key),
           all: prev.selected.concat(
             value,
@@ -68,6 +82,12 @@ const Sortable: React.FC<ISortable> = (props) => {
           isEmpty(find(prev.selected, (o: ColumnProps) => o.key === value.key))
         )
       )
+
+      // Store value to local storage
+      if (model.columnReorder.save) {
+        model.store('columnReorder', { presets: selected })
+      }
+
       return {
         ...prev,
         all,
@@ -80,7 +100,7 @@ const Sortable: React.FC<ISortable> = (props) => {
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
     margin: `10px 0`,
-    padding: '8px 0',
+    padding: '10px',
 
     // change background colour if dragging
     background: isDragging
@@ -94,7 +114,6 @@ const Sortable: React.FC<ISortable> = (props) => {
 
   const getListStyle = () => ({
     width: '100%',
-    padding: '0 10px'
   })
 
   // See react-beautiful-dnd for more usage documentation.
@@ -145,7 +164,7 @@ const Sortable: React.FC<ISortable> = (props) => {
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'space-between',
+                          justifyContent: 'space-between'
                         }}
                       >
                         <Checkbox

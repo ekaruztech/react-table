@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { CellMenuProps } from '../ReactTable/lib/Table/utils/CellMenu'
 // eslint-disable-next-line no-unused-vars
-import { ModelProvider } from '../_utils/model'
+import Model from '../_utils/model'
 
 export declare type PresentationColor =
   | 'magenta'
@@ -134,7 +134,7 @@ export interface ReactTableProviderProps {
   selectedTableItems: SelectedTableItems
   setSelectedTableItems: (items: SelectedTableItems) => void
   defaultColumns: ColumnProps[]
-  model: ModelProvider
+  model: Model
 }
 
 export interface TableBodyProviderProps {
