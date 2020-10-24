@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface AlignProps {
+type AlignProps = {
   /** React Elements */
   children: React.ReactNode | React.ReactNode[] | React.ReactElement
   /** Flex Direction property 'column' | 'row' */
@@ -15,9 +15,8 @@ interface AlignProps {
   justifyEnd?: boolean
   justifyAround?: boolean
   style?: React.CSSProperties
-  className?: string
-  id?: string
-}
+  componentType?: 'span' | 'div' | 'section' | 'main'
+} & React.HTMLProps<HTMLSpanElement | HTMLDivElement>
 /**
  * JSX wrapper for CSS's alignment style
  * @param props
@@ -38,31 +37,53 @@ const Align: React.FC<AlignProps> = (props: AlignProps) => {
     justifyEnd,
     justifyAround,
     style,
-    className,
-    id
+
+    componentType = 'div',
+    ...rest
   } = props
-  return (
-    <div
-      id={id || ''}
-      style={{
-        ...style,
-        display: 'flex',
-        flexFlow: type || 'row',
-        ...(alignCenter ? { alignItems: 'center' } : {}),
-        ...(alignEnd ? { alignItems: 'flex-end' } : {}),
-        ...(alignStart ? { alignItems: 'flex-start' } : {}),
-        ...(justifyCenter ? { justifyContent: 'center' } : {}),
-        ...(justifyAround ? { justifyContent: 'space-around' } : {}),
-        ...(justifyBetween ? { justifyContent: 'space-between' } : {}),
-        ...(justifyEnd ? { justifyContent: 'flex-end' } : {}),
-        ...(justifyStart ? { justifyContent: 'flex-start' } : {}),
-        ...(justifyEvenly ? { justifyContent: 'space-evenly' } : {})
-      }}
-      className={className || ''}
-    >
-      {children}
-    </div>
-  )
+
+  const styles = {
+    ...style,
+    display: 'flex',
+    flexFlow: type || 'row',
+    ...(alignCenter ? { alignItems: 'center' } : {}),
+    ...(alignEnd ? { alignItems: 'flex-end' } : {}),
+    ...(alignStart ? { alignItems: 'flex-start' } : {}),
+    ...(justifyCenter ? { justifyContent: 'center' } : {}),
+    ...(justifyAround ? { justifyContent: 'space-around' } : {}),
+    ...(justifyBetween ? { justifyContent: 'space-between' } : {}),
+    ...(justifyEnd ? { justifyContent: 'flex-end' } : {}),
+    ...(justifyStart ? { justifyContent: 'flex-start' } : {}),
+    ...(justifyEvenly ? { justifyContent: 'space-evenly' } : {})
+  }
+  switch (componentType) {
+    case 'main':
+      return (
+        <main style={styles} {...rest}>
+          {children}
+        </main>
+      )
+    case 'span':
+      return (
+        <span style={styles} {...rest}>
+          {children}
+        </span>
+      )
+    case 'section':
+      return (
+        <section style={styles} {...rest}>
+          {children}
+        </section>
+      )
+    default: {
+      const divProps = rest as React.HTMLProps<HTMLDivElement>
+      return (
+        <div style={styles} {...divProps}>
+          {children}
+        </div>
+      )
+    }
+  }
 }
 
 export { AlignProps }
