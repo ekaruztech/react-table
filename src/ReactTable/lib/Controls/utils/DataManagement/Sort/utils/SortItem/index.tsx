@@ -96,6 +96,7 @@ const SortItem: React.FC<SortItemProps> = (props) => {
                   range: Object.assign({}, sortData.sortProps.range, { from })
                 })
               }
+              placeholder='Add a sort range (optional)'
               value={sortData.sortProps.range?.from}
               style={{
                 width: '100%'
@@ -104,8 +105,9 @@ const SortItem: React.FC<SortItemProps> = (props) => {
           </Col>
           <Col span={5}>
             <InputNumber
-              min={1}
+              min={Number(sortData.sortProps.range?.from || 1) + 1}
               max={100000}
+              placeholder='Add a sort range (optional)'
               onChange={(to) =>
                 handleValueChange({
                   range: Object.assign({}, sortData.sortProps.range, { to })

@@ -19,6 +19,7 @@ import { Button, Empty, Row, Col, Typography } from 'antd'
 import { EmptyImage } from '../../../../../../_utils'
 import Align from '../../../../../../Align'
 import SortItem from './utils/SortItem'
+import './styles.scss'
 
 interface SortProps {
   columns: TableColumnProps

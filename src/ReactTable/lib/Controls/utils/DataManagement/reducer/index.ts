@@ -101,7 +101,8 @@ const dataManagementReducer = (model: Model) => (
 
       model.store(
         'advancedSort',
-        sorts.map((o) => o.sortProps)
+        sorts.map((o) => o.sortProps),
+        { override: true }
       )
 
       return { ...state, sorts }
