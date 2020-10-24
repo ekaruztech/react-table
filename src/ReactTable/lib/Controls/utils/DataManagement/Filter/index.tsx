@@ -20,14 +20,14 @@ import { motion } from 'framer-motion'
 import { EmptyImage } from '../../../../../../_utils'
 import './styles.scss'
 
-interface DateManagementFilterProps {
+interface DataManagementFilterProps {
   columns: TableColumnProps
   dataSource: Array<any>
   dispatch: React.Dispatch<DateManagementAction>
   state: DateManagementState
   model: Model
 }
-export default (props: DateManagementFilterProps) => {
+export default (props: DataManagementFilterProps) => {
   const { columns, dataSource, dispatch, state, model } = props
   const windowDimension = useDimension()
 

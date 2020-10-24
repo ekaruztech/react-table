@@ -69,20 +69,26 @@ export type DataFilterObject = {
   value: null | string | boolean | number | Date
   propertyType: Omit<ColumnType, 'action'>
 }
-export interface DateManagementFilterProps {
+
+export type DataSortObject = {
+  order: 'ascending' | 'descending'
+  range: { from: number; to: number } | null
+  property: string | null
+}
+export interface DataManagementFilterProps {
   filterIndex: number
   filterProps: DataFilterObject
 }
+export interface DataManagementSortProps {
+  sortIndex: number
+  sortProps: DataSortObject
+}
 
-export type TableFilterProps = ColumnProps & DateManagementFilterProps
+export type TableFilterProps = ColumnProps & DataManagementFilterProps
 
 export interface DateManagementState {
-  filters: Array<DateManagementFilterProps>
-  sorts: []
-  search: {
-    where: string
-    what: string
-  }
+  filters: Array<DataManagementFilterProps>
+  sorts: Array<DataManagementSortProps>
 }
 
 export type DateManagementAction =
@@ -93,8 +99,17 @@ export type DateManagementAction =
       }
     } // typescript union types allow for leading |'s to have nicer layout
   | { type: 'REMOVE_FILTER'; payload: { filterIndex: number } }
-  | { type: 'UPDATE_FILTER'; payload: DateManagementFilterProps }
+  | { type: 'UPDATE_FILTER'; payload: DataManagementFilterProps }
   | { type: 'RESET_FILTER' }
+  | {
+      type: 'ADD_SORT'
+      payload: {
+        sortProps: DataSortObject
+      }
+    }
+  | { type: 'REMOVE_SORT'; payload: { sortIndex: number } }
+  | { type: 'RESET_SORT' }
+  | { type: 'UPDATE_SORT'; payload: DataManagementSortProps }
 
 export interface OnCellSelect {
   onPin: (source: any) => void

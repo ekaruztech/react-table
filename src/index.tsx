@@ -20,7 +20,7 @@ export {
 export {
   ModelProvider,
   RenderOrderModel,
-  AdvancedSearchModel,
+  AdvancedSortModel,
   AdvancedFilterModel,
   QuickFilterModel,
   ColumnReorderModel

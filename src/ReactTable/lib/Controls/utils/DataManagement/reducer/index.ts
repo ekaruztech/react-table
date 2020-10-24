@@ -22,11 +22,12 @@ const initDataManagementState = (model: Model) => (columns: ColumnProps[]) => {
         filterProps: o
       })
     }),
-    sorts: [],
-    search: {
-      where: '',
-      what: ''
-    }
+    sorts: map(model.advancedSort, (o, index: number) => {
+      return {
+        sortIndex: index,
+        sortProps: o
+      }
+    })
   }
 }
 const dataManagementReducer = (model: Model) => (
@@ -71,6 +72,39 @@ const dataManagementReducer = (model: Model) => (
         filters: []
       })
       return { ...state, filters: [] }
+    }
+    case 'ADD_SORT': {
+      const sortIndex = state.sorts.length
+      return {
+        ...state,
+        sorts: state.sorts.concat({ ...action.payload, sortIndex })
+      }
+    }
+    case 'REMOVE_SORT': {
+      const newSort = filter(
+        state.sorts,
+        (o) => o.sortIndex !== action.payload?.sortIndex
+      )
+
+      model.store('advancedSort', {
+        filters: newSort.map((o) => o.sortProps)
+      })
+      return {
+        ...state,
+        sorts: newSort
+      }
+    }
+    case 'UPDATE_SORT': {
+      const sorts = state.sorts
+      const sortIndex = action.payload?.sortIndex
+      sorts[sortIndex] = action.payload
+
+      model.store(
+        'advancedSort',
+        sorts.map((o) => o.sortProps)
+      )
+
+      return { ...state, sorts }
     }
     default:
       return state

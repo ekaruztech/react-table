@@ -1,6 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import { Storage, StorageAPI } from '../storage'
 import { isPlainObject } from 'lodash'
+// eslint-disable-next-line no-unused-vars
+import { DataSortObject } from '../../types'
 
 export type ColumnReorderModel = {
   save: boolean
@@ -22,10 +24,7 @@ export type AdvancedFilterModel = {
   }> | null
 }
 
-export type AdvancedSearchModel = {
-  property: string
-  value: any
-} | null
+export type AdvancedSortModel = DataSortObject[] | []
 
 export type RenderOrderModel = {
   items: { label: string; value: number; type: 'default' | 'custom' }[]
@@ -37,7 +36,7 @@ export interface ModelProvider {
   quickFilter: QuickFilterModel
   renderOrder: RenderOrderModel
   advancedFilter: AdvancedFilterModel
-  advancedSearch: AdvancedSearchModel
+  advancedSort: AdvancedSortModel
 }
 
 class Model {
@@ -46,7 +45,7 @@ class Model {
   public quickFilter: QuickFilterModel
   public renderOrder: RenderOrderModel
   public advancedFilter: AdvancedFilterModel
-  public advancedSearch: AdvancedSearchModel
+  public advancedSort: AdvancedSortModel
   private readonly storage: StorageAPI
 
   static DEFAULT_VALUES: ModelProvider = {
@@ -72,7 +71,7 @@ class Model {
       queryType: 'or',
       filters: []
     },
-    advancedSearch: null
+    advancedSort: []
   }
 
   constructor(model: ModelProvider & { name: string }) {
@@ -81,7 +80,7 @@ class Model {
     this.renderOrder = model.renderOrder
     this.quickFilter = model.quickFilter
     this.advancedFilter = model.advancedFilter
-    this.advancedSearch = model.advancedSearch
+    this.advancedSort = model.advancedSort
     this.storage = Storage(model.name, model)
   }
 
@@ -109,7 +108,7 @@ class Model {
       | 'renderOrder'
       | 'columnReorder'
       | 'quickFilter'
-      | 'advancedSearch'
+      | 'advancedSort'
       | 'advancedFilter',
     value: any,
     options?: { override?: boolean }

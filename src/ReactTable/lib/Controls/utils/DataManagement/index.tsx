@@ -16,7 +16,7 @@ import {
 } from '../../../../../types'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../_utils/model'
-import ModalFooter from './Filter/utils/ModalFooter'
+import ModalFooter from './ModalFooter'
 
 const { TabPane } = Tabs
 
@@ -81,7 +81,7 @@ const DataManagement: React.FC<DataManagementProps> = (props) => {
         tabBarGutter={40}
         onChange={(key) => setActiveTab(key)}
       >
-        <TabPane tab='Filter' key='filter'>
+        <TabPane tab='Filter Data' key='filter'>
           <Filter
             columns={columns}
             dataSource={dataSource}
@@ -90,8 +90,14 @@ const DataManagement: React.FC<DataManagementProps> = (props) => {
             model={model}
           />
         </TabPane>
-        <TabPane tab='Sort' key='sort'>
-          <Sort />
+        <TabPane tab='Sort Data' key='sort'>
+          <Sort
+            columns={columns}
+            dataSource={dataSource}
+            dispatch={dispatch}
+            state={state}
+            model={model}
+          />
         </TabPane>
       </Tabs>
     </Modal>

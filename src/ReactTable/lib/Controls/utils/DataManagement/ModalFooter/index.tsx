@@ -6,13 +6,17 @@ import {
   // eslint-disable-next-line no-unused-vars
   DateManagementAction,
   // eslint-disable-next-line no-unused-vars
-  DateManagementFilterProps,
+  DataManagementFilterProps,
   // eslint-disable-next-line no-unused-vars
-  DateManagementState
-} from '../../../../../../../../types'
-import Align from '../../../../../../../../Align'
+  DateManagementState,
+  // eslint-disable-next-line no-unused-vars
+  DataSortObject,
+  // eslint-disable-next-line no-unused-vars
+  DataManagementSortProps
+} from '../../../../../../types'
+import Align from '../../../../../../Align'
 import { Button, Popover, Tooltip } from 'antd'
-import Margin from '../../../../../../../../Margin'
+import Margin from '../../../../../../Margin'
 
 interface ModalFooterProps {
   activeTab: string
@@ -40,7 +44,7 @@ const ModalFooter: React.FC<ModalFooterProps> = (props) => {
     const applyFilter = () => {
       if (isFunction(onFilterApply)) {
         const filters: DataFilterObject[] = state.filters.map(
-          (o: DateManagementFilterProps) => o.filterProps
+          (o: DataManagementFilterProps) => o.filterProps
         )
         onFilterApply(filters)
       }
@@ -118,6 +122,33 @@ const ModalFooter: React.FC<ModalFooterProps> = (props) => {
     )
   }
   if (activeTab === 'sort') {
+    const addSort = () => {
+      dispatch({
+        type: 'ADD_SORT',
+        payload: {
+          sortProps: {
+            property: null,
+            order: 'ascending',
+            range: null
+          }
+        }
+      })
+    }
+    const applySort = () => {
+      if (isFunction(onFilterApply)) {
+        const sorts: DataSortObject[] = state.sorts.map(
+          (o: DataManagementSortProps) => o.sortProps
+        )
+        console.log(sorts)
+        // onFilterApply(sort)
+      }
+    }
+    const clearSorts = () => {
+      dispatch({ type: 'RESET_SORT' })
+      // if (isFunction(onFilterClear)) {
+      //   onFilterClear()
+      // }
+    }
     return (
       <Align style={{ width: '100%' }} alignCenter justifyBetween>
         <Align alignCenter>
@@ -154,6 +185,7 @@ const ModalFooter: React.FC<ModalFooterProps> = (props) => {
           <Margin left={20}>
             <Button
               type='primary'
+              onClick={addSort}
               icon={
                 <span className='anticon'>
                   <i className='ri-add-line' style={{ fontSize: 16 }} />
@@ -165,10 +197,10 @@ const ModalFooter: React.FC<ModalFooterProps> = (props) => {
           </Margin>
         </Align>
         <Align>
-          {' '}
-          <Button>Clear sort</Button>
+          <Button onClick={clearSorts}>Clear sort</Button>
           <Margin left={20}>
             <Button
+              onClick={applySort}
               icon={
                 <span className='anticon'>
                   <i className='ri-sort-desc' style={{ fontSize: 16 }} />
