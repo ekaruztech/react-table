@@ -16,7 +16,20 @@ export const evalStatusColor = (status: string) => {
     case 'gymnastics':
       return 'green'
     case 'movies':
+    case 'comedy':
       return 'volcano'
+    case 'writing':
+      return 'blue'
+    case 'photography':
+      return 'lime'
+    case 'arguing':
+      return 'red'
+    case 'landscaping':
+      return 'volcano'
+    case 'teaching':
+      return 'orange'
+    case 'poetry':
+      return 'yellow'
     default:
       return 'default'
   }
@@ -120,7 +133,7 @@ const db = {
       name: 'Masi klones',
       cost: 42,
       address: '1 Main Street',
-      hobby: 'teaching',
+      hobby: 'Writing',
       food_choice: 'Vegan',
       id: '#90bgg431',
       id2: 'World',
@@ -138,7 +151,7 @@ const db = {
       name: 'Joseph Xi Lee',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Teaching',
 
       food_choice: 'Vegan',
       id: '#999nhh31',
@@ -157,7 +170,7 @@ const db = {
       name: 'Mikel Leeland',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Photography',
 
       food_choice: 'Vegan',
       id: '#99@6770111',
@@ -176,7 +189,7 @@ const db = {
       name: 'Hanna Klose',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Landscaping',
 
       food_choice: 'Vegan',
       id: '12',
@@ -195,7 +208,7 @@ const db = {
       name: 'Hanna Um',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Teaching',
 
       food_choice: 'Vegan',
       id: '#4599r931',
@@ -214,7 +227,7 @@ const db = {
       name: 'Josh Butland',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Acting',
 
       food_choice: 'Vegan',
       id: '#9s99vbb31',
@@ -233,7 +246,7 @@ const db = {
       name: 'Gideon Morning',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Poetry',
 
       food_choice: 'Vegan',
       id: '#9vb993f1',
@@ -252,7 +265,7 @@ const db = {
       name: 'James Levi',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Teaching',
 
       food_choice: 'Vegan',
       id: '#99f931',
@@ -271,7 +284,7 @@ const db = {
       name: 'Priah Singh',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Movies',
 
       food_choice: 'Vegan',
       id: '#9d99g31',
@@ -290,7 +303,7 @@ const db = {
       name: 'Johanna Lee',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Jogging',
 
       food_choice: 'Vegan',
       id: '#99d931',
@@ -309,7 +322,7 @@ const db = {
       name: 'Emerald Lalong',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Comedy',
 
       food_choice: 'Vegan',
       id: '#99h931',
@@ -328,7 +341,7 @@ const db = {
       name: 'Lulu Oyetola',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Arguing',
 
       food_choice:
         'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
@@ -348,7 +361,7 @@ const db = {
       name: 'Matthew Lee',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Writing',
 
       food_choice: 'Vegan',
       id: '#9993100',
@@ -367,7 +380,7 @@ const db = {
       name: 'Gretchen Spears',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Reading',
 
       food_choice: 'Vegan',
       id: '#9vbb99u31',
@@ -590,7 +603,9 @@ const App = () => {
               onDelete: (source: any[]) => console.log(source, selectCount),
               onPin: (source: any[]) => console.log(source, selectCount)
             })}
-            enableHoverActions={true}
+            enableHoverActions={(source: any) => {
+              return [source.hobby !== 'Teaching', true]
+            }}
             expandedView={(source: any) => {
               return (
                 <div>

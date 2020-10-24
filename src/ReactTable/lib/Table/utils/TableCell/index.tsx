@@ -7,7 +7,7 @@ import Presentation from './utils/Presentation'
 import { ReactTableContext } from '../../../ReactTableContext'
 import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
 import Padding from '../../../../../Padding'
-import { find, isBoolean, first, last } from 'lodash'
+import { find, isBoolean, first, last, isFunction } from 'lodash'
 import './styles.scss'
 
 interface ITableCell {
@@ -48,16 +48,40 @@ const TableCell: React.FC<ITableCell> = (props) => {
               find(selectedTableItems?.itemList, ['key', source?.key]) !==
               undefined
 
+            /**
+             * When enableHoverActions is a function, you want to show the hover actions,
+             * but disabled or enable their clicks (button) based on whether the function returns a truthy value or falsy value
+             **/
             const enableExpandedViewHoverAction =
               (Array.isArray(enableHoverActions) &&
                 first(enableHoverActions)) ||
-              (isBoolean(enableHoverActions) && enableHoverActions)
+              (isBoolean(enableHoverActions) && enableHoverActions) ||
+              isFunction(enableHoverActions)
+
+            const enableHoverActionFnResult = isFunction(enableHoverActions)
+              ? enableHoverActions(source)
+              : true
+
+            const expandedViewHoverActionDisabledState =
+              (Array.isArray(enableHoverActionFnResult) &&
+                !first(enableHoverActionFnResult)) ||
+              (isBoolean(enableHoverActionFnResult) &&
+                !enableHoverActionFnResult)
+
+            const editHoverActionDisabledState =
+              (Array.isArray(enableHoverActionFnResult) &&
+                enableHoverActionFnResult.length === 2 &&
+                !last(enableHoverActionFnResult)) ||
+              (isBoolean(enableHoverActionFnResult) &&
+                !enableHoverActionFnResult)
 
             const enableEditHoverAction =
               (Array.isArray(enableHoverActions) &&
                 enableHoverActions.length === 2 &&
                 last(enableHoverActions)) ||
-              (isBoolean(enableHoverActions) && enableHoverActions)
+              (isBoolean(enableHoverActions) && enableHoverActions) ||
+              isFunction(enableHoverActions)
+
             const cellMenuCallback = (child: React.ReactElement<any>) => {
               if (React.isValidElement(child)) {
                 // Adds showDrawer as a property for cellmenu to enable showing of drawer.
@@ -167,6 +191,9 @@ const TableCell: React.FC<ITableCell> = (props) => {
                                   type='text'
                                   shape='circle'
                                   onClick={showDrawer}
+                                  disabled={
+                                    expandedViewHoverActionDisabledState
+                                  }
                                   icon={
                                     <motion.span
                                       exit={{ opacity: 0, y: 10 }}
@@ -196,6 +223,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                                 <Button
                                   type='text'
                                   shape='circle'
+                                  disabled={editHoverActionDisabledState}
                                   onClick={() => {
                                     if (
                                       typeof hoverActions?.onEdit === 'function'

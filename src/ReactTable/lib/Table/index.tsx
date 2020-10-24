@@ -31,7 +31,11 @@ interface TableProps {
   hoverActions?: {
     onEdit: (source: any) => void
   }
-  enableHoverActions?: [boolean, boolean] | [boolean] | boolean
+  enableHoverActions?:
+    | [boolean, boolean]
+    | [boolean]
+    | boolean
+    | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
 }
 class Table extends React.Component<TableProps, any> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE: string =

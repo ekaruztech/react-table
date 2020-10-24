@@ -24,7 +24,7 @@ interface ITableBody {
   hoverActions?: {
     onEdit: (source: any) => void
   }
-  enableHoverActions?: [boolean, boolean] | [boolean] | boolean
+  enableHoverActions?: [boolean, boolean] | [boolean] | boolean    | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
 }
 const TableBody: React.FC<ITableBody> = (props) => {
   const {
