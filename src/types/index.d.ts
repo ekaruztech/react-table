@@ -63,19 +63,21 @@ export interface TableColumnProps {
   unselected: Array<ColumnProps>
 }
 
-export interface FilterProps {
+export type DataFilterObject = {
+  property: null | string
+  filterType: null | string
+  value: null | string | boolean | number | Date
+  propertyType: Omit<ColumnType, 'action'>
+}
+export interface DateManagementFilterProps {
   filterIndex: number
-  filterProps: {
-    property: null | string
-    type: null | string
-    value: null | string | boolean | number | Date
-  }
+  filterProps: DataFilterObject
 }
 
-export type TableFilterProps = ColumnProps & FilterProps
+export type TableFilterProps = ColumnProps & DateManagementFilterProps
 
 export interface DateManagementState {
-  filters: Array<FilterProps>
+  filters: Array<DateManagementFilterProps>
   sorts: []
   search: {
     where: string
@@ -87,16 +89,11 @@ export type DateManagementAction =
   | {
       type: 'ADD_FILTER'
       payload: {
-        filterProps: {
-          property: null | string
-          type: null | string
-          value: null | string | boolean | number | Date
-        }
+        filterProps: DataFilterObject
       }
     } // typescript union types allow for leading |'s to have nicer layout
   | { type: 'REMOVE_FILTER'; payload: { filterIndex: number } }
-  | { type: 'UPDATE_FILTER'; payload: FilterProps }
-  | { type: 'ADD_OR_UPDATE_SEARCH'; payload: any }
+  | { type: 'UPDATE_FILTER'; payload: DateManagementFilterProps }
   | { type: 'RESET_FILTER' }
 
 export interface OnCellSelect {

@@ -20,14 +20,14 @@ import { motion } from 'framer-motion'
 import { EmptyImage } from '../../../../../../_utils'
 import './styles.scss'
 
-interface FilterProps {
+interface DateManagementFilterProps {
   columns: TableColumnProps
   dataSource: Array<any>
   dispatch: React.Dispatch<DateManagementAction>
   state: DateManagementState
   model: Model
 }
-export default (props: FilterProps) => {
+export default (props: DateManagementFilterProps) => {
   const { columns, dataSource, dispatch, state, model } = props
   const windowDimension = useDimension()
 
@@ -49,8 +49,9 @@ export default (props: FilterProps) => {
       payload: {
         filterProps: {
           property: null,
-          type: null,
-          value: null
+          filterType: null,
+          value: null,
+          propertyType: 'text'
         }
       }
     })
@@ -80,14 +81,20 @@ export default (props: FilterProps) => {
               imageStyle={{
                 height: 60
               }}
-              description='Please add a filter'
+              description={
+                <Padding top={15} componentType='span'>
+                  <p style={{ color: 'var(--text-color-secondary)' }}>
+                    No filter was added, click Add filter to add one.
+                  </p>
+                </Padding>
+              }
             >
               <Button
                 type='default'
                 onClick={addFilter}
                 icon={
                   <span className='anticon'>
-                    <i className='ri-add-line' style={{ fontSize: 16 }} />
+                    <i className='ri-add-line' />
                   </span>
                 }
               >
@@ -128,12 +135,12 @@ export default (props: FilterProps) => {
               justifyCenter
               id='filter__field__container'
             >
-              {(state?.filters || []).map((data, index: number) => {
+              {(state?.filters || []).map((filter, index: number) => {
                 return (
                   <FilterItem
-                    key={data?.filterIndex || index}
+                    key={filter?.filterIndex || index}
                     columns={columns}
-                    filterData={data}
+                    filterData={filter}
                     logicType={logicType}
                     isLastIndex={index === filterDataLength - 1}
                     isMoreThanOne={filterDataLength > 1}

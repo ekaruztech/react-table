@@ -1,13 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import { ColumnProps } from '../../../../types'
 
-interface FilterProps {
+interface DateManagementFilterProps {
   filterIndex: number
   property: null | string
   type: string | null
   value: null | string | boolean | number | Date | undefined | Date[]
 }
-type QuickFilterProps = FilterProps & ColumnProps
+type QuickFilterProps = DateManagementFilterProps & ColumnProps
 interface QuickFilterState {
   filters: Array<QuickFilterProps>
 }
@@ -25,4 +25,4 @@ type QuickFilterAction =
   | { type: 'ADD_OR_UPDATE_SEARCH'; payload: any }
   | { type: 'RESET' }
 
-export { QuickFilterAction, QuickFilterProps, QuickFilterState, FilterProps }
+export { QuickFilterAction, QuickFilterProps, QuickFilterState, DateManagementFilterProps }

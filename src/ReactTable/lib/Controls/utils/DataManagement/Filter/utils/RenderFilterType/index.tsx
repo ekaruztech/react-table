@@ -61,7 +61,7 @@ export default (props: RenderFilterTypeProps) => {
             defaultValue={0}
             value={isNumber(value?.start) ? value?.start : 0}
             style={{ width: '45%' }}
-            onChange={(num) => handleFilterValueChange(num, 'range', 'end')}
+            onChange={(num) => handleFilterValueChange(num, 'range', 'start')}
           />
         )}
         <SuffixStatement />
@@ -78,7 +78,7 @@ export default (props: RenderFilterTypeProps) => {
               handleFilterValueChange(
                 moment(date || new Date()).toDate(),
                 'range',
-                'start'
+                'end'
               )
             }
           />

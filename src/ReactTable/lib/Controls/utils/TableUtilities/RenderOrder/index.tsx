@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
 import { Button, Divider, InputNumber, Select, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
-import './_styles.scss'
+import './styles.scss'
 import Align from '../../../../../../Align'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../../_utils/model'
 import { motion } from 'framer-motion'
+import './styles.scss'
 
 interface RenderOrderProps {
   onRenderOrderChange: (renderOrder: number) => void
   model: Model
 }
 type Item = { label: string; value: number; type: 'default' | 'custom' }
+
 const RenderOrder: React.FC<RenderOrderProps> = (props) => {
   const { onRenderOrderChange, model } = props
 
@@ -104,7 +106,7 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
   }
 
   return (
-    <div className='RenderOrder'>
+    <div className='ReactTable___RenderOrder'>
       <Button
         style={{
           borderTopRightRadius: 0,
@@ -116,7 +118,7 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
         Showing
       </Button>
       <Select
-        className='RenderOrder__select'
+        className='ReactTable___RenderOrder-select'
         placeholder='Customize data listing'
         defaultValue={15}
         value={renderOrder}

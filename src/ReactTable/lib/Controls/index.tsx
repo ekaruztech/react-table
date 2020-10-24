@@ -1,26 +1,33 @@
 import React from 'react'
 import { Button, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
-import DataManagement from './utils/DataControls'
-import {
-  TableRefresh,
-  ControlActions,
-  RenderOrder
-} from './utils/TableControls'
+import DataManagement from './utils/DataManagement'
+import { TableRefresh, Export, RenderOrder } from './utils/TableUtilities'
 import { ReactTableContext } from '../ReactTableContext'
+// eslint-disable-next-line no-unused-vars
+import { DataFilterObject } from '../../../types'
+import './styles.scss'
 
-interface IReactTableControls {
+interface ReactTableControlsProps {
   onRenderOrderChange: (renderOrder: number) => void
   onRefresh?: () => void
+  onFilterApply?: (filters: DataFilterObject[]) => void
+  onFilterClear?: () => void
+  enableExport?:
+    | [boolean, boolean, boolean]
+    | [boolean, boolean]
+    | [boolean]
+    | boolean
+  onExport?: (exportType: 'csv' | 'pdf' | 'excel') => void
 }
 
-interface IReactTableControlsState {
+interface ReactTableControlsPropsState {
   filterColumn: { visible: boolean }
 }
 
 class Controls extends React.Component<
-  IReactTableControls,
-  IReactTableControlsState
+  ReactTableControlsProps,
+  ReactTableControlsPropsState
 > {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE =
     '$$REACT_TABLE_CONTROLS'
@@ -56,10 +63,12 @@ class Controls extends React.Component<
     | undefined {
     const {
       onRenderOrderChange,
-      onRefresh
+      onRefresh,
+      onFilterApply,
+      onFilterClear,
+      onExport,
+      enableExport
     } = this.props
-
-    // const [filterColumn, setFilterColumn] = useState({ visible: false })
 
     return (
       <ReactTableContext.Consumer>
@@ -95,16 +104,20 @@ class Controls extends React.Component<
                     columns={columns}
                     dataSource={dataSource}
                     model={model}
+                    onFilterApply={onFilterApply}
+                    onFilterClear={onFilterClear}
                   />
                 </div>
 
                 <div className='ReactTable___table-filter-btn-container'>
-                  <ControlActions />
+                  <Export onExport={onExport} enableExport={enableExport} />
                 </div>
               </div>
 
               <div className='ReactTable___table-container-header-inner-right'>
-                <TableRefresh onRefresh={onRefresh} />
+                {isFunction(onRefresh) && (
+                  <TableRefresh onRefresh={onRefresh} />
+                )}
                 <RenderOrder
                   onRenderOrderChange={onRenderOrderChange}
                   model={model}
@@ -118,4 +131,4 @@ class Controls extends React.Component<
   }
 }
 
-export { Controls as default, IReactTableControls as ControlsProps }
+export { Controls as default, ReactTableControlsProps as ControlsProps }

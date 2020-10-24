@@ -17,7 +17,7 @@ import { isEmpty, last } from 'lodash'
 import CellExpanseSetter from './utils/CellExpanseSetter'
 
 // TODO: Find a reasonable way to make a sticky header for table
-interface ITable {
+interface TableProps {
   pagination: { all: number; currentPage: number }
   onPaginate: (page: number) => void
   loading?: boolean
@@ -33,7 +33,7 @@ interface ITable {
   }
   enableHoverActions?: [boolean, boolean] | [boolean] | boolean
 }
-class Table extends React.Component<ITable, any> {
+class Table extends React.Component<TableProps, any> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE: string =
     '$$REACT_TABLE_BODY'
 
@@ -268,4 +268,4 @@ class Table extends React.Component<ITable, any> {
     )
   }
 }
-export { Table as default, ITable as BodyProps, CellMenu, CellMenuProps }
+export { Table as default, TableProps as BodyProps, CellMenu, CellMenuProps }

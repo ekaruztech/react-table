@@ -72,8 +72,6 @@ const dataManagementReducer = (model: Model) => (
       })
       return { ...state, filters: [] }
     }
-    case 'ADD_OR_UPDATE_SEARCH':
-      return { ...state, search: action.payload }
     default:
       return state
   }

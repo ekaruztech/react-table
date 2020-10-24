@@ -330,7 +330,8 @@ const db = {
       address: '40 Houstin Street',
       hobby: 'Running',
 
-      food_choice: 'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
+      food_choice:
+        'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
       id: '#99v931',
       id2: 'World',
       dob: moment([
@@ -572,6 +573,8 @@ const App = () => {
           <ReactTable.Controls
             onRenderOrderChange={onRenderOrderChange}
             onRefresh={() => null}
+            enableExport
+            onExport={(key) => console.log(key)}
           />
           <ReactTable.QuickFilter
             onApply={(value: any) => console.log(value)}

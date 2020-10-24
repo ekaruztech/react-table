@@ -1,0 +1,24 @@
+.ReactTable___table-footer {
+  min-width: 100%;
+  //max-width: 10
+  //position: fixed;
+  //bottom: 0;
+  border-left: 1.3px solid var(--border);
+  //opacity: 1;
+  border-right: 1.3px solid var(--border);
+  background: var(--background-primary);
+  padding: 16px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom: 1.3px solid var(--border);
+  .page-item.active .page-link {
+    background-color: var(--accent);
+    border-color: var(--accent);
+  }
+}
+
+.ReactTable___table-pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

@@ -8,6 +8,8 @@ import {
   // eslint-disable-next-line no-unused-vars
   ColumnProps,
   // eslint-disable-next-line no-unused-vars
+  ColumnType,
+  // eslint-disable-next-line no-unused-vars
   TableColumnProps,
   // eslint-disable-next-line no-unused-vars
   DateManagementAction,
@@ -17,6 +19,49 @@ import {
 import RenderFilterType from '../RenderFilterType'
 
 const { Option } = Select
+
+const stringFilters = [
+  { label: 'Equals', value: 'equals' },
+  { label: 'Does not equal', value: 'does not equal' },
+  { label: 'Begins with', value: 'begins with' },
+  { label: 'Ends with', value: 'ends with' },
+  { label: 'Contains', value: 'contains' },
+  { label: 'Does not contains', value: 'does not contains' }
+]
+const numberFilters = [
+  { label: 'Equals to', value: 'equals' },
+  { label: 'Greater than', value: 'greater than' },
+  { label: 'Less than', value: 'less than' },
+  { label: 'In between', value: 'in between' }
+]
+const dateFilters = [
+  { label: 'more than', value: 'more than' },
+  { label: 'less than', value: 'less than' },
+  { label: 'on', value: 'on' },
+  { label: 'between', value: 'between' }
+]
+const booleanFilters = [
+  { label: 'True', value: 'true' },
+  { label: 'False', value: 'false' }
+]
+const listFilters = [
+  { label: 'Equals', value: 'equals' },
+  { label: 'Does not equal', value: 'does not equal' }
+]
+
+/**
+ * Evaluates the column types and displays its filter
+ * @param type
+ */
+const evaluatePropertyTypeToFilterType = (
+  type: Omit<ColumnType, 'action'>
+): { value: string; label: string }[] => {
+  if (type === 'number' || type === 'currency') return numberFilters
+  if (type === 'boolean') return booleanFilters
+  if (type === 'date' || type === 'datetime') return dateFilters
+  if (type === 'list') return listFilters
+  return stringFilters
+}
 type FilterItemProps = {
   columns: TableColumnProps
   filterData: any
@@ -36,8 +81,33 @@ export default (props: FilterItemProps) => {
     isMoreThanOne,
     isFirstIndex,
     dataSource,
-    dispatch,
+    dispatch
   } = props
+  // Current Property
+  const [property, setProperty] = useState<TableFilterProps>(filterData)
+
+  const type: string = filterData.filterProps.propertyType
+    ? filterData.filterProps.propertyType
+    : property?.type || 'text'
+
+  const initialFilterType = () => {
+    const evaluatedFilterType = evaluatePropertyTypeToFilterType(
+      property.filterProps.propertyType || 'text'
+    )
+    if (property.filterProps.propertyType && property.filterProps.filterType) {
+      const findCurrent = evaluatedFilterType.find(
+        (predicate) => predicate.value === property.filterProps.filterType
+      )
+
+      if (findCurrent) {
+        return findCurrent.value
+      } else {
+        return evaluatedFilterType[0].value
+      }
+    } else {
+      return evaluatedFilterType[0].value
+    }
+  }
 
   const dimension = useDimension('element', 'filter__field__container')
 
@@ -45,78 +115,49 @@ export default (props: FilterItemProps) => {
     () => columns.selected.filter((o: ColumnProps) => o.type !== 'action'),
     [columns.selected]
   )
-  const stringFilters = [
-    { label: 'Equals', value: 'equals' },
-    { label: 'Does not equal', value: 'does not equal' },
-    { label: 'Begins with', value: 'begins with' },
-    { label: 'Ends with', value: 'ends with' },
-    { label: 'Contains', value: 'contains' },
-    { label: 'Does not contains', value: 'does not contains' }
-  ]
-  const numberFilters = [
-    { label: 'Equals to', value: 'equals' },
-    { label: 'Greater than', value: 'greater than' },
-    { label: 'Less than', value: 'less than' },
-    { label: 'In between', value: 'in between' }
-  ]
-  const dateFilters = [
-    { label: 'more than', value: 'more than' },
-    { label: 'less than', value: 'less than' },
-    { label: 'on', value: 'on' },
-    { label: 'between', value: 'between' }
-  ]
-  const booleanFilters = [
-    { label: 'True', value: 'true' },
-    { label: 'False', value: 'false' }
-  ]
-  const listFilters = [
-    { label: 'Equals', value: 'equals' },
-    { label: 'Does not equal', value: 'does not equal' }
-  ]
 
-  /**
-   * Evaluates the column types and displays its filter
-   * @param type
-   */
-  const evalType = (type: string): { value: string; label: string }[] => {
-    if (type === 'number' || type === 'currency') return numberFilters
-    if (type === 'boolean') return booleanFilters
-    if (type === 'date' || type === 'datetime') return dateFilters
-    if (type === 'list') return listFilters
-    return stringFilters
-  }
-  const [property, setProperty] = useState<TableFilterProps>(filterData)
+  // filter type.
   const [filterType, setFilterType] = useState<string | null>(
-    evalType(property?.type)?.[0]?.value || ''
+    initialFilterType()
   )
-  const [autoCompleteProps, setAutoCompleteProps] = useState<string | null>(
-    null
-  )
+
+  // On load of filter item, tokenizes the fields value from data source for later usage.
+  const [
+    tokenizedAutoCompleteOptions,
+    setTokenizedAutoCompleteOptions
+  ] = useState<string | null>(null)
+
   const [autoCompleteOptions, setAutoCompleteOptions] = useState<
     Array<{ value: string }> | undefined
   >([])
 
-  const type: string = property?.type || 'text'
-
   /**
-   * Tokenizes a text field value for autocompletion
+   * Tokenizes a text field value for auto-completion
    * Tokenization replaces space with underscore and adds a new line to the beginning of each word, starting from the second.
    * @param acc
    * @param current
    * @param index
    */
   const handleAutoCompleteResource = useCallback(
+    // Reduce callback
     (acc: string, current: any, index: number): string => {
+      // Current is an object of data (from data-source)
       const currentValue = current[property?.key || ''] || ''
       const tokenize = currentValue.trim().split(' ').join('_')
+      // Arranges the tokenized string in new lines
       return index === 0 ? acc.concat(tokenize) : acc.concat(`\n${tokenize}`)
     },
     [property]
   )
 
+  /**
+   * Prepares the data for an auto-complete feature.
+   */
   useEffect(() => {
     if (type === 'text' && property?.autoComplete) {
-      setAutoCompleteProps(dataSource.reduce(handleAutoCompleteResource, ''))
+      setTokenizedAutoCompleteOptions(
+        dataSource.reduce(handleAutoCompleteResource, '')
+      )
     }
   }, [dataSource, handleAutoCompleteResource, property, type])
 
@@ -130,7 +171,7 @@ export default (props: FilterItemProps) => {
       `(^|\\s)${value}+(?:\\w)*(\\s|$)|(^|\\s)\\w+(?:\\w)*(?:_)${value}+(?:\\w)*(\\s|$)`,
       'gim'
     )
-    const options = autoCompleteProps?.match(regex)
+    const options = tokenizedAutoCompleteOptions?.match(regex)
     if (options) {
       setAutoCompleteOptions(
         (options || []).map((o) => ({ value: o.split('_').join(' ').trim() }))
@@ -156,7 +197,12 @@ export default (props: FilterItemProps) => {
     setProperty((prevState) => ({
       ...prevState,
       ...newProperty,
-      filterProps: { property: null, type: null, value: null }
+      filterProps: {
+        property: key,
+        filterType: null,
+        value: null,
+        propertyType: 'text'
+      }
     }))
   }
 
@@ -171,10 +217,12 @@ export default (props: FilterItemProps) => {
     valueType: string | undefined = 'fixed',
     rangePosition: string | undefined
   ): null => {
+    // For range-type filter
     if (valueType === 'range' && rangePosition) {
       const filterProps = {
         property: property?.key,
-        type: filterType,
+        filterType: filterType,
+        propertyType: property.type,
         value: {
           ...filterData.filterProps.value,
           [rangePosition]: value
@@ -188,7 +236,8 @@ export default (props: FilterItemProps) => {
     }
     const filterProps = {
       property: property?.key,
-      type: filterType,
+      filterType: filterType,
+      propertyType: property.type,
       value
     }
     dispatch({
@@ -197,6 +246,25 @@ export default (props: FilterItemProps) => {
     })
     return null
   }
+
+  /**
+   * Updates the store whenever the filter type changes
+   * @param newFilterType
+   */
+  const onFilterTypeChange = (newFilterType: string) => {
+    const filterProps = {
+      property: property?.key,
+      filterType: newFilterType,
+      propertyType: property.type,
+      value: property.filterProps.value
+    }
+    dispatch({
+      type: 'UPDATE_FILTER',
+      payload: { ...filterData, filterProps }
+    })
+    setFilterType(newFilterType)
+  }
+
   const PrefixStatement = () => {
     const prefix = () => {
       if (
@@ -302,18 +370,20 @@ export default (props: FilterItemProps) => {
                       type === 'boolean' ? 0.41 : 0.2
                     )
                   }}
-                  onChange={(value) => setFilterType(value)}
+                  onChange={(value) => onFilterTypeChange(value)}
                   value={filterType || ''}
                 >
-                  {(evalType(property?.type || 'text') || stringFilters).map(
-                    ({ value, label }, index) => {
-                      return (
-                        <Option value={value} key={index}>
-                          {label}
-                        </Option>
-                      )
-                    }
-                  )}
+                  {(
+                    evaluatePropertyTypeToFilterType(
+                      property?.type || 'text'
+                    ) || stringFilters
+                  ).map(({ value, label }, index) => {
+                    return (
+                      <Option value={value} key={index}>
+                        {label}
+                      </Option>
+                    )
+                  })}
                 </Select>
               </Align>
             </Margin>

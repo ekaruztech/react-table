@@ -1,15 +1,16 @@
 import { Pagination } from 'antd'
 import { motion } from 'framer-motion'
 import React from 'react'
+import './styles.scss'
 
-interface ITableFooter {
+interface TableFooterProps {
   currentPage: number
   handlePagination: (page: number) => void
   total: number
   loading: boolean
   isAnEmptyContent: boolean
 }
-const TableFooter: React.FC<ITableFooter> = (props) => {
+const TableFooter: React.FC<TableFooterProps> = (props) => {
   const {
     currentPage,
     handlePagination,
@@ -17,6 +18,7 @@ const TableFooter: React.FC<ITableFooter> = (props) => {
     loading,
     isAnEmptyContent
   } = props
+
   return (
     <motion.div
       className='ReactTable___table-footer'

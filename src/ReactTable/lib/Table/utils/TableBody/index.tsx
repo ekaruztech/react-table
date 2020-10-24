@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash'
 import TableCell from '../TableCell'
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Skeleton, Empty, Typography } from 'antd'
+import { Skeleton, Empty } from 'antd'
 import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
 import { TableBodyContext } from './utils/TableBodyContext'
@@ -105,8 +105,8 @@ const TableBody: React.FC<ITableBody> = (props) => {
                 key='empty-0'
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                 description={
-                  <Padding top={15}>
-                    <Typography.Text>No data to display here!.</Typography.Text>
+                  <Padding top={15} componentType={'span'}>
+                    <p style={{color: 'var(--text-color-secondary)'}}>No data to display here!.</p>
                   </Padding>
                 }
               />

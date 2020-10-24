@@ -7,7 +7,7 @@ import Align from '../../../../../Align'
 import Margin from '../../../../../Margin'
 import Padding from '../../../../../Padding'
 import Position from '../../../../../Position'
-import '../../_styles.scss'
+import '../../styles.scss'
 // eslint-disable-next-line no-unused-vars
 import { TableColumnProps, ColumnProps } from '../../../../../types'
 import { quickFilterReducer, initQuickFilterState } from '../../reducer'
@@ -15,7 +15,6 @@ import Model from '../../../../../_utils/model'
 import { EmptyImage } from '../../../../../_utils'
 
 const { Panel } = Collapse
-
 
 interface FilterControllerProps {
   onApply: (
@@ -77,7 +76,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
           )
           return isAlreadyAdded ? (
             index + 1 === array.length && (
-              <Menu.Item key={'none'}>
+              <Menu.Item key='none'>
                 <Empty
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
                   description={"Oops!!! You've used all the filters"}
@@ -85,7 +84,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
               </Menu.Item>
             )
           ) : (
-            <Menu.Item key={index}>{value?.title || '_____'}</Menu.Item>
+            <Menu.Item key={index}>{value?.title || '---'}</Menu.Item>
           )
         }
       )}
@@ -93,7 +92,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
   )
 
   return (
-    <div className='QuickFilter'>
+    <div className='ReactTable___QuickFilter'>
       <Collapse expandIconPosition='right'>
         <Panel
           header={
@@ -103,7 +102,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
               </Margin>
             </Align>
           }
-          key='1'
+          key='quick-filter'
         >
           <Align
             className='filter-container'
@@ -122,14 +121,20 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                   imageStyle={{
                     height: 60
                   }}
-                  description='Please add a filter'
+                  description={
+                    <Padding top={15} componentType='span'>
+                      <p style={{ color: 'var(--text-color-secondary)' }}>
+                        No filter was added, click Add filter to add one.
+                      </p>
+                    </Padding>
+                  }
                 >
                   <Dropdown overlay={menu} trigger={['click']} arrow>
                     <Button
                       type='default'
                       icon={
                         <span className='anticon'>
-                          <i className='ri-add-line' style={{ fontSize: 16 }} />
+                          <i className='ri-add-line' />
                         </span>
                       }
                     >

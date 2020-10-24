@@ -1,0 +1,24 @@
+.ReactTable___table-container-header {
+  background-color: var(--background-primary);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+  justify-content: space-between;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1.3px solid var(--border);
+  //border-right: 1.3px solid var(--border);
+
+  .ReactTable___table-container-header-inner-left,
+  .ReactTable___table-container-header-inner-right {
+    display: flex;
+    align-items: center;
+    .ReactTable___table-filter-radio-sort {
+      margin-right: 20px;
+    }
+    .ReactTable___table-filter-btn-container {
+      margin: 0 20px 0 0;
+    }
+  }
+}

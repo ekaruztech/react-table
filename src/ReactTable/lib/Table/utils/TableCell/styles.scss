@@ -5,3 +5,14 @@
     transition-delay: 150ms;
   }
 }
+
+.ReactTable___table-utility {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  .ReactTable___table-utility-icon {
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}

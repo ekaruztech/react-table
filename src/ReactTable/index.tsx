@@ -26,6 +26,11 @@ import '../styles/styles.scss'
 import Model from '../_utils/model'
 import { enumeratePresets } from '../_utils'
 
+// TODO: Create filter priority field. defaults to advanced filter.
+// TODO: If advanced filter is priority and show in quick filter that advanced filter was enabled and add button to open for clearing
+// TODO: Add replace type in advanced filter with filter-type and add property-type
+// TODO: parse advanced filter values (possibly create parsers)
+// TODO: Create sort
 class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   static Controls = Controls
   static QuickFilter = QuickFilter

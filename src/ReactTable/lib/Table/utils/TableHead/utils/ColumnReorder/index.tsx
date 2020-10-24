@@ -1,7 +1,7 @@
 import React, { useState, FC } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { Button, Checkbox } from 'antd'
-import './_style.scss'
+import './style.scss'
 import Sortable from './utils/Sortable'
 // eslint-disable-next-line no-unused-vars
 import { ColumnProps, TableColumnProps } from '../../../../../../../types'
