@@ -51,6 +51,7 @@ const SortItem: React.FC<SortItemProps> = (props) => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         style={{ overflow: 'hidden' }}
+        transition={{ delay: (sortData.sortIndex || 0) * 0.01 }}
       >
         <Row gutter={[20, 50]} style={{ width: '100%' }}>
           <Col span={6}>

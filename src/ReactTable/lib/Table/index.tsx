@@ -180,7 +180,8 @@ class Table extends React.Component<TableProps, any> {
           maxColumns,
           minColumns,
           columnKeys,
-          selectedTableItems
+          selectedTableItems,
+          model
         }) => {
           return (
             <Fragment>
@@ -264,6 +265,7 @@ class Table extends React.Component<TableProps, any> {
                 total={pagination?.all || 0}
                 loading={!!loading}
                 isAnEmptyContent={isEmpty(dataSource)}
+                model={model}
               />
             </Fragment>
           )

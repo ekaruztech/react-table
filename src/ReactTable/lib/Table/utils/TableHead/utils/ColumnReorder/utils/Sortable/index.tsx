@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox } from 'antd'
+import { Checkbox, Tooltip } from 'antd'
 import { reorder } from '../reorder'
 // @ts-ignore
 import { isEmpty, find } from 'lodash'
@@ -167,44 +167,51 @@ const Sortable: React.FC<SortableProvider> = (props) => {
                         opacity: dragDisabled ? 0.5 : 2
                       }}
                     >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between'
-                        }}
+                      <Tooltip
+                        title='Click and drag up or down to reorder'
+                        placement='left'
                       >
-                        <Checkbox
-                          disabled={
-                            (columns.selected.length >= maxColumns &&
-                              !isSelected) ||
-                            (isSelected !== undefined &&
-                              columns.selected.length <= minColumns)
-                          }
-                          checked={isSelected !== undefined || false}
-                          onChange={() => onChange(value, isSelected)}
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                          }}
                         >
-                          {value?.title}
-                        </Checkbox>
-                        <span style={{ display: 'flex', alignItems: 'center' }}>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            height='24'
-                            viewBox='0 0 24 24'
-                            width='24'
+                          <Checkbox
+                            disabled={
+                              (columns.selected.length >= maxColumns &&
+                                !isSelected) ||
+                              (isSelected !== undefined &&
+                                columns.selected.length <= minColumns)
+                            }
+                            checked={isSelected !== undefined || false}
+                            onChange={() => onChange(value, isSelected)}
                           >
-                            <path d='M0 0h24v24H0V0z' fill='none' />
-                            <path
-                              fill={
-                                snapshot.isDragging
-                                  ? 'var(--accent)'
-                                  : 'var(--disabled-color)'
-                              }
-                              d='M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'
-                            />
-                          </svg>
-                        </span>
-                      </div>
+                            {value?.title}
+                          </Checkbox>
+                          <span
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              height='24'
+                              viewBox='0 0 24 24'
+                              width='24'
+                            >
+                              <path d='M0 0h24v24H0V0z' fill='none' />
+                              <path
+                                fill={
+                                  snapshot.isDragging
+                                    ? 'var(--accent)'
+                                    : 'var(--disabled-color)'
+                                }
+                                d='M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </Tooltip>
                     </div>
                   )}
                 </Draggable>

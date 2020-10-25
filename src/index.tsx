@@ -2,7 +2,7 @@ export { default as Padding } from './Padding'
 export { default as Margin } from './Margin'
 export { default as Align } from './Align'
 export { default as Position } from './Position'
-export { default as Model } from './_utils/model'
+export { ExposedModel as Model } from './_utils/model'
 export { Table } from './ReactTable'
 export { useDimension, toPercentage } from './hooks'
 

@@ -11,7 +11,7 @@ import {
   // eslint-disable-next-line no-unused-vars
   TableColumnProps
 } from '../types'
-import { clamp, isFunction } from 'lodash'
+import { clamp, isFunction, isString } from 'lodash'
 import invariant from 'invariant'
 import { ReactTableContext } from './lib/ReactTableContext'
 
@@ -28,9 +28,10 @@ import { enumeratePresets } from '../_utils'
 
 // TODO: Create filter priority field. defaults to advanced filter.
 // TODO: If advanced filter is priority and show in quick filter that advanced filter was enabled and add button to open for clearing
-// TODO: Add replace type in advanced filter with filter-type and add property-type
 // TODO: parse advanced filter values (possibly create parsers)
-// TODO: Create sort
+// TODO: Add refresh button beside the customize column button if Controls is not used
+// TODO add ways to disable data-management
+
 class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   static Controls = Controls
   static QuickFilter = QuickFilter
@@ -49,10 +50,15 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     if (!this.props.name) {
       invariant(false, 'Name property is required')
     }
+    if (!isString(this.props.name)) {
+      invariant(
+        false,
+        `Name property expected a string, got ${typeof this.props
+          .name} instead.`
+      )
+    }
 
-    const model = Model.instantiate(
-      `persisted-model--${this.props.name.toLowerCase()}`
-    )
+    const model = Model.instantiate(this.props.name)
 
     const presets = enumeratePresets(
       model,
@@ -192,9 +198,7 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     )
 
     // Instantiates Model
-    const model = Model.instantiate(
-      `persisted-model--${this.props.name.toLowerCase()}`
-    )
+    const model = Model.instantiate(this.props.name)
 
     const providerValue = {
       columnKeys: columnKeys,

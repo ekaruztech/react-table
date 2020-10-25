@@ -32,36 +32,43 @@ const events = {
  * @param defaultValue
  */
 
-type StorageAPI = {
+interface StorageAPI {
   pull: () => any
   post: (data: any) => void
   update: (updateData: any) => void
   removeNested: (key: string | string[], removeFn?: (value: any) => any) => void
   remove: () => void
-} | null
+}
 
-const Storage = (localStorageKey: string, defaultValue?: any): StorageAPI => {
-  if (!localStorageKey) throw new Error('Invalid storage key')
+class Storage implements StorageAPI {
+  private readonly storageKey: string
+  private readonly storage: any
 
-  const storage = localStorage.getItem(localStorageKey)
-  if (!storage) {
-    localStorage.setItem(localStorageKey, JSON.stringify(defaultValue))
+  constructor(storageKey: string, defaultValue: any = null) {
+    if (!storageKey) throw new Error('Invalid storage key')
+    this.storageKey = storageKey
+    this.storage = localStorage.getItem(storageKey)
+
+    if (!this.storage) {
+      localStorage.setItem(storageKey, JSON.stringify(defaultValue))
+    }
   }
+
   /**
    * Stores data in localstorage.
    * @param data
    */
-  const post = (data: any): void => {
+  public post(data: any): void {
     // Stores the data in local-storage.
-    localStorage.setItem(localStorageKey, JSON.stringify(data))
+    localStorage.setItem(this.storageKey, JSON.stringify(data))
     // Initializes data to send to listener.
     const eventInit: PostEventInit = {
       detail: {
         newData: JSON.parse(
-          (localStorage.getItem(localStorageKey) || '{}') as string
+          (localStorage.getItem(this.storageKey) || '{}') as string
         ),
-        storageKey: localStorageKey,
-        oldData: JSON.parse(storage || '{}')
+        storageKey: this.storageKey,
+        oldData: JSON.parse(this.storage || '{}')
       },
       bubbles: true
     }
@@ -76,14 +83,14 @@ const Storage = (localStorageKey: string, defaultValue?: any): StorageAPI => {
   /**
    * Retrieves data from local storage
    */
-  const pull = (): any => {
+  public pull(): any {
     // Retrieves data from local-storage.
-    const storage = localStorage.getItem(localStorageKey)
+    const storage = localStorage.getItem(this.storageKey)
     if (storage) {
       const data = JSON.parse(storage || '{}')
       // Inits event data.
       const eventInit: PullEventInit = {
-        detail: { data, storageKey: localStorageKey },
+        detail: { data, storageKey: this.storageKey },
         bubbles: true
       }
       // Creates a pull event.
@@ -101,9 +108,9 @@ const Storage = (localStorageKey: string, defaultValue?: any): StorageAPI => {
    * Updates a storage value, unlike push, it checks does not reset the data.
    * @param updateData
    */
-  const update = (updateData: any) => {
+  public update(updateData: any): void {
     // Finds existing data. in local-storage.
-    const storage = localStorage.getItem(localStorageKey)
+    const storage = localStorage.getItem(this.storageKey)
     if (storage && updateData) {
       // Parses data to JS objects.
       const storageValue = JSON.parse(storage || '{}')
@@ -114,13 +121,13 @@ const Storage = (localStorageKey: string, defaultValue?: any): StorageAPI => {
           ...storageValue,
           ...updateData
         }
-        localStorage.setItem(localStorageKey, JSON.stringify(newStorageValue))
+        localStorage.setItem(this.storageKey, JSON.stringify(newStorageValue))
       }
 
       // For Arrays
       if (Array.isArray(updateData) && Array.isArray(storageValue)) {
         const newStorageValue = [...storageValue, ...updateData]
-        localStorage.setItem(localStorageKey, JSON.stringify(newStorageValue))
+        localStorage.setItem(this.storageKey, JSON.stringify(newStorageValue))
       }
 
       // For non-Arrays and non-Objects
@@ -128,16 +135,16 @@ const Storage = (localStorageKey: string, defaultValue?: any): StorageAPI => {
         !(isObject(updateData) && isObject(storageValue)) &&
         !(Array.isArray(updateData) && Array.isArray(storageValue))
       ) {
-        localStorage.setItem(localStorageKey, updateData.toString())
+        localStorage.setItem(this.storageKey, updateData.toString())
       }
 
       // Dispatch event after completion
       const eventInit: UpdateEventInit = {
         detail: {
           newData: JSON.parse(
-            (localStorage.getItem(localStorageKey) || '{}') as string
+            (localStorage.getItem(this.storageKey) || '{}') as string
           ),
-          storageKey: localStorageKey,
+          storageKey: this.storageKey,
           oldData: JSON.parse(storage || '{}')
         },
         bubbles: true
@@ -151,17 +158,18 @@ const Storage = (localStorageKey: string, defaultValue?: any): StorageAPI => {
       document.dispatchEvent(updateEvent)
     }
   }
+
   /**
    * Removes a nested value from the storage value. Only(Array | Objects)
    * @param key
    * @param removeFn
    */
-  const removeNested = (
+  public removeNested(
     key: string | string[],
     removeFn?: (value: any) => any
-  ): void => {
+  ): void {
     // Retrieves data.
-    const storage = localStorage.getItem(localStorageKey)
+    const storage = localStorage.getItem(this.storageKey)
 
     if (storage && key) {
       const storageValue = JSON.parse(storage)
@@ -169,18 +177,18 @@ const Storage = (localStorageKey: string, defaultValue?: any): StorageAPI => {
       // Removes data if stored data is an object.
       if (isObject(storageValue)) {
         const newStorageValue = JSON.stringify(omit(storageValue, key))
-        localStorage.setItem(localStorageKey, newStorageValue)
+        localStorage.setItem(this.storageKey, newStorageValue)
       }
 
       // Removes data if stored data is an array.
       if (Array.isArray(storageValue) && removeFn) {
         const newStorageValue = JSON.stringify(rm(storageValue, removeFn))
-        localStorage.setItem(localStorageKey, newStorageValue)
+        localStorage.setItem(this.storageKey, newStorageValue)
       }
 
       // Dispatch event after completion
       const eventInit: RemoveEventInit = {
-        detail: { storageKey: localStorageKey },
+        detail: { storageKey: this.storageKey },
         bubbles: true
       }
       // Creates a remove event.
@@ -189,23 +197,23 @@ const Storage = (localStorageKey: string, defaultValue?: any): StorageAPI => {
       document.dispatchEvent(removeEvent)
     }
   }
+
   /**
    * Removes a storage data from the local storage
    */
-  const remove = (): void => {
+  public remove(): void {
     const eventInit: RemoveEventInit = {
-      detail: { storageKey: localStorageKey },
+      detail: { storageKey: this.storageKey },
       bubbles: true
     }
     // Creates a remove event.
     /* See: https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events */
     const removeEvent = new CustomEvent(events.remove, eventInit)
-    localStorage.removeItem(localStorageKey)
+    localStorage.removeItem(this.storageKey)
 
     // dispatches event.
     document.dispatchEvent(removeEvent)
   }
-  return { post, pull, update, remove, removeNested }
 }
 
 export { Storage, events as StorageEvents, StorageAPI }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Table as ReactTable } from '@voomsway/react-table'
+import { Table as ReactTable, Model } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import moment from 'moment'
 import { useState, useEffect } from 'react'
@@ -494,13 +494,14 @@ const App = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingContent, setIsLoadingContent] = useState(true)
   // const [show, setShow] = useState(true)
+  const model = Model.instantiate('TestTable')
 
   useEffect(() => {
     setIsLoadingContent(true)
     const a = setTimeout(() => {
       setDataSource((prev) => ({
         ...prev,
-        data: db.dataSource.slice(0, 15)
+        data: db.dataSource.slice(0, model?.renderOrder)
       }))
       setIsLoadingContent(false)
     }, 5000)
@@ -513,11 +514,11 @@ const App = () => {
     range: { from: number; to: number }
   }>({ data: [], range: { from: 0, to: 15 } })
 
-  const [pageRenderOrder, setPageRenderOrder] = useState(15)
+  const [pageRenderOrder, setPageRenderOrder] = useState(model?.renderOrder || 15)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pagination, setPagination] = useState({
     all: db.dataSource.length,
-    currentPage: 1
+    currentPage: model?.pagination?.page || 1
   })
   // console.log(() setPagination, pagination)
 

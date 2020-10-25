@@ -58,7 +58,8 @@ class CellMenu extends React.Component<ICellMenu> {
               whileHover={
                 showExpandedView
                   ? {
-                      scale: 1.25
+                      scale: 1.25,
+                      opacity: 1
                     }
                   : {}
               }
@@ -93,7 +94,8 @@ class CellMenu extends React.Component<ICellMenu> {
               whileHover={
                 isFunction(onEdit)
                   ? {
-                      scale: 1.25
+                      scale: 1.25,
+                      opacity: 1
                     }
                   : {}
               }
@@ -129,7 +131,8 @@ class CellMenu extends React.Component<ICellMenu> {
               whileHover={
                 isFunction(onDuplicate)
                   ? {
-                      scale: 1.25
+                      scale: 1.25,
+                      opacity: 1
                     }
                   : {}
               }
@@ -163,7 +166,8 @@ class CellMenu extends React.Component<ICellMenu> {
               whileHover={
                 isFunction(onDelete)
                   ? {
-                      scale: 1.25
+                      scale: 1.25,
+                      opacity: 1
                     }
                   : {}
               }

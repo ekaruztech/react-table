@@ -29,6 +29,7 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
   const value = property?.value
 
   switch (type) {
+    case 'currency':
     case 'number':
       return (
         <InputNumber
