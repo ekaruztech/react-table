@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Table as ReactTable, Model } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
-import moment from 'moment'
 import { useState, useEffect } from 'react'
 import { Menu } from 'antd'
 
@@ -46,11 +45,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#9iopp785der0011',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -65,11 +64,11 @@ const db = {
       food_choice: 'Meaty',
       id: '#990uiopcfe11',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -83,11 +82,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#99vvgty88031',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -101,11 +100,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#9x70tyu31',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -119,11 +118,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#99bg831',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -137,11 +136,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#90bgg431',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -156,11 +155,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#999nhh31',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -175,11 +174,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#99@6770111',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -194,11 +193,11 @@ const db = {
       food_choice: 'Vegan',
       id: '12',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -213,11 +212,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#4599r931',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -232,11 +231,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#9s99vbb31',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -251,11 +250,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#9vb993f1',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -270,11 +269,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#99f931',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -289,11 +288,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#9d99g31',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -308,11 +307,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#99d931',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -327,11 +326,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#99h931',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -347,11 +346,11 @@ const db = {
         'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
       id: '#99v931',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -366,11 +365,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#9993100',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -385,11 +384,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#9vbb99u31',
       id2: 'World',
-      dob: moment([
+      dob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -419,7 +418,7 @@ const db = {
       type: 'date',
       presentationType: 'date',
       presentationColor: 'processing',
-      dateFormat: 'lll'
+      dateFormat: 'MMM dd, yyyy hh:mm aaa'
     },
     {
       title: 'Cost',

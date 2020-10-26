@@ -10,13 +10,12 @@ import {
   // eslint-disable-next-line no-unused-vars
   PresentationColor
 } from '../../../../../../../types'
-// eslint-disable-next-line no-unused-vars
-import moment, { Moment } from 'moment'
 import { isFunction } from 'lodash'
+import { format } from 'date-fns'
 
-interface IPresentation {
+interface PresentationProps {
   columnType: ColumnType | undefined
-  data: string | Moment | Date | number | undefined
+  data: string | Date | number | undefined
   actionPresentationType: ActionPresentationType | undefined
   presentationType: PresentationType | undefined
   presentationColor:
@@ -30,7 +29,7 @@ interface IPresentation {
   dateFormat: string | undefined
   currency: string | undefined
 }
-const Presentation: React.FC<IPresentation> = (props) => {
+const Presentation: React.FC<PresentationProps> = (props) => {
   const {
     columnType,
     data,
@@ -99,9 +98,9 @@ const Presentation: React.FC<IPresentation> = (props) => {
     }
     case 'date':
     case 'datetime': {
-      const format = dateFormat === 'datetime' ? 'lll LT' : 'lll'
-      const date =
-        moment(data).format(dateFormat || format) || moment(data).format(format)
+      const _dateFormat = dateFormat || 'MMM dd, yyyy hh:mm aaa'
+
+      const date = format(new Date(data || Date.now()), _dateFormat)
       if (presentationType === 'tag') {
         return (
           <Tag
