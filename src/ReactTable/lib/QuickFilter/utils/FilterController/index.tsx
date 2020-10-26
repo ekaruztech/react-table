@@ -55,6 +55,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
     if (onClear && isFunction(onClear)) {
       onClear()
     }
+    model.store('hasAppliedQuickFilter', false)
   }
   const applyFilter = () => {
     const filters = state.filters.map((value) =>
@@ -63,6 +64,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
     if (onApply && isFunction(onApply)) {
       onApply(filters)
     }
+    model.store('hasAppliedQuickFilter', true)
   }
 
   const validColumns = useMemo(

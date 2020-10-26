@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Storage, StorageAPI } from '../storage'
-import { isPlainObject, isString } from 'lodash'
+import { isPlainObject, isString, isUndefined } from 'lodash'
 // eslint-disable-next-line no-unused-vars
 import { DataSortObject } from '../../types'
 
@@ -38,6 +38,8 @@ export type ModelProvider = {
   advancedFilter: AdvancedFilterModel
   advancedSort: AdvancedSortModel
   pagination: PaginationModel
+  hasAppliedQuickFilter: boolean
+  hasAppliedAdvancedFilter: boolean
 }
 export interface PaginationModel {
   page: number
@@ -50,6 +52,8 @@ type ModelField =
   | 'advancedSort'
   | 'advancedFilter'
   | 'pagination'
+  | 'hasAppliedQuickFilter'
+  | 'hasAppliedAdvancedFilter'
 
 type ModelOptions = {
   override: boolean
@@ -68,6 +72,8 @@ class Model implements ModelAPI {
   public advancedFilter: AdvancedFilterModel
   public advancedSort: AdvancedSortModel
   public pagination: PaginationModel
+  public hasAppliedQuickFilter: boolean
+  public hasAppliedAdvancedFilter: boolean
   public readonly storage: StorageAPI
 
   private static DEFAULT_VALUES: ModelProvider = {
@@ -94,7 +100,9 @@ class Model implements ModelAPI {
       filters: []
     },
     advancedSort: [],
-    pagination: { page: 1 }
+    pagination: { page: 1 },
+    hasAppliedQuickFilter: false,
+    hasAppliedAdvancedFilter: false
   }
 
   constructor(model: ModelProvider & { name: string }) {
@@ -105,6 +113,8 @@ class Model implements ModelAPI {
     this.advancedFilter = model.advancedFilter
     this.advancedSort = model.advancedSort
     this.pagination = model.pagination
+    this.hasAppliedAdvancedFilter = model.hasAppliedAdvancedFilter
+    this.hasAppliedQuickFilter = model.hasAppliedQuickFilter
     this.storage = new Storage(model.name, model)
   }
 
@@ -113,7 +123,7 @@ class Model implements ModelAPI {
   }
 
   public store(field: ModelField, value: any, options?: ModelOptions) {
-    if (field && this[field] && this.storage) {
+    if (field && this.storage) {
       if (isPlainObject(this[field]) && isPlainObject(value)) {
         const newValue = Object.assign({}, this[field], value)
         this.storage.update({ [field]: newValue })
@@ -136,7 +146,7 @@ class Model implements ModelAPI {
       if (
         !isPlainObject(this[field]) &&
         !Array.isArray(this[field]) &&
-        (Array.isArray(value) || isPlainObject(value))
+        !isUndefined(value)
       ) {
         this.storage.update({ [field]: value })
         // @ts-ignore

@@ -24,6 +24,7 @@ interface ReactTableControlsProps {
   onExport?: (exportType: 'csv' | 'pdf' | 'excel') => void
   onSortApply?: (filters: DataSortObject[]) => void
   onSortClear?: () => void
+  enableDataManagement?: boolean
 }
 
 interface ReactTableControlsPropsState {
@@ -73,7 +74,8 @@ class Controls extends React.Component<
       onExport,
       enableExport,
       onSortApply,
-      onSortClear
+      onSortClear,
+      enableDataManagement = true
     } = this.props
 
     return (
@@ -104,17 +106,19 @@ class Controls extends React.Component<
                       Data Management
                     </Button>
                   </Tooltip>
-                  <DataManagement
-                    visible={this.state.filterColumn.visible}
-                    handleCancel={this.handleFilterColumnCancel}
-                    columns={columns}
-                    dataSource={dataSource}
-                    model={model}
-                    onFilterApply={onFilterApply}
-                    onFilterClear={onFilterClear}
-                    onSortApply={onSortApply}
-                    onSortClear={onSortClear}
-                  />
+                  {enableDataManagement && (
+                    <DataManagement
+                      visible={this.state.filterColumn.visible}
+                      handleCancel={this.handleFilterColumnCancel}
+                      columns={columns}
+                      dataSource={dataSource}
+                      model={model}
+                      onFilterApply={onFilterApply}
+                      onFilterClear={onFilterClear}
+                      onSortApply={onSortApply}
+                      onSortClear={onSortClear}
+                    />
+                  )}
                 </div>
 
                 <div className='ReactTable___table-filter-btn-container'>

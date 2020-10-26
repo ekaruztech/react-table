@@ -65,12 +65,14 @@ const ModalFooter: React.FC<ModalFooterProps> = (props) => {
         )
         onFilterApply({ filters, queryType: model.advancedFilter.queryType })
       }
+      model.store('hasAppliedAdvancedFilter', true)
     }
     const clearFilters = () => {
       dispatch({ type: 'RESET_FILTER' })
       if (isFunction(onFilterClear)) {
         onFilterClear()
       }
+      model.store('hasAppliedAdvancedFilter', false)
     }
     return (
       <Align style={{ width: '100%' }} alignCenter justifyBetween>
