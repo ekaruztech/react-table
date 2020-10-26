@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useMemo, useReducer } from 'react'
 import { Collapse, Typography, Button, Empty, Menu, Dropdown, Row } from 'antd'
 import { isEmpty, isFunction, pick } from 'lodash'
 import { motion } from 'framer-motion'
@@ -34,7 +34,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
   // @ts-ignore
   const [state, dispatch] = useReducer(
     quickFilterReducer(model),
-    columns.selected,
+    columns.all,
     initQuickFilterState(model)
   )
 
@@ -65,11 +65,16 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
     }
   }
 
+  const validColumns = useMemo(
+    () => columns.all.filter((o: ColumnProps) => o.type !== 'action'),
+    [columns.all]
+  )
+
   const menu = (
     <Menu
       onClick={({ key }) => (key !== 'none' ? addFilter(String(key)) : null)}
     >
-      {columns.all.map(
+      {validColumns.map(
         (value: ColumnProps, index: number, array: ColumnProps[]) => {
           const isAlreadyAdded = state.filters.find(
             (filter) => filter.key === value.key

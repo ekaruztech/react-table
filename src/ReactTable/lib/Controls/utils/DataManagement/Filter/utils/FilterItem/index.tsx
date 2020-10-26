@@ -86,9 +86,8 @@ export default (props: FilterItemProps) => {
   // Current Property
   const [property, setProperty] = useState<TableFilterProps>(filterData)
 
-  const type: string = filterData.filterProps.propertyType
-    ? filterData.filterProps.propertyType
-    : property?.type || 'text'
+  const type: string =
+    property?.type || property.filterProps.propertyType || 'text'
 
   const initialFilterType = () => {
     const evaluatedFilterType = evaluatePropertyTypeToFilterType(
@@ -112,8 +111,8 @@ export default (props: FilterItemProps) => {
   const dimension = useDimension('element', 'filter__field__container')
 
   const validColumns = useMemo(
-    () => columns.selected.filter((o: ColumnProps) => o.type !== 'action'),
-    [columns.selected]
+    () => columns.all.filter((o: ColumnProps) => o.type !== 'action'),
+    [columns.all]
   )
 
   // filter type.
@@ -201,7 +200,7 @@ export default (props: FilterItemProps) => {
         property: key,
         filterType: null,
         value: null,
-        propertyType: 'text'
+        propertyType: newProperty?.type || 'text'
       }
     }))
   }

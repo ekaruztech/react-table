@@ -49,7 +49,7 @@ const DataManagement: React.FC<DataManagementProps> = (props) => {
   >(
     dataManagementReducer(model),
     // @ts-ignore
-    columns.selected,
+    columns.all,
     initDataManagementState(model)
   )
 

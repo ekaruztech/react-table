@@ -28,7 +28,6 @@ import { enumeratePresets } from '../_utils'
 
 // TODO: Create filter priority field. defaults to advanced filter.
 // TODO: If advanced filter is priority and show in quick filter that advanced filter was enabled and add button to open for clearing
-// TODO: parse advanced filter values (possibly create parsers)
 // TODO: Add refresh button beside the customize column button if Controls is not used
 // TODO add ways to disable data-management
 
