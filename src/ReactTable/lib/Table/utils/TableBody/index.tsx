@@ -6,7 +6,6 @@ import { Skeleton, Empty } from 'antd'
 import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
 import { TableBodyContext } from './utils/TableBodyContext'
-import { LoadingOutlined } from '@ant-design/icons'
 import { CellMenuProps } from '../CellMenu'
 import './styles.scss'
 import { useDimension } from '../../../../../hooks'
@@ -24,7 +23,11 @@ interface ITableBody {
   hoverActions?: {
     onEdit: (source: any) => void
   }
-  enableHoverActions?: [boolean, boolean] | [boolean] | boolean    | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
+  enableHoverActions?:
+    | [boolean, boolean]
+    | [boolean]
+    | boolean
+    | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
 }
 const TableBody: React.FC<ITableBody> = (props) => {
   const {
@@ -72,11 +75,13 @@ const TableBody: React.FC<ITableBody> = (props) => {
                 justifyCenter
                 className={'ReactTable___table-body-loader'}
                 children={[
-                  <LoadingOutlined
-                    key='loading-0'
-                    style={{ fontSize: 40, color: 'var(--accent)' }}
-                    spin
-                  />
+                  <span className='anticon anticon-loading'>
+                    <i
+                      key='loading-0'
+                      className='ri-loader-5-line anticon-spin'
+                      style={{ fontSize: 40, color: 'var(--accent)' }}
+                    />
+                  </span>
                 ]}
               />
             )}
@@ -106,7 +111,9 @@ const TableBody: React.FC<ITableBody> = (props) => {
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
                 description={
                   <Padding top={15} componentType={'span'}>
-                    <p style={{color: 'var(--text-color-secondary)'}}>No data to display here!.</p>
+                    <p style={{ color: 'var(--text-color-secondary)' }}>
+                      No data to display here!.
+                    </p>
                   </Padding>
                 }
               />

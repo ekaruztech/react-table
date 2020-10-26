@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
 import DataManagement from './utils/DataManagement'
-import { TableRefresh, Export, RenderOrder } from './utils/TableUtilities'
+import { Export, RenderOrder } from './utils/TableUtilities'
 import { ReactTableContext } from '../ReactTableContext'
 // eslint-disable-next-line no-unused-vars
 import { DataFilterObject, DataSortObject } from '../../../types'
@@ -78,7 +78,7 @@ class Controls extends React.Component<
 
     return (
       <ReactTableContext.Consumer>
-        {({ dataSource, columns, model, onRefresh }) => {
+        {({ dataSource, columns, model }) => {
           return (
             <div className='ReactTable___table-container-header'>
               <div className='ReactTable___table-container-header-inner-left'>
@@ -123,9 +123,6 @@ class Controls extends React.Component<
               </div>
 
               <div className='ReactTable___table-container-header-inner-right'>
-                {isFunction(onRefresh) && (
-                  <TableRefresh onRefresh={onRefresh} />
-                )}
                 <RenderOrder
                   onRenderOrderChange={onRenderOrderChange}
                   model={model}

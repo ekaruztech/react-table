@@ -182,7 +182,6 @@ class Table extends React.Component<TableProps, any> {
           columnKeys,
           selectedTableItems,
           model,
-          isControlsPresent,
           onRefresh
         }) => {
           return (
@@ -245,7 +244,6 @@ class Table extends React.Component<TableProps, any> {
                       minColumns={minColumns}
                       defaultColumns={defaultColumns}
                       allowCellSelect={!!onCellSelect}
-                      isControlsPresent={isControlsPresent}
                       loading={!!loading}
                       onRefresh={onRefresh}
                     />

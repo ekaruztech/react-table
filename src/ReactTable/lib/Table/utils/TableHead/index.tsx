@@ -20,7 +20,6 @@ interface TableHeadProps {
   minColumns: number
   defaultColumns: ColumnProps[]
   allowCellSelect: boolean
-  isControlsPresent: boolean
   loading: boolean
   onRefresh?: () => void
 }
@@ -37,8 +36,7 @@ const TableHead: React.FC<TableHeadProps> = (props) => {
     defaultColumns,
     allowCellSelect,
     loading,
-    onRefresh,
-    isControlsPresent
+    onRefresh
   } = props
   const handleRefresh = () => {
     if (isFunction(onRefresh)) {
@@ -110,38 +108,34 @@ const TableHead: React.FC<TableHeadProps> = (props) => {
           }}
           className='ReactTable___table-header-cell selectable-header-cell table-header-cell-fixed-right'
         >
-          {!isControlsPresent && (
-            <Padding right={10}>
-              <motion.div
-                className='ReactTable___table-selectable-header-cell-child-container'
-                whileTap={{ scale: 0.8 }}
-                whileHover={{ scale: 1.15 }}
-              >
-                <Tooltip title='Refresh' placement='left'>
-                  <Button
-                    type='text'
-                    shape={'circle'}
-                    disabled={loading}
-                    onClick={handleRefresh}
-                    icon={
-                      <span
-                        className={`anticon ${
-                          loading ? 'anticon-loading' : ''
+          <Padding right={10}>
+            <motion.div
+              className='ReactTable___table-selectable-header-cell-child-container'
+              whileTap={{ scale: 0.8 }}
+              whileHover={{ scale: 1.15 }}
+            >
+              <Tooltip title='Refresh' placement='left'>
+                <Button
+                  type='text'
+                  shape={'circle'}
+                  disabled={loading}
+                  onClick={handleRefresh}
+                  icon={
+                    <span
+                      className={`anticon ${loading ? 'anticon-loading' : ''}`}
+                    >
+                      <i
+                        className={`ri-refresh-line column-refresh-button ${
+                          loading ? 'anticon-spin' : ''
                         }`}
-                      >
-                        <i
-                          className={`ri-refresh-line column-refresh-button ${
-                            loading ? 'anticon-spin' : ''
-                          }`}
-                          style={{ fontSize: 17 }}
-                        />
-                      </span>
-                    }
-                  />
-                </Tooltip>
-              </motion.div>
-            </Padding>
-          )}
+                        style={{ fontSize: 17 }}
+                      />
+                    </span>
+                  }
+                />
+              </Tooltip>
+            </motion.div>
+          </Padding>
           <motion.div className='ReactTable___table-selectable-header-cell-child-container'>
             <Popover
               placement='bottomRight'
