@@ -46,12 +46,12 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     this.maxColumns = clamp(this.props.maxColumns || 3, this.minColumns, 10)
 
     if (!this.props.name) {
-      invariant(false, 'Name property is required')
+      invariant(false, 'Name property is required in react table')
     }
     if (!isString(this.props.name)) {
       invariant(
         false,
-        `Name property expected a string, got ${typeof this.props
+        `Name property in react table expected a string, got ${typeof this.props
           .name} instead.`
       )
     }

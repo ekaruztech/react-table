@@ -25,7 +25,10 @@ const enumeratePresets = (
   columns: ColumnProps[],
   maxColumns: number,
   minColumns: number
-): { selected: ColumnProps[]; unselected: ColumnProps[] } => {
+): {
+  unselected: ColumnProps[]
+  selected: ColumnProps[] | { key: string }[]
+} => {
   if (
     model?.columnReorder?.presets &&
     !!model?.columnReorder?.presets?.length
@@ -48,9 +51,14 @@ const enumeratePresets = (
       })
 
     if (presetIsUsable) {
-      const presetColumns: ColumnProps[] = columns.filter(
-        (column: ColumnProps) => {
-          return model.columnReorder.presets.includes(column.key)
+      const presetColumns:
+        | ColumnProps[]
+        | { key: string }[] = model.columnReorder.presets.map(
+        (preset: string) => {
+          const value = columns.find(
+            (column: ColumnProps) => column.key === preset
+          )
+          return value || { key: preset }
         }
       )
       const unselectedColumns: ColumnProps[] = columns.filter(
