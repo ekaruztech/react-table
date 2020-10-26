@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
-import { Button, Select, Tag, Tooltip } from 'antd'
+import { Button, Select, Tag, Tooltip, Row, Col } from 'antd'
 import { motion } from 'framer-motion'
-import { toPercentage, useDimension } from '../../../../../../../../hooks'
+import { useDimension } from '../../../../../../../../hooks'
 import Align from '../../../../../../../../Align'
-import Margin from '../../../../../../../../Margin'
 import {
   // eslint-disable-next-line no-unused-vars
   ColumnProps,
@@ -203,6 +202,9 @@ export default (props: FilterItemProps) => {
         propertyType: newProperty?.type || 'text'
       }
     }))
+    setFilterType(
+      evaluatePropertyTypeToFilterType(newProperty?.type || 'text')[0]?.value
+    )
   }
 
   /**
@@ -277,11 +279,13 @@ export default (props: FilterItemProps) => {
       return null
     }
     return type !== 'text' && type !== 'list' ? (
-      <Margin right={20}>
-        <Tag style={{ height: 32, lineHeight: '32px' }} color='processing'>
-          {prefix()}
-        </Tag>
-      </Margin>
+      <Col span={2}>
+        <Align justifyCenter alignCenter style={{ width: '100%' }}>
+          <Tag style={{ height: 32, lineHeight: '32px' }} color='processing'>
+            {prefix()}
+          </Tag>
+        </Align>
+      </Col>
     ) : null
   }
   const SuffixStatement = () => {
@@ -301,11 +305,11 @@ export default (props: FilterItemProps) => {
       type === 'datetime' ||
       type === 'currency') &&
       (filterType || '').includes('between') ? (
-      <Margin horizontal={20}>
+      <Align alignCenter justifyCenter>
         <Tag style={{ height: 32, lineHeight: '32px' }} color='processing'>
           {suffix()}
         </Tag>
-      </Margin>
+      </Align>
     ) : null
   }
 
@@ -334,16 +338,22 @@ export default (props: FilterItemProps) => {
             />
           </Align>
         )}
-        <Margin style={{ width: '100%' }}>
-          <Align alignCenter style={{ width: '100%' }}>
-            <Margin right={20}>
+
+        <Align alignCenter style={{ width: '100%' }}>
+          <Row gutter={[20, 0]} style={{ width: '100%' }}>
+            <Col
+              span={
+                type !== 'boolean'
+                  ? type !== 'text' && type !== 'list'
+                    ? 6
+                    : 7
+                  : 11
+              }
+            >
               <Select
                 showSearch
                 style={{
-                  width: toPercentage(
-                    dimension.width,
-                    type === 'boolean' ? 0.45 : 0.3
-                  )
+                  width: '100%'
                 }}
                 placeholder='Select a property'
                 onChange={handlePropertyChange}
@@ -358,39 +368,40 @@ export default (props: FilterItemProps) => {
                   )
                 })}
               </Select>
-            </Margin>
-            <Margin right={20}>
-              <Align alignCenter>
-                <PrefixStatement />
-                <Select
-                  style={{
-                    width: toPercentage(
-                      dimension.width,
-                      type === 'boolean' ? 0.41 : 0.2
-                    )
-                  }}
-                  onChange={(value) => onFilterTypeChange(value)}
-                  value={filterType || ''}
-                >
-                  {(
-                    evaluatePropertyTypeToFilterType(
-                      property?.type || 'text'
-                    ) || stringFilters
-                  ).map(({ value, label }, index) => {
-                    return (
-                      <Option value={value} key={index}>
-                        {label}
-                      </Option>
-                    )
-                  })}
-                </Select>
-              </Align>
-            </Margin>
-            {type !== 'boolean' && (
-              <Align
-                alignCenter
-                style={{ width: toPercentage(dimension.width, 0.5) }}
+            </Col>
+            <PrefixStatement />
+
+            <Col
+              span={
+                type !== 'boolean'
+                  ? type !== 'text' && type !== 'list'
+                    ? 5
+                    : 6
+                  : 10
+              }
+            >
+              <Select
+                style={{
+                  width: '100%'
+                }}
+                onChange={(value) => onFilterTypeChange(value)}
+                value={filterType || ''}
               >
+                {(
+                  evaluatePropertyTypeToFilterType(property?.type || 'text') ||
+                  stringFilters
+                ).map(({ value, label }, index) => {
+                  return (
+                    <Option value={value} key={index}>
+                      {label}
+                    </Option>
+                  )
+                })}
+              </Select>
+            </Col>
+
+            {type !== 'boolean' && (
+              <Col span={10}>
                 <RenderFilterType
                   autoCompleteOptions={autoCompleteOptions}
                   suffix={SuffixStatement}
@@ -402,28 +413,30 @@ export default (props: FilterItemProps) => {
                   handleFilterValueChange={handleFilterValueChange}
                   currentData={filterData}
                 />
-              </Align>
+              </Col>
             )}
+            <Col span={1}>
+              <Tooltip title='Remove'>
+                <motion.div whileTap={{ scale: 0.8 }}>
+                  <Button
+                    type='text'
+                    danger
+                    shape={'circle'}
+                    onClick={() => handleFilterRemoval(filterData.filterIndex)}
+                  >
+                    <span className='anticon'>
+                      <i
+                        className='ri-delete-bin-2-line'
+                        style={{ fontSize: 16 }}
+                      />
+                    </span>
+                  </Button>
+                </motion.div>
+              </Tooltip>
+            </Col>
+          </Row>
+        </Align>
 
-            <Tooltip title='Remove'>
-              <motion.div whileTap={{ scale: 0.8 }}>
-                <Button
-                  type='text'
-                  danger
-                  shape={'circle'}
-                  onClick={() => handleFilterRemoval(filterData.filterIndex)}
-                >
-                  <span className='anticon'>
-                    <i
-                      className='ri-delete-bin-2-line'
-                      style={{ fontSize: 16 }}
-                    />
-                  </span>
-                </Button>
-              </motion.div>
-            </Tooltip>
-          </Align>
-        </Margin>
         {!isLastIndex && isMoreThanOne && (
           <motion.div
             exit={{ opacity: 0 }}

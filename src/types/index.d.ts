@@ -132,6 +132,7 @@ export interface ReactTableProps {
   name: string
   minColumns: number
   maxColumns: number
+  onRefresh?: () => void
 }
 export interface ReactTableProviderProps {
   columns: TableColumnProps
@@ -148,6 +149,8 @@ export interface ReactTableProviderProps {
   setSelectedTableItems: (items: SelectedTableItems) => void
   defaultColumns: ColumnProps[]
   model: Model
+  isControlsPresent: boolean
+  onRefresh?: () => void
 }
 
 export interface TableBodyProviderProps {

@@ -1,7 +1,9 @@
 import { Button, Dropdown, Menu, Tooltip } from 'antd'
 import React from 'react'
-import { first, last, isFunction, isBoolean } from 'lodash'
+import { first, last, isFunction, isBoolean, isPlainObject } from 'lodash'
 import './styles.scss'
+
+type EnableExport = { csv?: boolean; pdf?: boolean; excel?: boolean }
 
 interface ExportProps {
   enableExport?:
@@ -9,6 +11,7 @@ interface ExportProps {
     | [boolean, boolean]
     | [boolean]
     | boolean
+    | EnableExport
   onExport?: (exportType: 'csv' | 'pdf' | 'excel') => void
 }
 const Export: React.FC<ExportProps> = (props) => {
@@ -16,21 +19,27 @@ const Export: React.FC<ExportProps> = (props) => {
 
   const enableCsv =
     (Array.isArray(enableExport) &&
-      enableExport?.length >= 1 &&
+      (enableExport?.length || 0) >= 1 &&
       !!first(enableExport)) ||
-    (isBoolean(enableExport) && enableExport)
+    (isBoolean(enableExport) && enableExport) ||
+    // eslint-disable-next-line dot-notation
+    (enableExport && isPlainObject(enableExport) && enableExport['csv'])
 
   const enableExcel =
     (Array.isArray(enableExport) &&
-      enableExport?.length >= 2 &&
+      (enableExport?.length || 0) >= 2 &&
       enableExport[1]) ||
-    (isBoolean(enableExport) && enableExport)
+    (isBoolean(enableExport) && enableExport) ||
+    // eslint-disable-next-line dot-notation
+    (enableExport && isPlainObject(enableExport) && enableExport['excel'])
 
   const enablePdf =
     (Array.isArray(enableExport) &&
-      enableExport?.length === 3 &&
+      (enableExport?.length || 0) === 3 &&
       !!last(enableExport)) ||
-    (isBoolean(enableExport) && enableExport)
+    (isBoolean(enableExport) && enableExport) ||
+    // eslint-disable-next-line dot-notation
+    (enableExport && isPlainObject(enableExport) && enableExport['pdf'])
 
   const menu = (
     <Menu

@@ -17,16 +17,33 @@ import {
 import Align from '../../../../../../Align'
 import { Button, Popover, Tooltip } from 'antd'
 import Margin from '../../../../../../Margin'
+// eslint-disable-next-line no-unused-vars
+import Model from '../../../../../../_utils/model'
 
 interface ModalFooterProps {
   activeTab: string
   dispatch: React.Dispatch<DateManagementAction>
   state: DateManagementState
-  onFilterApply?: (filters: DataFilterObject[]) => void
+  onFilterApply?: (value: {
+    filters: DataFilterObject[]
+    queryType: 'or' | 'and'
+  }) => void
   onFilterClear?: () => void
+  onSortApply?: (filters: DataSortObject[]) => void
+  onSortClear?: () => void
+  model: Model
 }
 const ModalFooter: React.FC<ModalFooterProps> = (props) => {
-  const { activeTab, dispatch, state, onFilterApply, onFilterClear } = props
+  const {
+    activeTab,
+    dispatch,
+    state,
+    onFilterApply,
+    onFilterClear,
+    onSortApply,
+    onSortClear,
+    model
+  } = props
   if (activeTab === 'filter') {
     const addFilter = () => {
       dispatch({
@@ -46,7 +63,7 @@ const ModalFooter: React.FC<ModalFooterProps> = (props) => {
         const filters: DataFilterObject[] = state.filters.map(
           (o: DataManagementFilterProps) => o.filterProps
         )
-        onFilterApply(filters)
+        onFilterApply({ filters, queryType: model.advancedFilter.queryType })
       }
     }
     const clearFilters = () => {
@@ -135,19 +152,18 @@ const ModalFooter: React.FC<ModalFooterProps> = (props) => {
       })
     }
     const applySort = () => {
-      if (isFunction(onFilterApply)) {
+      if (isFunction(onSortApply)) {
         const sorts: DataSortObject[] = state.sorts.map(
           (o: DataManagementSortProps) => o.sortProps
         )
-        console.log(sorts)
-        // onFilterApply(sort)
+        onSortApply(sorts)
       }
     }
     const clearSorts = () => {
       dispatch({ type: 'RESET_SORT' })
-      // if (isFunction(onFilterClear)) {
-      //   onFilterClear()
-      // }
+      if (isFunction(onSortClear)) {
+        onSortClear()
+      }
     }
     return (
       <Align style={{ width: '100%' }} alignCenter justifyBetween>

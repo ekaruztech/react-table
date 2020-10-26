@@ -28,7 +28,6 @@ import { enumeratePresets } from '../_utils'
 
 // TODO: Create filter priority field. defaults to advanced filter.
 // TODO: If advanced filter is priority and show in quick filter that advanced filter was enabled and add button to open for clearing
-// TODO: Add refresh button beside the customize column button if Controls is not used
 // TODO add ways to disable data-management
 
 class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
@@ -211,7 +210,9 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       selectedTableItems: this.state.selectedTableItems,
       setSelectedTableItems: this.setSelectedTableItems,
       defaultColumns: this.props.columns,
-      model
+      model,
+      isControlsPresent: this.state.isControlsPresent,
+      onRefresh: this.props.onRefresh
     }
 
     const childrenLength = React.Children.count(children)

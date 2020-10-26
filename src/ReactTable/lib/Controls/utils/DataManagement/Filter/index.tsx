@@ -83,9 +83,9 @@ export default (props: DataManagementFilterProps) => {
               }}
               description={
                 <Padding top={15} componentType='span'>
-                  <p style={{ color: 'var(--text-color-secondary)' }}>
+                  <span style={{ color: 'var(--text-color-secondary)' }}>
                     No filter was added, click Add filter to add one.
-                  </p>
+                  </span>
                 </Padding>
               }
             >

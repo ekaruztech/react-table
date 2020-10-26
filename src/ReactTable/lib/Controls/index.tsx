@@ -5,20 +5,25 @@ import DataManagement from './utils/DataManagement'
 import { TableRefresh, Export, RenderOrder } from './utils/TableUtilities'
 import { ReactTableContext } from '../ReactTableContext'
 // eslint-disable-next-line no-unused-vars
-import { DataFilterObject } from '../../../types'
+import { DataFilterObject, DataSortObject } from '../../../types'
 import './styles.scss'
 
 interface ReactTableControlsProps {
   onRenderOrderChange: (renderOrder: number) => void
-  onRefresh?: () => void
-  onFilterApply?: (filters: DataFilterObject[]) => void
+  onFilterApply?: (value: {
+    filters: DataFilterObject[]
+    queryType: 'or' | 'and'
+  }) => void
   onFilterClear?: () => void
   enableExport?:
     | [boolean, boolean, boolean]
     | [boolean, boolean]
     | [boolean]
     | boolean
+    | { csv?: boolean; pdf?: boolean; excel?: boolean }
   onExport?: (exportType: 'csv' | 'pdf' | 'excel') => void
+  onSortApply?: (filters: DataSortObject[]) => void
+  onSortClear?: () => void
 }
 
 interface ReactTableControlsPropsState {
@@ -63,16 +68,17 @@ class Controls extends React.Component<
     | undefined {
     const {
       onRenderOrderChange,
-      onRefresh,
       onFilterApply,
       onFilterClear,
       onExport,
-      enableExport
+      enableExport,
+      onSortApply,
+      onSortClear
     } = this.props
 
     return (
       <ReactTableContext.Consumer>
-        {({ dataSource, columns, model }) => {
+        {({ dataSource, columns, model, onRefresh }) => {
           return (
             <div className='ReactTable___table-container-header'>
               <div className='ReactTable___table-container-header-inner-left'>
@@ -106,6 +112,8 @@ class Controls extends React.Component<
                     model={model}
                     onFilterApply={onFilterApply}
                     onFilterClear={onFilterClear}
+                    onSortApply={onSortApply}
+                    onSortClear={onSortClear}
                   />
                 </div>
 

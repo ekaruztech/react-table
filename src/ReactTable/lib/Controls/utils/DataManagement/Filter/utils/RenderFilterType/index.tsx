@@ -1,5 +1,13 @@
 import Align from '../../../../../../../../Align'
-import { AutoComplete, DatePicker, InputNumber, Select, Input } from 'antd'
+import {
+  AutoComplete,
+  DatePicker,
+  InputNumber,
+  Select,
+  Input,
+  Row,
+  Col
+} from 'antd'
 import moment from 'moment'
 import { has, isEmpty, isNumber } from 'lodash'
 import { toPercentage } from '../../../../../../../../hooks'
@@ -39,57 +47,67 @@ export default (props: RenderFilterTypeProps) => {
   if ((filterType || '').includes('between'))
     return (
       <Align style={{ width: '100%' }} alignCenter justifyBetween>
-        {type === 'date' || type === 'datetime' ? (
-          <DatePicker
-            style={{ width: '45%' }}
-            showTime={type === 'datetime'}
-            value={moment(
-              isDate(value?.start && new Date(value?.start))
-                ? value?.start
-                : new Date()
+        <Row gutter={[20, 0]} style={{ width: '100%', margin: 0 }}>
+          <Col span={10} style={{ paddingLeft: 0 }}>
+            {type === 'date' || type === 'datetime' ? (
+              <DatePicker
+                style={{ width: '100%' }}
+                showTime={type === 'datetime'}
+                value={moment(
+                  isDate(value?.start && new Date(value?.start))
+                    ? value?.start
+                    : new Date()
+                )}
+                onChange={(date) =>
+                  handleFilterValueChange(
+                    moment(date || new Date()).toDate(),
+                    'range',
+                    'start'
+                  )
+                }
+              />
+            ) : (
+              <InputNumber
+                defaultValue={0}
+                value={isNumber(value?.start) ? value?.start : 0}
+                style={{ width: '100%' }}
+                onChange={(num) =>
+                  handleFilterValueChange(num, 'range', 'start')
+                }
+              />
             )}
-            onChange={(date) =>
-              handleFilterValueChange(
-                moment(date || new Date()).toDate(),
-                'range',
-                'start'
-              )
-            }
-          />
-        ) : (
-          <InputNumber
-            defaultValue={0}
-            value={isNumber(value?.start) ? value?.start : 0}
-            style={{ width: '45%' }}
-            onChange={(num) => handleFilterValueChange(num, 'range', 'start')}
-          />
-        )}
-        <SuffixStatement />
-        {type === 'date' || type === 'datetime' ? (
-          <DatePicker
-            style={{ width: '45%' }}
-            showTime={type === 'datetime'}
-            value={moment(
-              isDate(value?.end && new Date(value?.end))
-                ? value?.end
-                : new Date()
+          </Col>
+          <Col span={4}>
+            <SuffixStatement />
+          </Col>
+          <Col span={10} style={{ paddingRight: 0 }}>
+            {type === 'date' || type === 'datetime' ? (
+              <DatePicker
+                style={{ width: '100%' }}
+                showTime={type === 'datetime'}
+                value={moment(
+                  isDate(value?.end && new Date(value?.end))
+                    ? value?.end
+                    : new Date()
+                )}
+                onChange={(date) =>
+                  handleFilterValueChange(
+                    moment(date || new Date()).toDate(),
+                    'range',
+                    'end'
+                  )
+                }
+              />
+            ) : (
+              <InputNumber
+                defaultValue={0}
+                style={{ width: '100%' }}
+                value={isNumber(value?.end) ? value?.end : 0}
+                onChange={(num) => handleFilterValueChange(num, 'range', 'end')}
+              />
             )}
-            onChange={(date) =>
-              handleFilterValueChange(
-                moment(date || new Date()).toDate(),
-                'range',
-                'end'
-              )
-            }
-          />
-        ) : (
-          <InputNumber
-            defaultValue={0}
-            style={{ width: '45%' }}
-            value={isNumber(value?.end) ? value?.end : 0}
-            onChange={(num) => handleFilterValueChange(num, 'range', 'end')}
-          />
-        )}
+          </Col>
+        </Row>
       </Align>
     )
 

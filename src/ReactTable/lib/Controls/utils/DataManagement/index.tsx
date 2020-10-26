@@ -12,7 +12,9 @@ import {
   // eslint-disable-next-line no-unused-vars
   DateManagementState,
   // eslint-disable-next-line no-unused-vars
-  DataFilterObject
+  DataFilterObject,
+  // eslint-disable-next-line no-unused-vars
+  DataSortObject
 } from '../../../../../types'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../_utils/model'
@@ -28,8 +30,13 @@ interface DataManagementProps {
   columns: TableColumnProps
   dataSource: any
   model: Model
-  onFilterApply?: (filters: DataFilterObject[]) => void
+  onFilterApply?: (value: {
+    filters: DataFilterObject[]
+    queryType: 'or' | 'and'
+  }) => void
   onFilterClear?: () => void
+  onSortApply?: (filters: DataSortObject[]) => void
+  onSortClear?: () => void
 }
 
 const DataManagement: React.FC<DataManagementProps> = (props) => {
@@ -40,7 +47,9 @@ const DataManagement: React.FC<DataManagementProps> = (props) => {
     dataSource,
     model,
     onFilterClear,
-    onFilterApply
+    onFilterApply,
+    onSortApply,
+    onSortClear
   } = props
   const [activeTab, setActiveTab] = useState('filter')
 
@@ -71,6 +80,9 @@ const DataManagement: React.FC<DataManagementProps> = (props) => {
           state={state}
           onFilterApply={onFilterApply}
           onFilterClear={onFilterClear}
+          onSortApply={onSortApply}
+          onSortClear={onSortClear}
+          model={model}
         />
       ]}
     >

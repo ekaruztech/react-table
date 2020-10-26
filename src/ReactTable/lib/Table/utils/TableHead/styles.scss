@@ -45,11 +45,9 @@
   background: var(--background-secondary);
   &:nth-child(1) {
     border-left: 1.3px solid var(--table-header-border);
-
   }
   &:nth-child(2) {
     left: 60px;
-
   }
 }
 .ReactTable___table-header-cell.table-header-cell-fixed-left.table-cell-fixed-left-shadow::before {
@@ -113,7 +111,14 @@
     .column-reorder-button {
       &:hover {
         color: var(--accent);
-        transition: color .2s var(--transition);
+        transition: color 0.2s var(--transition);
+      }
+    }
+    .column-refresh-button {
+      color: var(--text-color);
+      &:hover {
+        color: var(--accent) !important;
+        transition: color 0.2s var(--transition);
       }
     }
   }

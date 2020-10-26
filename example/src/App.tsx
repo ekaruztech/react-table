@@ -514,7 +514,9 @@ const App = () => {
     range: { from: number; to: number }
   }>({ data: [], range: { from: 0, to: 15 } })
 
-  const [pageRenderOrder, setPageRenderOrder] = useState(model?.renderOrder || 15)
+  const [pageRenderOrder, setPageRenderOrder] = useState(
+    model?.renderOrder || 15
+  )
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pagination, setPagination] = useState({
     all: db.dataSource.length,
@@ -549,7 +551,7 @@ const App = () => {
       onClick: (value: any) => console.log(value),
       icon: (
         <span className='anticon'>
-          <i className='ri-focus-line'></i>
+          <i className='ri-focus-line' />
         </span>
       )
     },
@@ -558,7 +560,7 @@ const App = () => {
       onClick: (value: any) => console.log(value),
       icon: (
         <span className='anticon'>
-          <i className='ri-switch-line'></i>
+          <i className='ri-switch-line' />
         </span>
       )
     }
@@ -583,12 +585,16 @@ const App = () => {
           dataSource={dataSource.data}
           maxColumns={db.maxColumns}
           minColumns={db.minColumns}
+          onRefresh={() => console.log('refreshing')}
         >
           <ReactTable.Controls
             onRenderOrderChange={onRenderOrderChange}
-            onRefresh={() => null}
             enableExport
             onExport={(key) => console.log(key)}
+            onSortApply={(sort: any) => console.log(sort)}
+            onSortClear={() => console.log('sort cleared')}
+            onFilterApply={(filter: any) => console.log(filter)}
+            onFilterClear={() => console.log('sort cleared')}
           />
           <ReactTable.QuickFilter
             onApply={(value: any) => console.log(value)}
@@ -604,6 +610,9 @@ const App = () => {
               onDelete: (source: any[]) => console.log(source, selectCount),
               onPin: (source: any[]) => console.log(source, selectCount)
             })}
+            hoverActions={{
+              onEdit: () => console.log('Hover Actions On Edit')
+            }}
             enableHoverActions={(source: any) => {
               return [source.hobby !== 'Teaching', true]
             }}

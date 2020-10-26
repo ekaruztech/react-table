@@ -71,9 +71,9 @@ const Sort: FC<SortProps> = (props) => {
               }}
               description={
                 <Padding top={15} componentType='span'>
-                  <p style={{ color: 'var(--text-color-secondary)' }}>
+                  <span style={{ color: 'var(--text-color-secondary)' }}>
                     No sort type was added, click Add sort to add one.
-                  </p>
+                  </span>
                 </Padding>
               }
             >

@@ -181,7 +181,9 @@ class Table extends React.Component<TableProps, any> {
           minColumns,
           columnKeys,
           selectedTableItems,
-          model
+          model,
+          isControlsPresent,
+          onRefresh
         }) => {
           return (
             <Fragment>
@@ -243,6 +245,9 @@ class Table extends React.Component<TableProps, any> {
                       minColumns={minColumns}
                       defaultColumns={defaultColumns}
                       allowCellSelect={!!onCellSelect}
+                      isControlsPresent={isControlsPresent}
+                      loading={!!loading}
+                      onRefresh={onRefresh}
                     />
                     <TableBody
                       columnKeys={columnKeys}
