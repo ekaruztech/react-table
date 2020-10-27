@@ -53,6 +53,7 @@ const useDimension = (
           height: element?.offsetHeight || 0,
           width: element?.offsetWidth || 0
         })
+        console.log(element?.offsetHeight, element?.offsetWidth)
       }
     }
     if (type === 'element' && elementId) {

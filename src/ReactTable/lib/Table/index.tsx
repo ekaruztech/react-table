@@ -212,11 +212,11 @@ class Table extends React.Component<TableProps, any> {
 
                 <ScrollBar
                   component='section'
-                  style={{
-                    overflow:
-                      isEmpty(dataSource) || loading ? 'unset' : 'auto hidden'
-                  }}
-                  className='ReactTable___scroll-wrapper'
+                  className={`ReactTable___scroll-wrapper ${
+                    isEmpty(dataSource) || loading
+                      ? 'ReactTable___scroll-wrapper-unset'
+                      : ''
+                  }`}
                   containerRef={(ref: HTMLElement) => {
                     this.scrollComponentRef = ref
                   }}

@@ -89,37 +89,39 @@ const TableBody: React.FC<ITableBody> = (props) => {
         </motion.tr>
       )}
       {!loading && isEmpty(dataSource) && (
-        <motion.td
-          exit={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          initial={{ opacity: 0 }}
-          colSpan={columnKeys.length + 2}
-          className={'ReactTable___table-body-td'}
-          style={{
-            maxWidth: dimensions.width,
-            width: dimensions.width,
-            minWidth: dimensions.width
-          }}
-        >
-          <Align
-            className={'ReactTable___table-body-empty'}
-            alignCenter
-            justifyCenter
-            children={[
-              <Empty
-                key='empty-0'
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={
-                  <Padding top={15} componentType={'span'}>
-                    <p style={{ color: 'var(--text-color-secondary)' }}>
-                      No data to display here!.
-                    </p>
-                  </Padding>
-                }
-              />
-            ]}
-          />
-        </motion.td>
+        <tr>
+          <motion.td
+            exit={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            colSpan={columnKeys.length + 2}
+            className={'ReactTable___table-body-td'}
+            style={{
+              maxWidth: dimensions.width,
+              width: dimensions.width,
+              minWidth: dimensions.width
+            }}
+          >
+            <Align
+              className={'ReactTable___table-body-empty'}
+              alignCenter
+              justifyCenter
+              children={[
+                <Empty
+                  key='empty-0'
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description={
+                    <Padding top={15} componentType={'span'}>
+                      <span style={{ color: 'var(--text-color-secondary)' }}>
+                        No data to display here!.
+                      </span>
+                    </Padding>
+                  }
+                />
+              ]}
+            />
+          </motion.td>
+        </tr>
       )}
       <TableBodyContext.Provider
         value={{

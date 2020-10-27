@@ -418,7 +418,8 @@ const db = {
       type: 'date',
       presentationType: 'date',
       presentationColor: 'processing',
-      dateFormat: 'MMM dd, yyyy hh:mm aaa'
+      dateFormat: 'MMM dd, yyyy hh:mm aaa',
+      columnSpan: 3
     },
     {
       title: 'Cost',
@@ -426,7 +427,8 @@ const db = {
       key: 'cost',
       type: 'currency',
       currency: 'USD',
-      presentationColor: 'gold'
+      presentationColor: 'gold',
+      columnSpan: 2
     },
     {
       title: 'Hobby',
@@ -485,7 +487,7 @@ const db = {
       presentationColor: 'geekblue'
     }
   ],
-  maxColumns: 6,
+  maxColumns: 10,
   minColumns: 4
 }
 
@@ -581,7 +583,7 @@ const App = () => {
         <ReactTable
           name={'TestTable'}
           columns={db.columns}
-          dataSource={dataSource.data}
+          dataSource={[]}
           maxColumns={db.maxColumns}
           minColumns={db.minColumns}
           onRefresh={() => console.log('refreshing')}
