@@ -258,6 +258,7 @@ class Table extends React.Component<TableProps, any> {
                       allowCellMenu={!!cellMenu}
                       hoverActions={hoverActions}
                       enableHoverActions={enableHoverActions}
+                      scrollComponentRef={this.scrollComponentRef}
                     />
                   </table>
                 </ScrollBar>

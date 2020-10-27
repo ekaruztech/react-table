@@ -8,7 +8,6 @@ import Padding from '../../../../../Padding'
 import { TableBodyContext } from './utils/TableBodyContext'
 import { CellMenuProps } from '../CellMenu'
 import './styles.scss'
-import { useDimension } from '../../../../../hooks'
 
 interface ITableBody {
   columnKeys: string[]
@@ -28,6 +27,7 @@ interface ITableBody {
     | [boolean]
     | boolean
     | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
+  scrollComponentRef: HTMLElement
 }
 const TableBody: React.FC<ITableBody> = (props) => {
   const {
@@ -40,10 +40,14 @@ const TableBody: React.FC<ITableBody> = (props) => {
     allowCellSelect,
     allowCellMenu,
     hoverActions,
-    enableHoverActions = [true]
+    enableHoverActions = [true],
+    scrollComponentRef
   } = props
 
-  const dimensions = useDimension('element', 'ReactTable___table-container')
+  const dimensions = {
+    height: scrollComponentRef?.offsetHeight || 0,
+    width: scrollComponentRef?.offsetWidth || 0
+  }
 
   return (
     <motion.tbody className='ReactTable___table-body'>
