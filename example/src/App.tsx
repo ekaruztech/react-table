@@ -583,7 +583,7 @@ const App = () => {
         <ReactTable
           name={'TestTable'}
           columns={db.columns}
-          dataSource={[]}
+          dataSource={dataSource.data}
           maxColumns={db.maxColumns}
           minColumns={db.minColumns}
           onRefresh={() => console.log('refreshing')}
@@ -626,9 +626,10 @@ const App = () => {
             }}
             cellMenu={
               <ReactTable.CellMenu
-              // onDelete={() => null}
-              // onDuplicate={() => null}
-              // onEdit={() => null}
+                // onDelete={() => null}
+                // onDuplicate={() => null}
+                // onEdit={() => null}
+                enabledMenu={[true, false, true, false]}
               >
                 {({ source }: { source: any }) => {
                   return (
