@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../personal/react-table/.idea/ant-themed.iml" filepath="$PROJECT_DIR$/../../personal/react-table/.idea/ant-themed.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/react-table.iml" filepath="$PROJECT_DIR$/.idea/react-table.iml" />
     </modules>
   </component>

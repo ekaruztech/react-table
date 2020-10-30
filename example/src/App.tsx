@@ -629,7 +629,7 @@ const App = () => {
                 // onDelete={() => null}
                 // onDuplicate={() => null}
                 // onEdit={() => null}
-                enabledMenu={[true, false, true, false]}
+                enabledMenu={[true, false, true, true]}
               >
                 {({ source }: { source: any }) => {
                   return (

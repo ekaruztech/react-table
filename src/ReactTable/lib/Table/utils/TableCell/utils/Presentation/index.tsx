@@ -137,7 +137,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               marginRight: 0
             }}
           >
-            {data || '...........'}
+            {data || '--'}
           </Tag>
         )
       } else
@@ -152,7 +152,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               paddingLeft: 0
             }}
           >
-            {data || '...........'}
+            {data || '--'}
           </Tag>
         )
   }

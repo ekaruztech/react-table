@@ -185,7 +185,11 @@ const TableCell: React.FC<ITableCell> = (props) => {
                       {showHoverActions && (
                         <Fragment>
                           {enableExpandedViewHoverAction && (
-                            <Padding right={10}>
+                            <Padding
+                              right={
+                                !!cellMenu && !enableEditHoverAction ? 10 : 0
+                              }
+                            >
                               <Tooltip placement='top' title='Quick view'>
                                 <Button
                                   type='text'
@@ -218,7 +222,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                           )}
 
                           {enableEditHoverAction && (
-                            <Padding right={10}>
+                            <Padding right={!!cellMenu ? 10 : 0}>
                               <Tooltip placement='top' title={'Edit'}>
                                 <Button
                                   type='text'

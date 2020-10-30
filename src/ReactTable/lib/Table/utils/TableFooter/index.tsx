@@ -51,6 +51,7 @@ const TableFooter: React.FC<TableFooterProps> = (props) => {
             total={total}
             current={currentPage}
             onChange={onPaginate}
+            pageSize={model?.renderOrder?.selected || 15}
           />
         )}
       </div>

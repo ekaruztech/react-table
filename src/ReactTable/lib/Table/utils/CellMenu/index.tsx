@@ -1,11 +1,12 @@
-import { Button, Dropdown, Menu, Tooltip } from 'antd'
+import { Button, Dropdown, Menu, Tooltip, Modal } from 'antd'
 import { motion } from 'framer-motion'
 import React from 'react'
 
 import './_styles.scss'
 import { isFunction, isBoolean, first } from 'lodash'
 
-interface ICellMenu {
+const { confirm } = Modal
+interface CellMenuProps {
   showDrawer?:
     | ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
     | undefined
@@ -30,7 +31,7 @@ interface ICellMenu {
         | boolean)
 }
 
-class CellMenu extends React.Component<ICellMenu> {
+class CellMenu extends React.Component<CellMenuProps> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE =
     'REACT_-_TABLE_-_CELL_-_MENU'
 
@@ -53,6 +54,25 @@ class CellMenu extends React.Component<ICellMenu> {
       onEdit,
       enabledMenu = true
     } = this.props
+
+    const showConfirm = (): void => {
+      confirm({
+        title: 'Do you Want to delete item?',
+        icon: (
+          <span className={'anticon'}>
+            <i className='ri-error-warning-line' />
+          </span>
+        ),
+        onOk() {
+          if (onDelete && isFunction(onDelete)) {
+            onDelete(source?.key || null)
+          }
+        },
+        onCancel() {
+          return true
+        }
+      })
+    }
 
     const showExpandedView = (enabler: typeof enabledMenu) => {
       if (isFunction(enabler)) {
@@ -257,11 +277,7 @@ class CellMenu extends React.Component<ICellMenu> {
                 <Button
                   shape='circle'
                   type='text'
-                  onClick={() =>
-                    onDelete && isFunction(onDelete)
-                      ? onDelete(source?.key || null)
-                      : null
-                  }
+                  onClick={() => showConfirm()}
                   disabled={!showDelete(enabledMenu)}
                   icon={
                     <span className='anticon'>
@@ -307,4 +323,4 @@ class CellMenu extends React.Component<ICellMenu> {
   }
 }
 
-export { CellMenu as default, ICellMenu as CellMenuProps }
+export { CellMenu as default, CellMenuProps }
