@@ -166,4 +166,5 @@ export interface TableBodyProviderProps {
     | [boolean]
     | boolean
     | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
+  disableCell?: (source: any) => boolean
 }

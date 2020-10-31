@@ -36,6 +36,7 @@ interface TableProps {
     | [boolean]
     | boolean
     | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
+  disableCell?: (source: any) => boolean
 }
 class Table extends React.Component<TableProps, any> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE: string =
@@ -167,7 +168,8 @@ class Table extends React.Component<TableProps, any> {
       expandedView,
       onCellSelect,
       hoverActions,
-      enableHoverActions
+      enableHoverActions,
+      disableCell
     } = this.props
     return (
       <ReactTableContext.Consumer>
@@ -259,6 +261,7 @@ class Table extends React.Component<TableProps, any> {
                       hoverActions={hoverActions}
                       enableHoverActions={enableHoverActions}
                       scrollComponentRef={this.scrollComponentRef}
+                      disableCell={disableCell}
                     />
                   </table>
                 </ScrollBar>

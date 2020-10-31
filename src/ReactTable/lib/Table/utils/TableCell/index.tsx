@@ -33,6 +33,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
 
   // @ts-ignore
 
+  // TODO: Add table numbering.
   return (
     <ReactTableContext.Consumer>
       {({ onSelectedItemChange, selectedTableItems, columnKeys, columns }) => (
@@ -42,8 +43,12 @@ const TableCell: React.FC<ITableCell> = (props) => {
             allowCellSelect,
             cellMenu,
             hoverActions,
-            enableHoverActions
+            enableHoverActions,
+            disableCell
           }) => {
+            const isDisabled = isFunction(disableCell)
+              ? disableCell(source)
+              : false
             const cellSelected =
               find(selectedTableItems?.itemList, ['key', source?.key]) !==
               undefined
@@ -117,11 +122,11 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   }`}
                   key={source?.key}
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  animate={{ opacity: isDisabled ? 0.5 : 1 }}
                   exit={{ opacity: 0 }}
                   transition={{
                     type: 'spring',
-                    delay: (index || 1) * 0.03,
+                    delay: (index || 1) * 0.02,
                     stiffness: 100,
                     damping: 13
                   }}

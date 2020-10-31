@@ -49,12 +49,12 @@ const RenderOrder: React.FC<RenderOrderProps> = (props) => {
   }
 
   const onChange = (value: number) => {
-    if (isFunction(onRenderOrderChange)) {
-      onRenderOrderChange(value)
-    }
     // Persist data
     model.store('renderOrder', { selected: value })
     setRenderOrder(value)
+    if (isFunction(onRenderOrderChange)) {
+      onRenderOrderChange(value)
+    }
   }
 
   const removeCustomItem = (item: Item) => {

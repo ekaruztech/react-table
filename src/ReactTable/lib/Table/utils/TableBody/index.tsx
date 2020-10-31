@@ -28,6 +28,7 @@ interface ITableBody {
     | boolean
     | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
   scrollComponentRef: HTMLElement
+  disableCell?: (source: any) => boolean
 }
 const TableBody: React.FC<ITableBody> = (props) => {
   const {
@@ -41,7 +42,8 @@ const TableBody: React.FC<ITableBody> = (props) => {
     allowCellMenu,
     hoverActions,
     enableHoverActions = [true],
-    scrollComponentRef
+    scrollComponentRef,
+    disableCell
   } = props
 
   const dimensions = {
@@ -134,7 +136,8 @@ const TableBody: React.FC<ITableBody> = (props) => {
           expandedView,
           allowCellMenu,
           hoverActions,
-          enableHoverActions
+          enableHoverActions,
+          disableCell
         }}
       >
         {!loading &&

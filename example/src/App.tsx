@@ -607,6 +607,7 @@ const App = () => {
             onPaginate={onPaginate}
             loader={'skeleton'}
             loading={isLoadingContent}
+            disableCell={(source: any) => source.hobby === 'Teaching'}
             onCellSelect={(selectCount: number) => ({
               onDelete: (source: any[]) => console.log(source, selectCount),
               onPin: (source: any[]) => console.log(source, selectCount)
