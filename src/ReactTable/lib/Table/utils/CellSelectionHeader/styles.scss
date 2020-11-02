@@ -1,0 +1,23 @@
+.ReactTable___CellSelection {
+  width: 100%;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  background: var(--background-primary);
+  min-height: calc(60px - 10px);
+  height: calc(100% - 10px);
+}
+.ReactTable___CellSelection-row {
+  width: 100%;
+  margin: 0 !important;
+}
+.ReactTable___CellSelection-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  //margin-bottom: 10px;
+}
+.CellSelection-border {
+  border-right: 1px solid var(--border-color-split);
+  height: 100%;
+}

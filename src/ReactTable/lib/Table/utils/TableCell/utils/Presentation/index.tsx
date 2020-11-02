@@ -77,7 +77,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
             color={presentationColor || 'gold'}
             style={{
               fontWeight: bold ? 'bold' : 'normal',
-              marginRight: 0
+              marginRight: 0,
+              opacity: isDisabled ? 0.5 : 1
             }}
           >
             {currency}
@@ -92,7 +93,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               borderColor: 'transparent',
               background: 'transparent !important',
               marginRight: 0,
-              paddingLeft: 0
+              paddingLeft: 0,
+              opacity: isDisabled ? 0.5 : 1
             }}
           >
             {currency}
@@ -109,7 +111,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           <Tag
             color={presentationColor || 'default'}
             style={{
-              fontWeight: bold ? 'bold' : 'normal'
+              fontWeight: bold ? 'bold' : 'normal',
+              opacity: isDisabled ? 0.5 : 1
             }}
           >
             {date}
@@ -123,7 +126,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
               background: 'transparent !important',
-              paddingLeft: 0
+              paddingLeft: 0,
+              opacity: isDisabled ? 0.5 : 1
             }}
           >
             {date}
@@ -137,7 +141,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
             color={presentationColor || 'orange'}
             style={{
               fontWeight: bold ? 'bold' : 'normal',
-              marginRight: 0
+              marginRight: 0,
+              opacity: isDisabled ? 0.5 : 1
             }}
           >
             {data || '--'}
@@ -152,7 +157,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               borderColor: 'transparent',
               background: 'transparent !important',
               marginRight: 0,
-              paddingLeft: 0
+              paddingLeft: 0,
+              opacity: isDisabled ? 0.5 : 1
             }}
           >
             {data || '--'}

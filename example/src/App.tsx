@@ -3,7 +3,7 @@ import React from 'react'
 import { Table as ReactTable, Model } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import { useState, useEffect } from 'react'
-import { Menu } from 'antd'
+import { Menu, Tooltip, Button } from 'antd'
 
 export const evalStatusColor = (status: string) => {
   switch (status) {
@@ -608,10 +608,29 @@ const App = () => {
             loader={'skeleton'}
             loading={isLoadingContent}
             disableCell={(source: any) => source.hobby === 'Teaching'}
-            onCellSelect={(selectCount: number) => ({
-              onDelete: (source: any[]) => console.log(source, selectCount),
-              onPin: (source: any[]) => console.log(source, selectCount)
-            })}
+            cellSelectionMenu={Array(4).fill(
+              // <Padding horizontal={10} style={{ height: '100%' }}>
+              //   <div
+              //     style={{
+              //       height: '100%',
+              //       borderLeft: '1px solid var(--border-color-split)'
+              //     }}
+              //   />
+              // </Padding>
+              <Tooltip title='Pin selected'>
+                <Button
+                  type='text'
+                  onClick={() => null}
+                  icon={
+                    <span className='anticon'>
+                      <i className='ri-pushpin-line' />
+                    </span>
+                  }
+                >
+                  Pin
+                </Button>
+              </Tooltip>
+            )}
             hoverActions={{
               onEdit: () => console.log('Hover Actions On Edit')
             }}

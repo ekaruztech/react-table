@@ -132,11 +132,11 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   }}
                 >
                   {allowCellSelect && (
-                    <td
-                      className='ReactTable___table-body-cell table-body-cell-fixed-left'
-                      style={{ opacity: isDisabled ? 0.5 : 1 }}
-                    >
-                      <div className='ReactTable___table-body-cell-checkbox-container'>
+                    <td className='ReactTable___table-body-cell table-body-cell-fixed-left'>
+                      <div
+                        className='ReactTable___table-body-cell-checkbox-container'
+                        style={{ opacity: isDisabled ? 0.5 : 1 }}
+                      >
                         <Checkbox
                           key={source?.key}
                           onChange={(e) => {

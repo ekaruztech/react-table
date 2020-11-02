@@ -7,11 +7,6 @@ import TableFooter from './utils/TableFooter'
 import CellSelectionHeader from './utils/CellSelectionHeader'
 // import FixHeader from './utils/FixHeader'
 import { ReactTableContext } from '../ReactTableContext'
-// eslint-disable-next-line no-unused-vars
-import {
-  // eslint-disable-next-line no-unused-vars
-  OnCellSelect
-} from '../../../types'
 import CellMenu, { CellMenuProps } from './utils/CellMenu'
 import { isEmpty, last } from 'lodash'
 import CellExpanseSetter from './utils/CellExpanseSetter'
@@ -22,7 +17,8 @@ interface TableProps {
   onPaginate: (page: number) => void
   loading?: boolean
   loader?: 'skeleton' | 'spinner'
-  onCellSelect?: (selectCount: number) => OnCellSelect
+  cellSelectionSpacing?: number[] | number
+  cellSelectionMenu?: React.ReactNode[]
   /* JSX element for displaying expanded data for table cell */
   expandedView?: (source: any) => React.ReactNode
   /* JSX element for displaying menu for table cell */
@@ -166,10 +162,11 @@ class Table extends React.Component<TableProps, any> {
       loader,
       cellMenu,
       expandedView,
-      onCellSelect,
+      cellSelectionSpacing,
       hoverActions,
       enableHoverActions,
-      disableCell
+      disableCell,
+      cellSelectionMenu
     } = this.props
     return (
       <ReactTableContext.Consumer>
@@ -188,7 +185,10 @@ class Table extends React.Component<TableProps, any> {
         }) => {
           return (
             <Fragment>
-              <CellSelectionHeader onCellSelect={onCellSelect} />
+              <CellSelectionHeader
+                cellSelectionSpacing={cellSelectionSpacing}
+                cellSelectionMenu={cellSelectionMenu}
+              />
               <div
                 className='ReactTable___table-wrapper'
                 id='ReactTable___table_wrapper-identifier'
@@ -232,7 +232,7 @@ class Table extends React.Component<TableProps, any> {
                   <table className='ReactTable___table'>
                     <CellExpanseSetter
                       columns={columns}
-                      allowCellSelect={!!onCellSelect}
+                      allowCellSelect={!isEmpty(cellSelectionMenu)}
                       allowCellMenu={!!cellMenu}
                       enableHoverActions={enableHoverActions}
                     />
@@ -245,7 +245,7 @@ class Table extends React.Component<TableProps, any> {
                       maxColumns={maxColumns}
                       minColumns={minColumns}
                       defaultColumns={defaultColumns}
-                      allowCellSelect={!!onCellSelect}
+                      allowCellSelect={!isEmpty(cellSelectionMenu)}
                       loading={!!loading}
                       onRefresh={onRefresh}
                     />
@@ -256,7 +256,7 @@ class Table extends React.Component<TableProps, any> {
                       loader={loader}
                       cellMenu={cellMenu}
                       expandedView={expandedView}
-                      allowCellSelect={!!onCellSelect}
+                      allowCellSelect={!isEmpty(cellSelectionMenu)}
                       allowCellMenu={!!cellMenu}
                       hoverActions={hoverActions}
                       enableHoverActions={enableHoverActions}
