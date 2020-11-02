@@ -28,6 +28,7 @@ interface PresentationProps {
   source: any
   dateFormat: string | undefined
   currency: string | undefined
+  isDisabled: boolean
 }
 const Presentation: React.FC<PresentationProps> = (props) => {
   const {
@@ -41,7 +42,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
     bold,
     source,
     dateFormat,
-    currency: currencyType
+    currency: currencyType,
+    isDisabled
   } = props
 
   const fnPresentationColor =
@@ -59,6 +61,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           onClick={() => (actionCallback ? actionCallback(source) : null)}
           size='small'
           style={{ fontSize: 12 }}
+          disabled={isDisabled}
         >
           {actionTitle || ''}
         </Button>

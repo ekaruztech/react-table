@@ -122,7 +122,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   }`}
                   key={source?.key}
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: isDisabled ? 0.5 : 1 }}
+                  animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{
                     type: 'spring',
@@ -132,7 +132,10 @@ const TableCell: React.FC<ITableCell> = (props) => {
                   }}
                 >
                   {allowCellSelect && (
-                    <td className='ReactTable___table-body-cell table-body-cell-fixed-left'>
+                    <td
+                      className='ReactTable___table-body-cell table-body-cell-fixed-left'
+                      style={{ opacity: isDisabled ? 0.5 : 1 }}
+                    >
                       <div className='ReactTable___table-body-cell-checkbox-container'>
                         <Checkbox
                           key={source?.key}
@@ -165,7 +168,8 @@ const TableCell: React.FC<ITableCell> = (props) => {
                       key: `presentation__${
                         source?.key || index
                       }__of__column_${cellIndex}`,
-                      cellIndex
+                      cellIndex,
+                      isDisabled
                     })(
                       <Presentation
                         data={data}
@@ -181,11 +185,15 @@ const TableCell: React.FC<ITableCell> = (props) => {
                         source={source}
                         dateFormat={retrieved?.dateFormat}
                         currency={retrieved?.currency}
+                        isDisabled={isDisabled}
                       />
                     )
                   })}
 
-                  <td className='ReactTable___table-body-cell table-body-cell-fixed-right'>
+                  <td
+                    className='ReactTable___table-body-cell table-body-cell-fixed-right'
+                    style={{ opacity: isDisabled ? 0.5 : 1 }}
+                  >
                     <div className='ReactTable___table-utility'>
                       {showHoverActions && (
                         <Fragment>
