@@ -85,27 +85,29 @@ class Controls extends React.Component<
             <div className='ReactTable___table-container-header'>
               <div className='ReactTable___table-container-header-inner-left'>
                 <div className='ReactTable___table-filter-radio-sort'>
-                  <Tooltip title='Manage data'>
-                    <Button
-                      icon={
-                        <span className='anticon'>
-                          <i
-                            className='ri-database-2-line'
-                            style={{ fontSize: 17 }}
-                          />
-                        </span>
-                      }
-                      onClick={() => {
-                        this.setFilterColumn((prev) => ({
-                          ...prev,
-                          visible: true
-                        }))
-                      }}
-                      type='primary'
-                    >
-                      Data Management
-                    </Button>
-                  </Tooltip>
+                  {enableDataManagement && (
+                    <Tooltip title='Manage data'>
+                      <Button
+                        icon={
+                          <span className='anticon'>
+                            <i
+                              className='ri-database-2-line'
+                              style={{ fontSize: 17 }}
+                            />
+                          </span>
+                        }
+                        onClick={() => {
+                          this.setFilterColumn((prev) => ({
+                            ...prev,
+                            visible: true
+                          }))
+                        }}
+                        type='primary'
+                      >
+                        Data Management
+                      </Button>
+                    </Tooltip>
+                  )}
                   {enableDataManagement && (
                     <DataManagement
                       visible={this.state.filterColumn.visible}
