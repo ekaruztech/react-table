@@ -1,6 +1,7 @@
 import { Button, Dropdown, Menu, Tooltip } from 'antd'
 import React from 'react'
 import { first, last, isFunction, isBoolean, isPlainObject } from 'lodash'
+import { Margin } from '../../../../../../index'
 import './styles.scss'
 
 type EnableExport = { csv?: boolean; pdf?: boolean; excel?: boolean }
@@ -91,23 +92,25 @@ const Export: React.FC<ExportProps> = (props) => {
   )
 
   return enableExcel || enableCsv || enablePdf ? (
-    <Dropdown overlay={menu} trigger={['click']}>
-      <Tooltip title='Export data'>
-        <Button
-          icon={
-            <span className='anticon'>
-              <i
-                className='ri-download-cloud-2-line'
-                style={{ fontSize: 17 }}
-              />
-            </span>
-          }
-          style={{ width: 160 }}
-        >
-          Export data
-        </Button>
-      </Tooltip>
-    </Dropdown>
+    <Margin left={20}>
+      <Dropdown overlay={menu} trigger={['click']}>
+        <Tooltip title='Export data'>
+          <Button
+            icon={
+              <span className='anticon'>
+                <i
+                  className='ri-download-cloud-2-line'
+                  style={{ fontSize: 17 }}
+                />
+              </span>
+            }
+            style={{ width: 160 }}
+          >
+            Export data
+          </Button>
+        </Tooltip>
+      </Dropdown>
+    </Margin>
   ) : null
 }
 
