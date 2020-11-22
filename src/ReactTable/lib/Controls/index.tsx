@@ -6,6 +6,7 @@ import { Export, RenderOrder } from './utils/TableUtilities'
 import { ReactTableContext } from '../ReactTableContext'
 // eslint-disable-next-line no-unused-vars
 import { DataFilterObject, DataSortObject } from '../../../types'
+import Margin from '../../../Margin'
 import './styles.scss'
 
 interface ReactTableControlsProps {
@@ -84,31 +85,32 @@ class Controls extends React.Component<
           return (
             <div className='ReactTable___table-container-header'>
               <div className='ReactTable___table-container-header-inner-left'>
-                <div className='ReactTable___table-filter-radio-sort'>
-                  {enableDataManagement && (
-                    <Tooltip title='Manage data'>
-                      <Button
-                        icon={
-                          <span className='anticon'>
-                            <i
-                              className='ri-database-2-line'
-                              style={{ fontSize: 17 }}
-                            />
-                          </span>
-                        }
-                        onClick={() => {
-                          this.setFilterColumn((prev) => ({
-                            ...prev,
-                            visible: true
-                          }))
-                        }}
-                        type='primary'
-                      >
-                        Data Management
-                      </Button>
-                    </Tooltip>
-                  )}
-                  {enableDataManagement && (
+                {enableDataManagement && (
+                  <div className='ReactTable___table-filter-radio-sort'>
+                    <Margin right={20}>
+                      <Tooltip title='Manage data'>
+                        <Button
+                          icon={
+                            <span className='anticon'>
+                              <i
+                                className='ri-database-2-line'
+                                style={{ fontSize: 17 }}
+                              />
+                            </span>
+                          }
+                          onClick={() => {
+                            this.setFilterColumn((prev) => ({
+                              ...prev,
+                              visible: true
+                            }))
+                          }}
+                          type='primary'
+                        >
+                          Data Management
+                        </Button>
+                      </Tooltip>
+                    </Margin>
+
                     <DataManagement
                       visible={this.state.filterColumn.visible}
                       handleCancel={this.handleFilterColumnCancel}
@@ -120,9 +122,8 @@ class Controls extends React.Component<
                       onSortApply={onSortApply}
                       onSortClear={onSortClear}
                     />
-                  )}
-                </div>
-
+                  </div>
+                )}
                 <div className='ReactTable___table-filter-btn-container'>
                   <Export onExport={onExport} enableExport={enableExport} />
                 </div>

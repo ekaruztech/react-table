@@ -596,6 +596,7 @@ const App = () => {
             onSortClear={() => console.log('sort cleared')}
             onFilterApply={(filter: any) => console.log(filter)}
             onFilterClear={() => console.log('sort cleared')}
+            enableDataManagement={false}
           />
           <ReactTable.QuickFilter
             onApply={(value: any) => console.log(value)}
