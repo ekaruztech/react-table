@@ -110,9 +110,17 @@ const TableHead: React.FC<TableHeadProps> = (props) => {
         >
           <Padding right={10}>
             <motion.div
-              className='ReactTable___table-selectable-header-cell-child-container'
+              className='ReactTable___table-selectable-header-cell-child-container header-refresh-control'
               whileTap={{ scale: 0.8 }}
               whileHover={{ scale: 1.15 }}
+              style={{
+                height: '100%',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'var(--background-secondary)'
+              }}
             >
               <Tooltip title='Refresh' placement='left'>
                 <Button

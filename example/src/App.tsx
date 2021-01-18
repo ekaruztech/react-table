@@ -419,7 +419,7 @@ const db = {
       presentationType: 'date',
       presentationColor: 'processing',
       dateFormat: 'MMM dd, yyyy hh:mm aaa',
-      columnSpan: 3
+      columnSpan: 0.7
     },
     {
       title: 'Cost',
@@ -583,25 +583,25 @@ const App = () => {
         <ReactTable
           name={'TestTable'}
           columns={db.columns}
-          dataSource={[]}
+          dataSource={dataSource.data}
           maxColumns={db.maxColumns}
           minColumns={db.minColumns}
           onRefresh={() => console.log('refreshing')}
         >
-          {/*<ReactTable.Controls*/}
-          {/*  onRenderOrderChange={onRenderOrderChange}*/}
-          {/*  enableExport*/}
-          {/*  onExport={(key) => console.log(key)}*/}
-          {/*  onSortApply={(sort: any) => console.log(sort)}*/}
-          {/*  onSortClear={() => console.log('sort cleared')}*/}
-          {/*  onFilterApply={(filter: any) => console.log(filter)}*/}
-          {/*  onFilterClear={() => console.log('sort cleared')}*/}
-          {/*  enableDataManagement={false}*/}
-          {/*/>*/}
-          {/*<ReactTable.QuickFilter*/}
-          {/*  onApply={(value: any) => console.log(value)}*/}
-          {/*  onClear={() => console.log('cleared')}*/}
-          {/*/>*/}
+          <ReactTable.Controls
+            onRenderOrderChange={onRenderOrderChange}
+            enableExport
+            onExport={(key) => console.log(key)}
+            onSortApply={(sort: any) => console.log(sort)}
+            onSortClear={() => console.log('sort cleared')}
+            onFilterApply={(filter: any) => console.log(filter)}
+            onFilterClear={() => console.log('sort cleared')}
+            enableDataManagement={true}
+          />
+          <ReactTable.QuickFilter
+            onApply={(value: any) => console.log(value)}
+            onClear={() => console.log('cleared')}
+          />
 
           <ReactTable.Body
             pagination={pagination}

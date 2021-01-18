@@ -89,7 +89,7 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
         />
       )}
       {columns.selected.map((column: ColumnProps, index: any) => {
-        const span = clamp(column?.columnSpan || 0, 1, 12)
+        const span = clamp(column?.columnSpan || 1, 0.5, 12)
         return (
           <col
             key={index}
