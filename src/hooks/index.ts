@@ -7,7 +7,7 @@ interface UseDimension {
 
 const useDimension = (
   type: 'window' | 'element' = 'window',
-  elementId: string = ''
+  domElement: string | HTMLElement = ''
 ): UseDimension => {
   const [dimension, setDimension] = useState({
     height: 0,
@@ -36,32 +36,56 @@ const useDimension = (
   // @ts-ignore
   useEffect(() => {
     const handleInitialDimension = () => {
-      if (elementId) {
-        const element = document.getElementById(elementId)
+      if (domElement && typeof domElement === 'string') {
+        const element = document.getElementById(domElement)
         setDimension({
           height: element?.clientWidth || 0,
           width: element?.clientWidth || 0
+        })
+      }
+      if (
+        domElement &&
+        typeof domElement !== 'string' &&
+        typeof HTMLElement === 'object' &&
+        domElement instanceof HTMLElement
+      ) {
+        setDimension({
+          height: domElement?.clientWidth || 0,
+          width: domElement?.clientWidth || 0
         })
       }
     }
     handleInitialDimension()
 
     const handleDimensionChange = () => {
-      if (type === 'element' && elementId) {
-        const element = document.getElementById(elementId)
-        setDimension({
-          height: element?.offsetHeight || 0,
-          width: element?.offsetWidth || 0
-        })
-        console.log(element?.offsetHeight, element?.offsetWidth)
+      if (type === 'element' && domElement) {
+        if (domElement && typeof domElement === 'string') {
+          const element = document.getElementById(domElement)
+          setDimension({
+            height: element?.clientWidth || 0,
+            width: element?.clientWidth || 0
+          })
+          console.log(element?.offsetHeight, element?.offsetWidth)
+        }
+        if (
+          domElement &&
+          typeof domElement !== 'string' &&
+          typeof HTMLElement === 'object' &&
+          domElement instanceof HTMLElement
+        ) {
+          setDimension({
+            height: domElement?.clientWidth || 0,
+            width: domElement?.clientWidth || 0
+          })
+        }
       }
     }
-    if (type === 'element' && elementId) {
+    if (type === 'element' && domElement) {
       window.addEventListener('resize', handleDimensionChange)
     }
 
     return () =>
-      type === 'element' && elementId
+      type === 'element' && domElement
         ? window.removeEventListener('resize', handleDimensionChange)
         : null
   }, [])
