@@ -93,7 +93,7 @@
   font-size: 14px;
   font-family: var(--font);
   font-weight: 500;
-  color: var(--text-color);
+  color: var(--heading-color);
 }
 .ReactTable___table-header-checkbox-container {
   padding: 0 6px;
@@ -109,13 +109,14 @@
   border-left: 1.3px solid var(--table-header-border);
   .ReactTable___table-selectable-header-cell-child-container {
     .column-reorder-button {
+      color: var(--heading-color);
       &:hover {
         color: var(--accent);
         transition: color 0.2s var(--transition);
       }
     }
     .column-refresh-button {
-      color: var(--text-color);
+      color: var(--heading-color);
       &:hover {
         color: var(--accent) !important;
         transition: color 0.2s var(--transition);

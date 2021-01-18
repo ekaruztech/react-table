@@ -17,6 +17,8 @@
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true
   },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "include": ["src"],
   "exclude": ["node_modules", "dist", "example"]
 }
