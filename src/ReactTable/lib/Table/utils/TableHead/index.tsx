@@ -108,43 +108,47 @@ const TableHead: React.FC<TableHeadProps> = (props) => {
           }}
           className='ReactTable___table-header-cell selectable-header-cell table-header-cell-fixed-right'
         >
-          <Padding right={10}>
-            <motion.div
-              className='ReactTable___table-selectable-header-cell-child-container header-refresh-control'
-              whileTap={{ scale: 0.8 }}
-              whileHover={{ scale: 1.15 }}
-              style={{
-                height: '100%',
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'var(--background-secondary)'
-              }}
-            >
-              <Tooltip title='Refresh' placement='left'>
-                <Button
-                  type='text'
-                  shape={'circle'}
-                  disabled={loading}
-                  onClick={handleRefresh}
-                  icon={
-                    <span
-                      className={`anticon ${loading ? 'anticon-loading' : ''}`}
-                    >
-                      <i
-                        className={`ri-refresh-line column-refresh-button ${
-                          loading ? 'anticon-spin' : ''
+          {isFunction(onRefresh) && (
+            <Padding componentType={'span'} right={10}>
+              <motion.span
+                className='ReactTable___table-selectable-header-cell-child-container header-refresh-control'
+                whileTap={{ scale: 0.8 }}
+                whileHover={{ scale: 1.15 }}
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'var(--background-secondary)'
+                }}
+              >
+                <Tooltip title='Refresh' placement='left'>
+                  <Button
+                    type='text'
+                    shape={'circle'}
+                    disabled={loading}
+                    onClick={handleRefresh}
+                    icon={
+                      <span
+                        className={`anticon ${
+                          loading ? 'anticon-loading' : ''
                         }`}
-                        style={{ fontSize: 17 }}
-                      />
-                    </span>
-                  }
-                />
-              </Tooltip>
-            </motion.div>
-          </Padding>
-          <motion.div className='ReactTable___table-selectable-header-cell-child-container'>
+                      >
+                        <i
+                          className={`ri-refresh-line column-refresh-button ${
+                            loading ? 'anticon-spin' : ''
+                          }`}
+                          style={{ fontSize: 17 }}
+                        />
+                      </span>
+                    }
+                  />
+                </Tooltip>
+              </motion.span>
+            </Padding>
+          )}
+          <motion.span className='ReactTable___table-selectable-header-cell-child-container'>
             <Popover
               placement='bottomRight'
               content={() => (
@@ -179,7 +183,7 @@ const TableHead: React.FC<TableHeadProps> = (props) => {
                 />
               </Tooltip>
             </Popover>
-          </motion.div>
+          </motion.span>
         </motion.th>
       </tr>
     </motion.thead>
