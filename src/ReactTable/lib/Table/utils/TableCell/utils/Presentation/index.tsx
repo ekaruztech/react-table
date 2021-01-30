@@ -145,7 +145,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               opacity: isDisabled ? 0.5 : 1
             }}
           >
-            {data || '--'}
+            {data ?? '--'}
           </Tag>
         )
       } else
@@ -161,7 +161,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               opacity: isDisabled ? 0.5 : 1
             }}
           >
-            {data || '--'}
+            {data ?? '--'}
           </Tag>
         )
   }
