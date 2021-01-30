@@ -84,18 +84,21 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
           const isAlreadyAdded = state.filters.find(
             (filter) => filter.key === value.key
           )
-          return isAlreadyAdded ? (
-            index + 1 === array.length && (
-              <Menu.Item key='none'>
-                <Empty
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description={"Oops!!! You've used all the filters"}
-                />
-              </Menu.Item>
-            )
-          ) : (
-            <Menu.Item key={index}>{value?.title || '---'}</Menu.Item>
-          )
+          if (isAlreadyAdded) {
+            if (index + 1 === array.length) {
+              return (
+                <Menu.Item key='none'>
+                  <Empty
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    description={"Oops!!! You've used all the filters"}
+                  />
+                </Menu.Item>
+              )
+            } else {
+              return null
+            }
+          }
+          return <Menu.Item key={index}>{value?.title || '---'}</Menu.Item>
         }
       )}
     </Menu>
@@ -218,7 +221,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                         Clear filter
                       </Button>
                       <Button
-                        type={'primary'}
+                        type='primary'
                         onClick={applyFilter}
                         icon={
                           <span className='anticon'>
