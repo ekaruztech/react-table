@@ -134,7 +134,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           </Tag>
         )
     }
-    default:
+    case 'number':
       if (presentationType === 'tag') {
         return (
           <Tag
@@ -162,6 +162,36 @@ const Presentation: React.FC<PresentationProps> = (props) => {
             }}
           >
             {data ?? '--'}
+          </Tag>
+        )
+    default:
+      if (presentationType === 'tag') {
+        return (
+          <Tag
+            color={presentationColor || 'orange'}
+            style={{
+              fontWeight: bold ? 'bold' : 'normal',
+              marginRight: 0,
+              opacity: isDisabled ? 0.5 : 1
+            }}
+          >
+            {data || '--'}
+          </Tag>
+        )
+      } else
+        return (
+          <Tag
+            color={presentationColor || 'default'}
+            style={{
+              fontWeight: bold ? 'bold' : 'normal',
+              borderColor: 'transparent',
+              background: 'transparent !important',
+              marginRight: 0,
+              paddingLeft: 0,
+              opacity: isDisabled ? 0.5 : 1
+            }}
+          >
+            {data || '--'}
           </Tag>
         )
   }

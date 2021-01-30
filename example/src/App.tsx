@@ -148,7 +148,7 @@ const db = {
     {
       key: '8',
       name: 'Joseph Xi Lee',
-      cost: 6,
+      cost: 0,
       address: '40 Houstin Street',
       hobby: 'Teaching',
 
@@ -389,7 +389,7 @@ const db = {
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
       ),
-      id5: 'World',
+      id5: '',
       id6: 'Hello',
       id10: 'Finally'
     }
@@ -425,7 +425,7 @@ const db = {
       title: 'Cost',
       dataIndex: 'cost',
       key: 'cost',
-      type: 'currency',
+      type: 'number',
       currency: 'USD',
       presentationColor: 'gold',
       columnSpan: 2
