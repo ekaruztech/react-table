@@ -92,7 +92,11 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
             tagRender={TagRender}
           />
         )
-      } else return null
+      } else {
+        throw new Error(
+          "Column of type 'List' expects a listMenu props with a non-empty value"
+        )
+      }
     default:
       if (property.autoComplete) {
         return (
