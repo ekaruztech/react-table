@@ -31,15 +31,23 @@ interface FilterControllerProps {
 
 const FilterController: React.FC<FilterControllerProps> = (props) => {
   const { columns, dataSource, onApply, onClear, model } = props
+
+  const validColumns = useMemo(
+    () =>
+      columns.all.filter(
+        (o: ColumnProps) => o.type !== 'action' && o.quickFilter !== false
+      ),
+    [columns.all]
+  )
   // @ts-ignore
   const [state, dispatch] = useReducer(
     quickFilterReducer(model),
-    columns.all,
+    validColumns,
     initQuickFilterState(model)
   )
 
   const addFilter = (propertyIndex: string) => {
-    const columnProperty = columns.all[parseInt(propertyIndex, 10)]
+    const columnProperty = validColumns[parseInt(propertyIndex, 10)]
     dispatch({
       type: 'ADD_FILTER',
       payload: {
@@ -66,14 +74,6 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
     }
     model.store('hasAppliedQuickFilter', true)
   }
-
-  const validColumns = useMemo(
-    () =>
-      columns.all.filter(
-        (o: ColumnProps) => o.type !== 'action' && o.quickFilter !== false
-      ),
-    [columns.all]
-  )
 
   const menu = (
     <Menu
@@ -108,7 +108,9 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
           header={
             <Align alignCenter>
               <Margin right={20}>
-                <Typography.Text>Quick Filter</Typography.Text>
+                <Typography.Text style={{ color: 'var(--heading-color)' }}>
+                  Quick Filter
+                </Typography.Text>
               </Margin>
             </Align>
           }
@@ -132,10 +134,12 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                     height: 60
                   }}
                   description={
-                    <Padding top={15} componentType='span'>
-                      <p style={{ color: 'var(--text-color-secondary)' }}>
-                        No filter was added, click Add filter to add one.
-                      </p>
+                    <Padding
+                      top={15}
+                      componentType='span'
+                      style={{ color: 'var(--text-color-secondary)' }}
+                    >
+                      No filter was added, click Add filter to add one.
                     </Padding>
                   }
                 >

@@ -65,7 +65,6 @@ const useDimension = (
             height: element?.clientWidth || 0,
             width: element?.clientWidth || 0
           })
-          console.log(element?.offsetHeight, element?.offsetWidth)
         }
         if (
           domElement &&

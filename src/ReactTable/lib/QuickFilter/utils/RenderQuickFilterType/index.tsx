@@ -1,5 +1,5 @@
 import { AutoComplete, InputNumber, Select, Input } from 'antd'
-import { has, isEmpty, isNumber } from 'lodash'
+import { has, isNumber } from 'lodash'
 import React from 'react'
 import TagRender from '../../../Controls/utils/DataManagement/Filter/utils/TagRender'
 import { isDate, DatePicker } from '../../../../../_utils'
@@ -73,7 +73,7 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
         />
       )
     case 'list':
-      if (has(property, 'listMenu') && !isEmpty(property?.listMenu)) {
+      if (has(property, 'listMenu') && Array.isArray(property?.listMenu)) {
         return (
           <Select
             mode={property?.multiple ? 'multiple' : undefined}
@@ -93,9 +93,7 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           />
         )
       } else {
-        throw new Error(
-          "Column of type 'List' expects a listMenu props with a non-empty value"
-        )
+        throw new Error("Column of type 'List' expects an array listMenu props")
       }
     default:
       if (property.autoComplete) {

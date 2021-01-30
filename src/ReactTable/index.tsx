@@ -14,7 +14,6 @@ import {
 import { clamp, isFunction, isString } from 'lodash'
 import invariant from 'invariant'
 import { ReactTableContext } from './lib/ReactTableContext'
-
 import Controls from './lib/Controls'
 import QuickFilter from './lib/QuickFilter'
 import Table, { CellMenu } from './lib/Table'
@@ -75,6 +74,7 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
         selected: presets.selected,
         unselected: presets.unselected
       },
+      unusedDefaultColumns: this.props.columns,
       isControlsPresent: false
       // isTableOnly: false,
     }
@@ -111,6 +111,37 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       indeterminate: false,
       checkAll: e.target.checked
     })
+  }
+
+  static getDerivedStateFromProps(
+    props: ReactTableProps,
+    state: ReactTableState
+  ) {
+    // JSON.stringify is used in place of lodash.isEqual or Fast-equal.deepEqual, because (column) has non-serializable objects (functions)
+    // JSON.stringify removes functions from the object before stringifying it.
+    // Comparison will always return false if the order of props.columns changes
+    // Todo: see if _.isEqual or fe.deepEqual could be manipulated to overlook functions
+    if (
+      JSON.stringify(props.columns) !==
+      JSON.stringify(state.unusedDefaultColumns)
+    ) {
+      const model = Model.instantiate(props.name)
+      const presets = enumeratePresets(
+        model,
+        props.columns,
+        props.maxColumns,
+        props.minColumns
+      )
+      return {
+        unusedDefaultColumns: props.columns,
+        columns: {
+          all: presets.selected.concat(presets.unselected),
+          selected: presets.selected,
+          unselected: presets.unselected
+        }
+      }
+    }
+    return null
   }
 
   componentDidMount(): void {

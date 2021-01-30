@@ -394,7 +394,7 @@ const db = {
       id10: 'Finally'
     }
   ],
-  columns: [
+  columns: (menu: { label: string; value: string }[] | Array<{}>) => [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -402,7 +402,7 @@ const db = {
       type: 'action',
       actionPresentationType: 'default',
       actionCallback: (source: any) => console.log('action clicked id', source),
-      actionTitle: 'Print ID',
+      actionTitle: 'Print ID'
     },
     {
       title: 'Name',
@@ -439,13 +439,7 @@ const db = {
       presentationType: 'tag',
       presentationColor: (value: string) => evalStatusColor(value),
       multiple: true,
-      listMenu: [
-        { label: 'Swimming', value: 'swimming' },
-        { label: 'Skipping', value: 'skipping' },
-        { label: 'Skiing', value: 'skiing' },
-        { label: 'Gaming', value: 'gaming' },
-        { label: 'Movies', value: 'movies' }
-      ]
+      listMenu: menu
     },
     {
       title: 'Food choice',
@@ -495,6 +489,9 @@ const db = {
 const App = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingContent, setIsLoadingContent] = useState(true)
+  const [menu, setMenu] = useState<
+    { label: string; value: string }[] | Array<{}>
+  >([])
   // const [show, setShow] = useState(true)
   const model = Model.instantiate('TestTable')
 
@@ -508,7 +505,20 @@ const App = () => {
       setIsLoadingContent(false)
     }, 5000)
 
-    return () => clearTimeout(a)
+    const b = setTimeout(() => {
+      setMenu([
+        { label: 'Swimming', value: 'swimming' },
+        { label: 'Skipping', value: 'skipping' },
+        { label: 'Skiing', value: 'skiing' },
+        { label: 'Gaming', value: 'gaming' },
+        { label: 'Movies', value: 'movies' }
+      ])
+    }, 10000)
+
+    return () => {
+      clearTimeout(a)
+      clearTimeout(b)
+    }
   }, [])
 
   const [dataSource, setDataSource] = useState<{
@@ -583,7 +593,7 @@ const App = () => {
       <div style={{ width: `100%` }}>
         <ReactTable
           name={'TestTable'}
-          columns={db.columns}
+          columns={db.columns(menu)}
           dataSource={dataSource.data}
           maxColumns={db.maxColumns}
           minColumns={db.minColumns}

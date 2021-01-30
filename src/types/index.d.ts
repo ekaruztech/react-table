@@ -127,6 +127,7 @@ export interface ReactTableState {
   columns: TableColumnProps
   selectedTableItems: SelectedTableItems
   isControlsPresent: boolean
+  unusedDefaultColumns: ColumnProps[]
 }
 export interface ReactTableProps {
   columns: ColumnProps[]
