@@ -49,6 +49,7 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
 
   useEffect(() => {
     if (type === 'text' && property?.autoComplete) {
+      // Tokenizes the text type, if it's autoComplete props is set to true
       setAutoCompleteProps(dataSource.reduce(handleAutoCompleteResource, ''))
     }
   }, [dataSource, handleAutoCompleteResource, property, type])
@@ -59,13 +60,16 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
    * @param value
    */
   const handleAutoComplete = (value: string): void => {
+    // Regex tries to match the value with to tokenized  string
     const regex = new RegExp(
       `(^|\\s)${value}+(?:\\w)*(\\s|$)|(^|\\s)\\w+(?:\\w)*(?:_)${value}+(?:\\w)*(\\s|$)`,
       'gim'
     )
+    // Returns the value that matches
     const options = autoCompleteProps?.match(regex)
     if (options) {
       setAutoCompleteOptions(
+        // De-tokenizes the returned values.
         (options || []).map((o) => ({ value: o.split('_').join(' ').trim() }))
       )
     }

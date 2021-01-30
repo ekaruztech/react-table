@@ -56,6 +56,8 @@ export interface ColumnProps {
   dateFormat?: string
   currency?: string
   columnSpan?: number
+  quickFilter?: boolean
+  advancedFilter?: boolean
 }
 export interface TableColumnProps {
   all: Array<ColumnProps>

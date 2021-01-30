@@ -68,7 +68,10 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
   }
 
   const validColumns = useMemo(
-    () => columns.all.filter((o: ColumnProps) => o.type !== 'action'),
+    () =>
+      columns.all.filter(
+        (o: ColumnProps) => o.type !== 'action' && o.quickFilter !== false
+      ),
     [columns.all]
   )
 

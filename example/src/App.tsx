@@ -402,7 +402,7 @@ const db = {
       type: 'action',
       actionPresentationType: 'default',
       actionCallback: (source: any) => console.log('action clicked id', source),
-      actionTitle: 'Print ID'
+      actionTitle: 'Print ID',
     },
     {
       title: 'Name',
@@ -425,10 +425,11 @@ const db = {
       title: 'Cost',
       dataIndex: 'cost',
       key: 'cost',
-      type: 'number',
+      type: 'currency',
       currency: 'USD',
       presentationColor: 'gold',
-      columnSpan: 2
+      columnSpan: 2,
+      quickFilter: false
     },
     {
       title: 'Hobby',
