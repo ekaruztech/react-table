@@ -1,4 +1,4 @@
-import { filter, isEmpty, pick, map, find } from 'lodash'
+import { isEmpty, pick, map, find } from 'lodash'
 import {
   // eslint-disable-next-line no-unused-vars
   QuickFilterState,
@@ -53,26 +53,22 @@ const quickFilterReducer = (model: Model) => (
       }
     }
     case 'REINITIALIZE_FILTER': {
-      return {
-        ...state,
-        filters: action.payload
-      }
-    }
-    case 'REMOVE_FILTER': {
-      const newFilterState = filter(
-        state.filters,
-        (o: QuickFilterProps) => o.filterIndex !== action.payload?.filterIndex
-      )
       model.store(
         'quickFilter',
-        map(newFilterState, (o: QuickFilterProps) =>
+        map(action.payload || [], (o: QuickFilterProps) =>
           pick(o, ['property', 'value'])
         ),
         { override: true }
       )
       return {
         ...state,
-        filters: newFilterState
+        filters: action.payload
+      }
+    }
+    case 'REMOVE_FILTER': {
+      return {
+        ...state,
+        filters: action.payload
       }
     }
     case 'UPDATE_FILTER': {

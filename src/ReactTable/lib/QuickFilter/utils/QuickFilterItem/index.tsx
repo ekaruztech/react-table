@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { isDate, pick, isFunction, map, filter } from 'lodash'
+import { isDate, pick, isFunction, map, filter, isEmpty } from 'lodash'
 import { Button, Col, Tooltip } from 'antd'
 import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
@@ -11,21 +11,28 @@ import {
   QuickFilterAction,
   QuickFilterState
 } from '../../reducer/reducer'
+import Model from '../../../../../_utils/model'
+import { QuickFilterApplyFn, QuickFilterOnFieldsRemoveFn } from '../../index'
 
 interface IQuickFilterItem {
   dataSource: Array<any>
   property: QuickFilterProps
   dispatch: React.Dispatch<QuickFilterAction>
-  onApply: (
-    value: {
-      property: string
-      value: string[] | number | number[] | string
-    }[]
-  ) => void
+  onFieldsChange?: QuickFilterApplyFn
+  onFieldsRemove?: QuickFilterOnFieldsRemoveFn
   state: QuickFilterState
+  model: Model
 }
 const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
-  const { dataSource, property, dispatch, onApply, state } = props
+  const {
+    dataSource,
+    property,
+    dispatch,
+    onFieldsChange,
+    state,
+    model,
+    onFieldsRemove
+  } = props
 
   const type: string = property?.type || 'text'
   const [autoCompleteProps, setAutoCompleteProps] = useState<string | null>(
@@ -91,13 +98,27 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
    * @param filterIndex
    */
   const handleFilterRemoval = (filterIndex: number): void => {
-    dispatch({ type: 'REMOVE_FILTER', payload: { filterIndex } })
-    if (onApply && isFunction(onApply)) {
-      const filters = map(
-        filter(state.filters, (o) => o.filterIndex !== filterIndex),
-        (value) => pick(value, ['property', 'value'])
-      )
-      onApply(filters)
+    const newFilterState = filter(
+      state.filters,
+      (o: QuickFilterProps) => o.filterIndex !== filterIndex
+    )
+    const returnValue = map(newFilterState, (o: QuickFilterProps) =>
+      pick(o, ['property', 'value'])
+    )
+    // Updating a state  is asynchronous.
+    // Updating the model the model in the reducer also makes it synchronous
+    // In cases where the data is needed immediately, it poses a lot of issues.
+    model.store('quickFilter', returnValue, { override: true })
+    if (isEmpty(newFilterState)) model.store('hasAppliedQuickFilter', false)
+
+    dispatch({ type: 'REMOVE_FILTER', payload: newFilterState })
+    if (onFieldsChange && isFunction(onFieldsChange)) {
+      onFieldsChange(returnValue)
+    }
+    if (onFieldsRemove && isFunction(onFieldsRemove)) {
+      const removed = state.filters.find((o) => o.filterIndex === filterIndex)
+        ?.property
+      onFieldsRemove(removed, returnValue)
     }
   }
 

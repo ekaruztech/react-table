@@ -13,24 +13,34 @@ import { TableColumnProps, ColumnProps } from '../../../../../types'
 import { quickFilterReducer, initQuickFilterState } from '../../reducer'
 import Model from '../../../../../_utils/model'
 import { EmptyImage } from '../../../../../_utils'
+import {
+  QuickFilterApplyFn,
+  QuickFilterOnFieldsRemoveFn,
+  QuickFilterReturnType
+} from '../../index'
 
 const { Panel } = Collapse
 
 interface FilterControllerProps {
-  onApply: (
-    value: {
-      property: string
-      value: string[] | number | number[] | string
-    }[]
-  ) => void
+  onApply: QuickFilterApplyFn
   onClear: () => void
+  onFieldsChange?: QuickFilterApplyFn
+  onFieldsRemove?: QuickFilterOnFieldsRemoveFn
   columns: TableColumnProps
   dataSource: Array<any>
   model: Model
 }
 
 const FilterController: React.FC<FilterControllerProps> = (props) => {
-  const { columns, dataSource, onApply, onClear, model } = props
+  const {
+    columns,
+    dataSource,
+    onApply,
+    onClear,
+    model,
+    onFieldsChange,
+    onFieldsRemove
+  } = props
 
   const validColumns = useMemo(
     () =>
@@ -57,18 +67,32 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
       return filter
     })
     dispatch({ type: 'REINITIALIZE_FILTER', payload: filters })
+    if (model.hasAppliedQuickFilter) {
+      // Reset pagination to page 1
+      model.store('pagination', Model.DEFAULT_VALUES.pagination)
+    }
   }, [columns.all])
 
   const addFilter = (propertyIndex: string) => {
     const columnProperty = validColumns[parseInt(propertyIndex, 10)]
+    const filter = {
+      ...columnProperty,
+      property: columnProperty?.key,
+      value: null
+    }
     dispatch({
       type: 'ADD_FILTER',
-      payload: {
-        ...columnProperty,
-        property: columnProperty?.key,
-        value: null
-      }
+      payload: filter
     })
+    if (isFunction(onFieldsChange)) {
+      const filters = state.filters
+        .map((value) => pick(value, ['property', 'value']))
+        .concat({
+          property: columnProperty?.key,
+          value: null
+        }) as QuickFilterReturnType[]
+      onFieldsChange(filters)
+    }
   }
   const clearFilter = () => {
     dispatch({ type: 'RESET' })
@@ -77,6 +101,8 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
       onClear()
     }
     model.store('hasAppliedQuickFilter', false)
+    // Reset pagination to page 1 when quick filter is resetted
+    model.store('pagination', Model.DEFAULT_VALUES.pagination)
   }
   const applyFilter = () => {
     const filters = state.filters.map((value) =>
@@ -86,6 +112,8 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
       onApply(filters)
     }
     model.store('hasAppliedQuickFilter', true)
+    // Reset pagination to page 1 when quick filter is applied
+    model.store('pagination', Model.DEFAULT_VALUES.pagination)
   }
 
   const menu = (
@@ -119,9 +147,8 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
 
   return (
     <div className='ReactTable___QuickFilter'>
-      <Collapse expandIconPosition='right' >
+      <Collapse expandIconPosition='right'>
         <Panel
-          disabled={false}
           header={
             <Align alignCenter>
               <Margin right={20}>
@@ -208,7 +235,9 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                             dataSource={dataSource}
                             dispatch={dispatch}
                             property={property}
-                            onApply={onApply}
+                            onFieldsChange={onFieldsChange}
+                            onFieldsRemove={onFieldsRemove}
+                            model={model}
                             state={state}
                           />
                         )

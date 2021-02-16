@@ -76,7 +76,7 @@ class Model implements ModelAPI {
   public hasAppliedAdvancedFilter: boolean
   public readonly storage: StorageAPI
 
-  private static DEFAULT_VALUES: ModelProvider = {
+  public static DEFAULT_VALUES: ModelProvider = {
     columnReorder: {
       save: true,
       presets: []

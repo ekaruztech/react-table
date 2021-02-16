@@ -20,7 +20,7 @@ type QuickFilterAction =
         value: null | string | boolean | number | Date | undefined
       } & ColumnProps
     } // typescript union types allow for leading |'s to have nicer layout
-  | { type: 'REMOVE_FILTER'; payload: { filterIndex: number } }
+  | { type: 'REMOVE_FILTER'; payload: Array<QuickFilterProps> }
   | { type: 'UPDATE_FILTER'; payload: QuickFilterProps }
   | { type: 'ADD_OR_UPDATE_SEARCH'; payload: any }
   | { type: 'RESET' }

@@ -661,6 +661,13 @@ const App = () => {
           <ReactTable.QuickFilter
             onApply={onApply}
             onClear={() => console.log('cleared')}
+            onFieldsRemove={(o, l) => {
+              console.log(o)
+              console.table(l)
+            }}
+            onFieldsChange={(d) => {
+              console.log(d)
+            }}
           />
 
           <ReactTable.Body

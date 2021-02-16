@@ -2,15 +2,26 @@ import React from 'react'
 import { ReactTableContext } from '../ReactTableContext'
 import FilterController from './utils/FilterController'
 
-type QuickFilterApplyFn = (
-  value: {
-    property: string
-    value: string[] | number | number[] | string
-  }[]
+export type QuickFilterReturnType = {
+  property: string
+  value: string[] | number | number[] | string
+}
+export type QuickFilterApplyFn = (value: QuickFilterReturnType[]) => void
+
+export type QuickFilterOnFieldsChangeFn = (
+  allFields: QuickFilterReturnType[]
 ) => void
+
+export type QuickFilterOnFieldsRemoveFn = (
+  removedField: string | undefined,
+  allFields: QuickFilterReturnType[]
+) => void
+
 interface IQuickFilter {
   onApply: QuickFilterApplyFn
   onClear: () => void
+  onFieldsChange?: QuickFilterApplyFn
+  onFieldsRemove?: QuickFilterOnFieldsRemoveFn
 }
 
 class QuickFilter extends React.Component<IQuickFilter> {
@@ -27,7 +38,7 @@ class QuickFilter extends React.Component<IQuickFilter> {
     | boolean
     | null
     | undefined {
-    const { onApply, onClear } = this.props
+    const { onApply, onClear, onFieldsChange, onFieldsRemove } = this.props
 
     return (
       <ReactTableContext.Consumer>
@@ -38,6 +49,8 @@ class QuickFilter extends React.Component<IQuickFilter> {
               columns={columns}
               onClear={onClear}
               onApply={onApply}
+              onFieldsChange={onFieldsChange}
+              onFieldsRemove={onFieldsRemove}
               model={model}
             />
           )
@@ -47,8 +60,4 @@ class QuickFilter extends React.Component<IQuickFilter> {
   }
 }
 
-export {
-  QuickFilter as default,
-  IQuickFilter as QuickFilterProps,
-  QuickFilterApplyFn
-}
+export { QuickFilter as default, IQuickFilter as QuickFilterProps }
