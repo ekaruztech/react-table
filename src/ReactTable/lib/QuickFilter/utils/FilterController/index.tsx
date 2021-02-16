@@ -18,6 +18,7 @@ import {
   QuickFilterOnFieldsRemoveFn,
   QuickFilterReturnType
 } from '../../index'
+import { QuickFilterProps } from '../../reducer/reducer'
 
 const { Panel } = Collapse
 
@@ -49,11 +50,11 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
       ),
     [columns.all]
   )
-  // @ts-ignore
+
   const [state, dispatch] = useReducer(
     quickFilterReducer(model),
-    validColumns,
-    initQuickFilterState(model)
+    { filters: [] },
+    initQuickFilterState(model, validColumns)
   )
 
   useEffect(() => {
@@ -122,11 +123,17 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
     >
       {validColumns.map(
         (value: ColumnProps, index: number, array: ColumnProps[]) => {
-          const isAlreadyAdded = state.filters.find(
-            (filter) => filter.key === value.key
+          const isAlreadyAdded:
+            | QuickFilterProps
+            | undefined = state.filters.find(
+            (filter: QuickFilterProps) => filter.property === value.key
           )
+
           if (isAlreadyAdded) {
-            if (index + 1 === array.length) {
+            if (
+              state.filters?.length === array.length &&
+              index === array.length - 1
+            ) {
               return (
                 <Menu.Item key='none'>
                   <Empty
@@ -135,10 +142,10 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                   />
                 </Menu.Item>
               )
-            } else {
-              return null
             }
+            return null
           }
+
           return <Menu.Item key={index}>{value?.title || '---'}</Menu.Item>
         }
       )}

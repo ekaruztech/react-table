@@ -1,4 +1,4 @@
-import { isEmpty, pick, map, find } from 'lodash'
+import { isEmpty, pick, map, find, isUndefined } from 'lodash'
 import {
   // eslint-disable-next-line no-unused-vars
   QuickFilterState,
@@ -17,21 +17,38 @@ import Model, {
   QuickFilterObject
 } from '../../../../_utils/model'
 
-const initQuickFilterState = (model: Model) => (columns: ColumnProps[]) => {
-  const persistedFilters: QuickFilterModel = model.quickFilter
+const initQuickFilterState = (
+  model: Model,
+  columns: ColumnProps[]
+) => (): QuickFilterState => {
+  const persistedFilters: QuickFilterModel = model?.quickFilter?.slice?.() || []
   if (!isEmpty(persistedFilters)) {
     return {
-      filters: map(
-        persistedFilters,
-        (filter: QuickFilterObject, index: number) => {
+      filters: (persistedFilters || []).reduce(
+        (acc: QuickFilterProps[], filter: QuickFilterObject, index: number) => {
           const findInColumns = find(
             columns,
             (column: ColumnProps) => column.key === filter.property
           )
-          return Object.assign({}, findInColumns, filter, {
-            filterIndex: index
-          })
-        }
+          // If the persisted value is in the current columns add it to the state
+          if (findInColumns) {
+            return acc.concat(
+              Object.assign({}, findInColumns, filter, {
+                filterIndex: index
+              })
+            )
+          }
+          // If the persisted value does not exist in the current column remove it from the persisted state
+          if (isUndefined(findInColumns)) {
+            model.store(
+              'quickFilter',
+              persistedFilters.filter((o) => o.property !== filter.property),
+              { override: true }
+            )
+          }
+          return acc
+        },
+        []
       )
     }
   } else {
@@ -47,6 +64,7 @@ const quickFilterReducer = (model: Model) => (
   switch (action.type) {
     case 'ADD_FILTER': {
       const filterIndex = state.filters.length
+      model.store('quickFilter', [pick(action.payload, ['property', 'value'])])
       return {
         ...state,
         filters: state.filters.concat({ ...action.payload, filterIndex })

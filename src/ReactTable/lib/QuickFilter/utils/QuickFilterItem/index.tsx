@@ -102,22 +102,29 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
       state.filters,
       (o: QuickFilterProps) => o.filterIndex !== filterIndex
     )
-    const returnValue = map(newFilterState, (o: QuickFilterProps) =>
-      pick(o, ['property', 'value'])
+
+    const removed = state.filters.find((o) => o.filterIndex === filterIndex)
+      ?.property
+    // Remove the value from the persisted state
+    const newPersistedQuickFilter = filter(
+      model?.quickFilter || [],
+      (o) => o.property !== removed
     )
     // Updating a state  is asynchronous.
     // Updating the model the model in the reducer also makes it synchronous
     // In cases where the data is needed immediately, it poses a lot of issues.
-    model.store('quickFilter', returnValue, { override: true })
+    model.store('quickFilter', newPersistedQuickFilter, { override: true })
     if (isEmpty(newFilterState)) model.store('hasAppliedQuickFilter', false)
 
     dispatch({ type: 'REMOVE_FILTER', payload: newFilterState })
+
+    const returnValue = map(newFilterState, (o: QuickFilterProps) =>
+      pick(o, ['property', 'value'])
+    )
     if (onFieldsChange && isFunction(onFieldsChange)) {
       onFieldsChange(returnValue)
     }
     if (onFieldsRemove && isFunction(onFieldsRemove)) {
-      const removed = state.filters.find((o) => o.filterIndex === filterIndex)
-        ?.property
       onFieldsRemove(removed, returnValue)
     }
   }

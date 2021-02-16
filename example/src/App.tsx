@@ -50,7 +50,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#9iopp785der0011',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -69,7 +69,7 @@ const db = {
       food_choice: 'Meaty',
       id: '#990uiopcfe11',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -87,7 +87,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#99vvgty88031',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -105,7 +105,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#9x70tyu31',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -123,7 +123,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#99bg831',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -141,7 +141,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#90bgg431',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -160,7 +160,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#999nhh31',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -179,7 +179,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#99@6770111',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -198,7 +198,7 @@ const db = {
       food_choice: 'Vegan',
       id: '12',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -217,7 +217,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#4599r931',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -236,7 +236,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#9s99vbb31',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -255,7 +255,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#9vb993f1',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -274,7 +274,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#99f931',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -293,7 +293,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#9d99g31',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -312,7 +312,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#99d931',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -331,7 +331,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#99h931',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -351,7 +351,7 @@ const db = {
         'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
       id: '#99v931',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -370,7 +370,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#9993100',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -389,7 +389,7 @@ const db = {
       food_choice: 'Vegan',
       id: '#9vbb99u31',
       id2: 'World',
-      dob: new Date(
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
@@ -418,8 +418,8 @@ const db = {
     },
     {
       title: 'DOB',
-      dataIndex: 'dob',
-      key: 'dob',
+      dataIndex: 'dooob',
+      key: 'dooob',
       type: 'date',
       presentationType: 'date',
       presentationColor: 'processing',
@@ -434,7 +434,7 @@ const db = {
       currency: 'USD',
       presentationColor: 'gold',
       columnSpan: 2,
-      quickFilter: false
+      quickFilter: true
     },
     {
       title: 'Hobby',
@@ -470,21 +470,24 @@ const db = {
       key: 'id5',
       type: 'text',
       bold: true,
-      presentationColor: 'volcano'
+      presentationColor: 'volcano',
+      quickFilter: false
     },
     {
       title: 'ID-6',
       dataIndex: 'id',
       key: 'id6',
       type: 'text',
-      presentationColor: 'lime'
+      presentationColor: 'lime',
+      quickFilter: false
     },
     {
       title: 'ID-10',
       dataIndex: 'id',
       key: 'id10',
       type: 'text',
-      presentationColor: 'geekblue'
+      presentationColor: 'geekblue',
+      quickFilter: false
     }
   ],
   maxColumns: 10,
