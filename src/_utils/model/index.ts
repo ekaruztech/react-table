@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Storage, StorageAPI } from '../storage'
-import { isPlainObject, isString, isUndefined } from 'lodash'
+import { isPlainObject, isString, isUndefined, isNull, isNaN } from 'lodash'
 // eslint-disable-next-line no-unused-vars
 import { DataSortObject } from '../../types'
 
@@ -179,13 +179,46 @@ type ExposedModelProps = {
   advancedFilter: AdvancedFilterModel
   advancedSort: AdvancedSortModel
   pagination: PaginationModel
+  hasAppliedQuickFilter: boolean
+  hasAppliedAdvancedFilter: boolean
+  name: string
 }
+
+type ExposedModelFields =
+  | 'quickFilter'
+  | 'advancedFilter'
+  | 'advancedSort'
+  | 'pagination'
+
 class ExposedModel {
-  public readonly quickFilter: QuickFilterModel
-  public readonly renderOrder: number
-  public readonly advancedFilter: AdvancedFilterModel
-  public readonly advancedSort: AdvancedSortModel
-  public readonly pagination: PaginationModel
+  public quickFilter: QuickFilterModel
+  public renderOrder: number
+  public advancedFilter: AdvancedFilterModel
+  public advancedSort: AdvancedSortModel
+  public pagination: PaginationModel
+  private readonly storage: StorageAPI
+  public hasAppliedQuickFilter: boolean
+  public hasAppliedAdvancedFilter: boolean
+  private readonly fields: ExposedModelFields[] = [
+    'quickFilter',
+    'advancedFilter',
+    'advancedSort',
+    'pagination'
+  ]
+
+  private static DEFAULT_VALUES: ExposedModelProps = {
+    quickFilter: [],
+    renderOrder: 15,
+    advancedFilter: {
+      queryType: 'or',
+      filters: []
+    },
+    advancedSort: [],
+    pagination: { page: 1 },
+    name: '@voomsway/react-table',
+    hasAppliedAdvancedFilter: false,
+    hasAppliedQuickFilter: false
+  }
 
   constructor(exposedModel: ExposedModelProps) {
     this.renderOrder = exposedModel.renderOrder
@@ -193,6 +226,9 @@ class ExposedModel {
     this.advancedFilter = exposedModel.advancedFilter
     this.advancedSort = exposedModel.advancedSort
     this.pagination = exposedModel.pagination
+    this.hasAppliedAdvancedFilter = exposedModel.hasAppliedQuickFilter
+    this.hasAppliedQuickFilter = exposedModel.hasAppliedQuickFilter
+    this.storage = new Storage(exposedModel.name)
   }
 
   public static instantiate(name: string): ExposedModel | null {
@@ -216,10 +252,133 @@ class ExposedModel {
     if (retrievedStorageState && isPlainObject(retrievedStorageState)) {
       return new ExposedModel({
         ...retrievedStorageState,
-        renderOrder: retrievedStorageState.renderOrder.selected
+        renderOrder: retrievedStorageState.renderOrder.selected,
+        name: tokenizedName
       })
     } else {
       return null
+    }
+  }
+
+  static validValues(value: any): void {
+    if (isUndefined(value) || isNaN(value) || isNull(value)) {
+      throw new TypeError(`Update value cannot be of type '${typeof value}'`)
+    }
+  }
+
+  private validFields(field: ExposedModelFields): void {
+    if (this.fields.indexOf(field) === -1) {
+      throw new RangeError(
+        `Invalid table field property: Expected one of ${JSON.stringify(
+          this.fields
+        )}`
+      )
+    }
+  }
+
+  private store(
+    field: ExposedModelFields,
+    value: any,
+    options?: { override: boolean }
+  ) {
+    if (field && this.storage) {
+      if (isPlainObject(this[field]) && isPlainObject(value)) {
+        const newValue = Object.assign({}, this[field], value)
+        this.storage.update({ [field]: newValue })
+        this[field] = newValue
+      }
+      if (Array.isArray(this[field]) && Array.isArray(value)) {
+        if (options?.override) {
+          this.storage.update({ [field]: value })
+
+          // @ts-ignore
+          this[field] = value
+        } else {
+          // @ts-ignore
+          const newValue = [...this[field], ...value]
+          this.storage.update({ [field]: newValue })
+          // @ts-ignore
+          this[field] = newValue
+        }
+      }
+      if (
+        !isPlainObject(this[field]) &&
+        !Array.isArray(this[field]) &&
+        !isUndefined(value)
+      ) {
+        this.storage.update({ [field]: value })
+        this[field] = value
+      }
+    }
+  }
+
+  public updateField(
+    field: ExposedModelFields,
+    value: any,
+    options?: { override: boolean }
+  ): void {
+    this.validFields(field)
+    ExposedModel.validValues(value)
+    this.store(field, value, options)
+  }
+
+  public resetField(field: ExposedModelFields): void {
+    this.validFields(field)
+    switch (field) {
+      case 'advancedFilter':
+        this.store(field, ExposedModel.DEFAULT_VALUES.advancedFilter, {
+          override: true
+        })
+        break
+      case 'quickFilter':
+        this.store(field, ExposedModel.DEFAULT_VALUES.quickFilter, {
+          override: true
+        })
+        break
+      case 'advancedSort':
+        this.store(field, ExposedModel.DEFAULT_VALUES.advancedSort, {
+          override: true
+        })
+        break
+      case 'pagination':
+        this.store(field, ExposedModel.DEFAULT_VALUES.pagination, {
+          override: true
+        })
+        break
+      default:
+        break
+    }
+  }
+
+  public resetFields(fields?: ExposedModelFields[]) {
+    if (fields) {
+      if (!Array.isArray(fields)) {
+        throw new RangeError(`Invalid argument expected an Array`)
+      }
+      for (const field of fields) {
+        this.validFields(field)
+        this.resetField(field)
+      }
+    }
+
+    if (!fields) {
+      for (const field of this.fields) {
+        this.validFields(field)
+        this.resetField(field)
+      }
+    }
+  }
+
+  public updateFields(
+    values: {
+      field: ExposedModelFields
+      value: any
+      options?: { override: boolean }
+    }[]
+  ): void {
+    for (const o of values) {
+      const { value, field, options } = o
+      this.updateField(field, value, options)
     }
   }
 }

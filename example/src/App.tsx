@@ -1,6 +1,11 @@
 import React from 'react'
 
-import { Table as ReactTable, Model } from '@voomsway/react-table'
+import {
+  Table as ReactTable,
+  Model,
+  Align,
+  Padding
+} from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import { useState, useEffect } from 'react'
 import { Menu, Tooltip, Button } from 'antd'
@@ -583,20 +588,57 @@ const App = () => {
       value: string[] | number | number[] | string
     }[]
   ): void => {
-    console.log('%c ' + model?.hasAppliedQuickFilter, 'font-size: 25px; color: orange;',value)
+    console.log(
+      '%c ' + model?.hasAppliedQuickFilter,
+      'font-size: 25px; color: orange;',
+      value
+    )
   }
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
   console.log(pageRenderOrder, onRenderOrderChange, selectMenu, dataSource)
   return (
-    <div
+    <Align
       style={{
         padding: 20,
         background: '#f7f8fa',
-        display: 'flex',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        width: '100%'
       }}
+      type={'column'}
     >
+      <Padding vertical={20} style={{ width: '100%' }}>
+        <Align style={{ width: '100%' }} alignCenter justifyAround>
+          <Button
+            onClick={() => {
+              model?.updateField('pagination', { page: 2 }, { override: true })
+            }}
+          >
+            Update Pagination
+          </Button>
+          <Button
+            onClick={() => {
+              model?.resetField?.('quickFilter')
+            }}
+          >
+            Reset quick filter
+          </Button>
+          <Button
+            onClick={() => {
+              model?.resetFields?.()
+            }}
+          >
+            Reset all
+          </Button>
+          <Button
+            onClick={() => {
+              model?.resetFields?.(['pagination', 'quickFilter'])
+            }}
+          >
+            Reset pagination and quickFilter
+          </Button>
+        </Align>
+      </Padding>
       <div style={{ width: `100%` }}>
         <ReactTable
           name={'TestTable'}
@@ -698,7 +740,7 @@ const App = () => {
           />
         </ReactTable>
       </div>
-    </div>
+    </Align>
   )
 }
 
