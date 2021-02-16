@@ -577,7 +577,14 @@ const App = () => {
       )
     }
   ]
-  // TODO: add a confirmation to the select delete.
+  const onApply = (
+    value: {
+      property: string
+      value: string[] | number | number[] | string
+    }[]
+  ): void => {
+    console.log('%c ' + model?.hasAppliedQuickFilter, 'font-size: 25px; color: orange;',value)
+  }
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
   console.log(pageRenderOrder, onRenderOrderChange, selectMenu, dataSource)
@@ -610,7 +617,7 @@ const App = () => {
             enableDataManagement={true}
           />
           <ReactTable.QuickFilter
-            onApply={(value: any) => console.log(value)}
+            onApply={onApply}
             onClear={() => console.log('cleared')}
           />
 

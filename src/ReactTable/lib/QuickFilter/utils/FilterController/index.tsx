@@ -1,6 +1,6 @@
-import React, { useMemo, useReducer } from 'react'
+import React, { useEffect, useMemo, useReducer } from 'react'
 import { Collapse, Typography, Button, Empty, Menu, Dropdown, Row } from 'antd'
-import { isEmpty, isFunction, pick } from 'lodash'
+import { isEmpty, isFunction, pick, find, map } from 'lodash'
 import { motion } from 'framer-motion'
 import QuickFilterItem from '../QuickFilterItem'
 import Align from '../../../../../Align'
@@ -45,6 +45,19 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
     validColumns,
     initQuickFilterState(model)
   )
+
+  useEffect(() => {
+    const filters = map(state.filters, (filter) => {
+      const findColumn = find(columns.all, (o) => {
+        return o.key === filter.property
+      })
+      if (findColumn) {
+        return Object.assign({}, filter, findColumn)
+      }
+      return filter
+    })
+    dispatch({ type: 'REINITIALIZE_FILTER', payload: filters })
+  }, [columns.all])
 
   const addFilter = (propertyIndex: string) => {
     const columnProperty = validColumns[parseInt(propertyIndex, 10)]
@@ -106,8 +119,9 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
 
   return (
     <div className='ReactTable___QuickFilter'>
-      <Collapse expandIconPosition='right'>
+      <Collapse expandIconPosition='right' >
         <Panel
+          disabled={false}
           header={
             <Align alignCenter>
               <Margin right={20}>
@@ -194,6 +208,8 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                             dataSource={dataSource}
                             dispatch={dispatch}
                             property={property}
+                            onApply={onApply}
+                            state={state}
                           />
                         )
                       })}

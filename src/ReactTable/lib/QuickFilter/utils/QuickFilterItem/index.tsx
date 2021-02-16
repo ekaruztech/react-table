@@ -1,20 +1,31 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { isDate } from 'lodash'
+import { isDate, pick, isFunction, map, filter } from 'lodash'
 import { Button, Col, Tooltip } from 'antd'
 import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
 import RenderQuickFilterType from '../RenderQuickFilterType'
 import { motion } from 'framer-motion'
 // eslint-disable-next-line no-unused-vars
-import { QuickFilterProps, QuickFilterAction } from '../../reducer/reducer'
+import {
+  QuickFilterProps,
+  QuickFilterAction,
+  QuickFilterState
+} from '../../reducer/reducer'
 
 interface IQuickFilterItem {
   dataSource: Array<any>
   property: QuickFilterProps
   dispatch: React.Dispatch<QuickFilterAction>
+  onApply: (
+    value: {
+      property: string
+      value: string[] | number | number[] | string
+    }[]
+  ) => void
+  state: QuickFilterState
 }
 const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
-  const { dataSource, property, dispatch } = props
+  const { dataSource, property, dispatch, onApply, state } = props
 
   const type: string = property?.type || 'text'
   const [autoCompleteProps, setAutoCompleteProps] = useState<string | null>(
@@ -81,6 +92,13 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
    */
   const handleFilterRemoval = (filterIndex: number): void => {
     dispatch({ type: 'REMOVE_FILTER', payload: { filterIndex } })
+    if (onApply && isFunction(onApply)) {
+      const filters = map(
+        filter(state.filters, (o) => o.filterIndex !== filterIndex),
+        (value) => pick(value, ['property', 'value'])
+      )
+      onApply(filters)
+    }
   }
 
   const handleFilterValueChange = (

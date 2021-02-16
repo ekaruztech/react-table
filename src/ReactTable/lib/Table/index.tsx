@@ -196,22 +196,6 @@ class Table extends React.Component<TableProps, any> {
                   overflow: isEmpty(dataSource) || loading ? 'hidden' : 'unset'
                 }}
               >
-                {/* <FixHeader> */}
-                {/*  <CellExpanseSetter columns={columns} /> */}
-                {/*  <TableHead */}
-                {/*    columns={columns} */}
-                {/*    columnKeys={columnKeys} */}
-                {/*    onSelectAll={onSelectAll} */}
-                {/*    setColumns={setColumns} */}
-                {/*    selectedTableItems={selectedTableItems} */}
-                {/*    maxColumns={maxColumns} */}
-                {/*    minColumns={minColumns} */}
-                {/*    defaultColumns={defaultColumns} */}
-                {/*    allowCellSelect={!!onCellSelect} */}
-                {/*  /> */}
-                {/*  <tbody /> */}
-                {/* </FixHeader> */}
-
                 <ScrollBar
                   component='section'
                   className={`ReactTable___scroll-wrapper ${

@@ -120,7 +120,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                       ? 'ReactTable___table-body-row-checked '
                       : 'ReactTable___table-body-row'
                   }`}
-                  key={source?.key}
+                  key={`react-table-col-${source?.key ?? index}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

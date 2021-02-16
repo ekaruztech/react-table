@@ -24,5 +24,11 @@ type QuickFilterAction =
   | { type: 'UPDATE_FILTER'; payload: QuickFilterProps }
   | { type: 'ADD_OR_UPDATE_SEARCH'; payload: any }
   | { type: 'RESET' }
+  | { type: 'REINITIALIZE_FILTER'; payload: Array<QuickFilterProps> }
 
-export { QuickFilterAction, QuickFilterProps, QuickFilterState, DataManagementFilterProps }
+export {
+  QuickFilterAction,
+  QuickFilterProps,
+  QuickFilterState,
+  DataManagementFilterProps
+}

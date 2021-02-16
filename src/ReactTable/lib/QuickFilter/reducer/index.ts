@@ -52,6 +52,12 @@ const quickFilterReducer = (model: Model) => (
         filters: state.filters.concat({ ...action.payload, filterIndex })
       }
     }
+    case 'REINITIALIZE_FILTER': {
+      return {
+        ...state,
+        filters: action.payload
+      }
+    }
     case 'REMOVE_FILTER': {
       const newFilterState = filter(
         state.filters,

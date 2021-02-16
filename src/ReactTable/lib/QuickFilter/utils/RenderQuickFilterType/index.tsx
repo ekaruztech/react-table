@@ -28,7 +28,6 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
   const value = property?.value
 
   switch (type) {
-    case 'currency':
     case 'number':
       return (
         <InputNumber
@@ -36,6 +35,23 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           value={isNumber(value) ? value : 0}
           style={{ width: '100%' }}
           onChange={(num) => handleFilterValueChange(num)}
+        />
+      )
+    case 'currency':
+      // const currencyCode = property?.currency;
+      // TODO: Add currency code / sign to the currency formatter during localisation
+      return (
+        <InputNumber
+          defaultValue={0}
+          value={isNumber(value) ? value : 0}
+          style={{ width: '100%' }}
+          onChange={(num) => handleFilterValueChange(num)}
+          formatter={(value: number | string | undefined) =>
+            `${value || ''}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+          }
+          parser={(value: string | undefined) =>
+            value ? value.replace(/₦\s?|(,*)/g, '') : ''
+          }
         />
       )
     case 'date':
