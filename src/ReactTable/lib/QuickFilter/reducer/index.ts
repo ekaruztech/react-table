@@ -64,10 +64,16 @@ const quickFilterReducer = (model: Model) => (
   switch (action.type) {
     case 'ADD_FILTER': {
       const filterIndex = state.filters.length
-      model.store('quickFilter', [pick(action.payload, ['property', 'value'])])
+      const filters = state.filters.concat({ ...action.payload, filterIndex })
+
+      model.store(
+        'quickFilter',
+        filters.map((o) => pick(o, ['property', 'value'])),
+        { override: true }
+      )
       return {
         ...state,
-        filters: state.filters.concat({ ...action.payload, filterIndex })
+        filters
       }
     }
     case 'REINITIALIZE_FILTER': {
