@@ -6,6 +6,7 @@
   "license": "Apache-2.0",
   "repository": "https://github.com/ekaruztech/react-table.git",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "esmodule": "dist/react-table.js",
   "source": "src/index.tsx",
   "engines": {
