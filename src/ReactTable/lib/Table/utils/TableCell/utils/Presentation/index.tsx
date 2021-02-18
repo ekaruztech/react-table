@@ -11,8 +11,7 @@ import {
   PresentationColor
 } from '../../../../../../../types'
 import { isFunction } from 'lodash'
-import moment from 'moment'
-import { isDate } from '../../../../../../../_utils'
+import { format } from 'date-fns'
 
 interface PresentationProps {
   columnType: ColumnType | undefined
@@ -75,7 +74,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
       if (presentationType === 'tag') {
         return (
           <Tag
-            color={presentationColor || 'gold'}
+            color={presentationColor || 'orange'}
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               marginRight: 0,
@@ -92,7 +91,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              background: 'transparent !important',
+              background: 'transparent',
               marginRight: 0,
               paddingLeft: 0,
               opacity: isDisabled ? 0.5 : 1
@@ -104,11 +103,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
     }
     case 'date':
     case 'datetime': {
-      const _dateFormat = dateFormat || 'MMM DD, YYYY hh:mm a'
-      const date = new Date(
-        isDate(new Date(data as string)) ? (data as string) : Date.now()
-      )
-      const format = moment(date).format(_dateFormat)
+      const _dateFormat = dateFormat || 'MMM dd, yyyy hh:mm aaa'
+      const date = format(new Date(data || Date.now()), _dateFormat)
       if (presentationType === 'tag') {
         return (
           <Tag
@@ -118,7 +114,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               opacity: isDisabled ? 0.5 : 1
             }}
           >
-            {format}
+            {date}
           </Tag>
         )
       } else
@@ -128,12 +124,12 @@ const Presentation: React.FC<PresentationProps> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              background: 'transparent !important',
+              background: 'transparent',
               paddingLeft: 0,
               opacity: isDisabled ? 0.5 : 1
             }}
           >
-            {format}
+            {date}
           </Tag>
         )
     }
@@ -158,7 +154,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              background: 'transparent !important',
+              background: 'transparent',
               marginRight: 0,
               paddingLeft: 0,
               opacity: isDisabled ? 0.5 : 1
@@ -188,7 +184,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
             style={{
               fontWeight: bold ? 'bold' : 'normal',
               borderColor: 'transparent',
-              background: 'transparent !important',
+              background: 'transparent',
               marginRight: 0,
               paddingLeft: 0,
               opacity: isDisabled ? 0.5 : 1

@@ -5,7 +5,7 @@ import {
   Model,
   Align,
   Padding
-} from '@voomsway/react-table'
+} from '@voomsway/react-table/dist'
 import '@voomsway/react-table/dist/index.css'
 import { useState, useEffect } from 'react'
 import { Menu, Tooltip, Button } from 'antd'
@@ -423,8 +423,7 @@ const db = {
       type: 'datetime',
       presentationType: 'date',
       presentationColor: 'processing',
-      dateFormat: 'MMM dd, yyyy hh:mm aaa',
-      columnSpan: 0.7
+      columnSpan: 1
     },
     {
       title: 'Cost',

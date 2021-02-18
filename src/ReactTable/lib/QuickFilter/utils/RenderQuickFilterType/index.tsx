@@ -1,9 +1,9 @@
-import { AutoComplete, InputNumber, Select, Input, DatePicker } from 'antd'
+import { AutoComplete, InputNumber, Select, Input } from 'antd'
 import { has, isNumber } from 'lodash'
 import React from 'react'
 import TagRender from '../../../Controls/utils/DataManagement/Filter/utils/TagRender'
-import { isDate } from '../../../../../_utils'
-import moment from 'moment'
+import { isDate, DatePicker } from '../../../../../_utils'
+import { add } from 'date-fns'
 
 interface IRenderFilterType {
   type: string
@@ -64,29 +64,23 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           value={
             Array.isArray(value)
               ? [
-                  moment(
-                    new Date(
-                      value[0] && isDate(new Date(value[0]))
-                        ? value[0]
-                        : new Date()
-                    )
+                  new Date(
+                    value[0] && isDate(new Date(value[0]))
+                      ? value[0]
+                      : new Date()
                   ),
-                  moment(
-                    new Date(
-                      value[1] && isDate(new Date(value[1]))
-                        ? value[1]
-                        : new Date()
-                    )
+                  new Date(
+                    value[1] && isDate(new Date(value[1]))
+                      ? value[1]
+                      : new Date()
                   )
                 ]
-              : [moment(new Date()), moment(new Date()).add(1, 'weeks')]
+              : [new Date(), add(new Date(), { weeks: 1 })]
           }
           onChange={(dates) =>
             handleFilterValueChange(
               // @ts-ignore
-              (dates || []).map(
-                (value: any) => new Date(value.toDate() || Date.now())
-              )
+              (dates || []).map((value: any) => new Date(value || Date.now()))
             )
           }
         />
@@ -94,11 +88,11 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
         <DatePicker
           showTime={type === 'datetime'}
           style={{ width: '100%' }}
-          value={moment(
+          value={
             new Date(value && isDate(new Date(value)) ? value : new Date())
-          )}
+          }
           onChange={(date) =>
-            handleFilterValueChange(new Date(date?.toDate?.() || Date.now()))
+            handleFilterValueChange(new Date(date || Date.now()))
           }
         />
       )

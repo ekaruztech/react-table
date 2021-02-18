@@ -1,6 +1,6 @@
 import React from 'react'
 // eslint-disable-next-line no-unused-vars
-import { ColumnProps, ReactTableProviderProps } from '../types'
+import { ColumnProps } from '../types'
 // eslint-disable-next-line no-unused-vars
 import Model from './model'
 import { isDate as _isDate } from 'lodash'
@@ -9,16 +9,6 @@ import generatePicker from 'antd/es/date-picker/generatePicker'
 import 'antd/es/date-picker/style/index'
 
 const DatePicker = generatePicker<Date>(dateFnsGenerateConfig)
-
-/**
- * Creates a named React context
- * @param name
- */
-const createNamedContext = (name: string) => {
-  const contextType = React.createContext({} as ReactTableProviderProps)
-  contextType.displayName = name
-  return contextType
-}
 
 const enumeratePresets = (
   model: Model,
@@ -157,4 +147,4 @@ const EmptyImage = (
     </g>
   </svg>
 )
-export { createNamedContext, enumeratePresets, isDate, EmptyImage, DatePicker }
+export { enumeratePresets, isDate, EmptyImage, DatePicker }
