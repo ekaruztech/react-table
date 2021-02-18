@@ -11,7 +11,8 @@ import {
   PresentationColor
 } from '../../../../../../../types'
 import { isFunction } from 'lodash'
-import { format } from 'date-fns'
+import moment from 'moment'
+import { isDate } from '../../../../../../../_utils'
 
 interface PresentationProps {
   columnType: ColumnType | undefined
@@ -103,9 +104,11 @@ const Presentation: React.FC<PresentationProps> = (props) => {
     }
     case 'date':
     case 'datetime': {
-      const _dateFormat = dateFormat || 'MMM dd, yyyy hh:mm aaa'
-
-      const date = format(new Date(data || Date.now()), _dateFormat)
+      const _dateFormat = dateFormat || 'MMM DD, YYYY hh:mm a'
+      const date = new Date(
+        isDate(new Date(data as string)) ? (data as string) : Date.now()
+      )
+      const format = moment(date).format(_dateFormat)
       if (presentationType === 'tag') {
         return (
           <Tag
@@ -115,7 +118,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               opacity: isDisabled ? 0.5 : 1
             }}
           >
-            {date}
+            {format}
           </Tag>
         )
       } else
@@ -130,7 +133,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
               opacity: isDisabled ? 0.5 : 1
             }}
           >
-            {date}
+            {format}
           </Tag>
         )
     }

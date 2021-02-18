@@ -3,7 +3,6 @@ import { has, isNumber } from 'lodash'
 import React from 'react'
 import TagRender from '../../../Controls/utils/DataManagement/Filter/utils/TagRender'
 import { isDate } from '../../../../../_utils'
-import { add } from 'date-fns'
 import moment from 'moment'
 
 interface IRenderFilterType {
@@ -80,7 +79,7 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
                     )
                   )
                 ]
-              : [moment(new Date()), moment(add(new Date(), { weeks: 1 }))]
+              : [moment(new Date()), moment(new Date()).add(1, 'weeks')]
           }
           onChange={(dates) =>
             handleFilterValueChange(

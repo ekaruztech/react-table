@@ -1,6 +1,6 @@
 {
   "name": "@voomsway/react-table",
-  "version": "1.0.0-beta.55",
+  "version": "1.0.0-beta.56",
   "description": "React table for voomsway web application",
   "author": "Cmion",
   "license": "Apache-2.0",
@@ -67,7 +67,6 @@
   ],
   "dependencies": {
     "antd": "^4.6.4",
-    "date-fns": "^2.16.1",
     "framer-motion": "^2.6.13",
     "invariant": "^2.2.4",
     "lodash": "^4.17.20",
