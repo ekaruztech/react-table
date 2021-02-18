@@ -3,6 +3,7 @@
   padding: 20px 16px;
   display: flex;
   align-items: center;
+  flex-flow: row wrap;
   min-height: 80px;
   justify-content: space-between;
   border-top-left-radius: 10px;
@@ -19,6 +20,16 @@
     }
     .ReactTable___table-filter-btn-container {
       //margin: 0 20px 0 0;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .ReactTable___table-container-header-inner-right {
+      margin-top: 20px;
+      width: 100%;
+    }
+    .ReactTable___table-container-header-inner-left {
+      justify-content: space-between;
+      width: 100%;
     }
   }
 }

@@ -420,7 +420,7 @@ const db = {
       title: 'DOB',
       dataIndex: 'dooob',
       key: 'dooob',
-      type: 'date',
+      type: 'datetime',
       presentationType: 'date',
       presentationColor: 'processing',
       dateFormat: 'MMM dd, yyyy hh:mm aaa',

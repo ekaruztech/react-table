@@ -45,7 +45,7 @@ const Align: React.FC<AlignProps> = (props: AlignProps) => {
   const styles = {
     ...style,
     display: 'flex',
-    flexFlow: type || 'row',
+    flexDirection: type || 'row',
     ...(alignCenter ? { alignItems: 'center' } : {}),
     ...(alignEnd ? { alignItems: 'flex-end' } : {}),
     ...(alignStart ? { alignItems: 'flex-start' } : {}),

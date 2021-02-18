@@ -1,9 +1,10 @@
-import { AutoComplete, InputNumber, Select, Input } from 'antd'
+import { AutoComplete, InputNumber, Select, Input, DatePicker } from 'antd'
 import { has, isNumber } from 'lodash'
 import React from 'react'
 import TagRender from '../../../Controls/utils/DataManagement/Filter/utils/TagRender'
-import { isDate, DatePicker } from '../../../../../_utils'
+import { isDate } from '../../../../../_utils'
 import { add } from 'date-fns'
+import moment from 'moment';
 
 interface IRenderFilterType {
   type: string
@@ -64,15 +65,23 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           value={
             Array.isArray(value)
               ? [
-                  new Date(isDate(new Date(value[0])) ? value[0] : new Date()),
-                  new Date(isDate(new Date(value[1])) ? value[1] : new Date())
+                  moment(new Date(
+                    value[0] && isDate(new Date(value[0]))
+                      ? value[0]
+                      : new Date()
+                  )),
+                  moment(new Date(
+                    value[1] && isDate(new Date(value[1]))
+                      ? value[1]
+                      : new Date()
+                  ))
                 ]
-              : [new Date(), add(new Date(), { weeks: 1 })]
+              : [moment(new Date()), moment(add(new Date(), { weeks: 1 }))]
           }
           onChange={(dates) =>
             handleFilterValueChange(
               // @ts-ignore
-              (dates || []).map((value) => new Date(value || Date.now()))
+              (dates || []).map((value) => new Date(value.toDate() || Date.now()))
             )
           }
         />
@@ -81,10 +90,10 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           showTime={type === 'datetime'}
           style={{ width: '100%' }}
           value={
-            new Date(isDate(value && new Date(value)) ? value : new Date())
+            moment(new Date(value && isDate(new Date(value)) ? value : new Date()))
           }
           onChange={(date) =>
-            handleFilterValueChange(new Date(date || Date.now()))
+            handleFilterValueChange(new Date(date.toDate() || Date.now()))
           }
         />
       )

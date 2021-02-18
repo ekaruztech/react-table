@@ -140,7 +140,7 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
   }
 
   return (
-    <Col span={6}>
+    <Col span={6} sm={24} md={12} lg={8} xl={6}>
       <motion.div
         exit={{ opacity: 0, y: 40 }}
         initial={{ opacity: 0, y: 40 }}
