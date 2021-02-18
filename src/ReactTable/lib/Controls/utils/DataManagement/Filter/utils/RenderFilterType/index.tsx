@@ -16,7 +16,7 @@ type RenderFilterTypeProps = {
   autoCompleteOptions: Array<{ value: string }> | undefined
   currentData: any
   handleFilterValueChange: (
-    value: number | string | Date | undefined,
+    value: number | string | Date | undefined | null,
     valueType?: string | undefined,
     rangePosition?: string | undefined
   ) => null
@@ -139,7 +139,7 @@ export default (props: RenderFilterTypeProps) => {
             new Date(value && isDate(new Date(value)) ? value : new Date())
           }
           onChange={(date) =>
-            handleFilterValueChange(new Date(date|| new Date()))
+            handleFilterValueChange(new Date(date || new Date()))
           }
         />
       )
