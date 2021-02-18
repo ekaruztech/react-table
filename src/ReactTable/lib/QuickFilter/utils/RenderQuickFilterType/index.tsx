@@ -4,7 +4,7 @@ import React from 'react'
 import TagRender from '../../../Controls/utils/DataManagement/Filter/utils/TagRender'
 import { isDate } from '../../../../../_utils'
 import { add } from 'date-fns'
-import moment from 'moment';
+import moment from 'moment'
 
 interface IRenderFilterType {
   type: string
@@ -65,23 +65,29 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           value={
             Array.isArray(value)
               ? [
-                  moment(new Date(
-                    value[0] && isDate(new Date(value[0]))
-                      ? value[0]
-                      : new Date()
-                  )),
-                  moment(new Date(
-                    value[1] && isDate(new Date(value[1]))
-                      ? value[1]
-                      : new Date()
-                  ))
+                  moment(
+                    new Date(
+                      value[0] && isDate(new Date(value[0]))
+                        ? value[0]
+                        : new Date()
+                    )
+                  ),
+                  moment(
+                    new Date(
+                      value[1] && isDate(new Date(value[1]))
+                        ? value[1]
+                        : new Date()
+                    )
+                  )
                 ]
               : [moment(new Date()), moment(add(new Date(), { weeks: 1 }))]
           }
           onChange={(dates) =>
             handleFilterValueChange(
               // @ts-ignore
-              (dates || []).map((value) => new Date(value.toDate() || Date.now()))
+              (dates || []).map(
+                (value: any) => new Date(value.toDate() || Date.now())
+              )
             )
           }
         />
@@ -89,11 +95,11 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
         <DatePicker
           showTime={type === 'datetime'}
           style={{ width: '100%' }}
-          value={
-            moment(new Date(value && isDate(new Date(value)) ? value : new Date()))
-          }
+          value={moment(
+            new Date(value && isDate(new Date(value)) ? value : new Date())
+          )}
           onChange={(date) =>
-            handleFilterValueChange(new Date(date.toDate() || Date.now()))
+            handleFilterValueChange(new Date(date?.toDate?.() || Date.now()))
           }
         />
       )
