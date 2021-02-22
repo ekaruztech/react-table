@@ -32,7 +32,7 @@ const events = {
  * @param defaultValue
  */
 
-interface StorageAPI {
+export interface StorageAPI {
   pull: () => any
   post: (data: any) => void
   update: (updateData: any) => void
@@ -40,7 +40,7 @@ interface StorageAPI {
   remove: () => void
 }
 
-class Storage implements StorageAPI {
+export class Storage implements StorageAPI {
   private readonly storageKey: string
   private readonly storage: any
 
@@ -215,5 +215,3 @@ class Storage implements StorageAPI {
     document.dispatchEvent(removeEvent)
   }
 }
-
-export { Storage, events as StorageEvents, StorageAPI }
