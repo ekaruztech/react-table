@@ -147,4 +147,15 @@ const EmptyImage = (
     </g>
   </svg>
 )
-export { enumeratePresets, isDate, EmptyImage, DatePicker }
+
+/**
+ * Finds and Returns the truthy values in an array of boolean
+ * @param array
+ */
+const findTruthies = (array: boolean[]) =>
+  array.reduce(
+    (accumulator: number, current: boolean) =>
+      current ? accumulator + 1 : accumulator,
+    0
+  )
+export { enumeratePresets, isDate, EmptyImage, DatePicker, findTruthies }

@@ -163,11 +163,19 @@ export interface TableBodyProviderProps {
   allowCellMenu: boolean
   hoverActions?: {
     onEdit: (source: any) => void
+    onDelete: (key: string) => void
   }
   enableHoverActions?:
+    | [boolean, boolean, boolean]
     | [boolean, boolean]
     | [boolean]
     | boolean
-    | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
+    | ((
+        source: Array<{}>
+      ) =>
+        | [boolean, boolean, boolean]
+        | [boolean, boolean]
+        | [boolean]
+        | boolean)
   disableCell?: (source: any) => boolean
 }

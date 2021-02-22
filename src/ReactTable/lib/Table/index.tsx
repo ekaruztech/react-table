@@ -26,12 +26,20 @@ interface TableProps {
   /* Functions to be called on hover actions */
   hoverActions?: {
     onEdit: (source: any) => void
+    onDelete: (key: string) => void
   }
   enableHoverActions?:
+    | [boolean, boolean, boolean]
     | [boolean, boolean]
     | [boolean]
     | boolean
-    | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
+    | ((
+        source: Array<{}>
+      ) =>
+        | [boolean, boolean, boolean]
+        | [boolean, boolean]
+        | [boolean]
+        | boolean)
   disableCell?: (source: any) => boolean
 }
 class Table extends React.Component<TableProps, any> {

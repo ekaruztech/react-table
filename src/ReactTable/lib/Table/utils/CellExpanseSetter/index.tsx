@@ -1,18 +1,26 @@
 import React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { ColumnProps, TableColumnProps } from '../../../../../types'
-import { clamp, first, isBoolean, last, isFunction } from 'lodash'
+import { clamp, isBoolean, isFunction } from 'lodash'
 import { useDimension } from '../../../../../hooks'
+import { findTruthies } from '../../../../../_utils'
 
 interface ICellExpanseSetter {
   columns: TableColumnProps
   allowCellSelect: boolean
   allowCellMenu: boolean
   enableHoverActions?:
+    | [boolean, boolean, boolean]
     | [boolean, boolean]
     | [boolean]
     | boolean
-    | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
+    | ((
+        source: Array<{}>
+      ) =>
+        | [boolean, boolean, boolean]
+        | [boolean, boolean]
+        | [boolean]
+        | boolean)
 }
 const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
   const { columns, allowCellSelect, enableHoverActions = [true] } = props
@@ -22,8 +30,9 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
     'ReactTable___table_wrapper-identifier'
   )
 
+  // Currently displaying columns.
   const selectedColumnLength = columns.selected.length
-  // width for select column
+  // width for  checkbox
   const selectColumnWidth = 60
   // min column width
   const minColumnWidth = 150
@@ -33,49 +42,41 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
     (dimension.width - selectColumnWidth) / (selectedColumnLength + 1)
 
   // clamps the computed value withing the minColumnWidth and minColumnWidth * 2
-  let columnWidth = clamp(
+  const columnWidth = clamp(
     computedColumnWidth,
     minColumnWidth,
     minColumnWidth * 2
   )
 
-  // if enableHoverActions is an array (and) its length is equal to 2, and either the first or the last item in a truthy | falsy value
-  // or if enableHoverActions is a boolean
-  // When enableHoverActions is function we want to enable it
-  const allowAllHoverActions =
-    (Array.isArray(enableHoverActions) &&
-      enableHoverActions.length === 2 &&
-      first(enableHoverActions) &&
-      last(enableHoverActions)) ||
-    (isBoolean(enableHoverActions) && enableHoverActions) ||
-    isFunction(enableHoverActions)
+  let actionColumnWidthBounds = 60
 
-  // If EnableHoverActions is an array (and) the first item is a boolean
-  // or the length of enableHoverActions is equal to 2 and the last item is a boolean
-  const allowOneHoverAction =
-    Array.isArray(enableHoverActions) &&
-    (first(enableHoverActions) ||
-      (enableHoverActions.length === 2 && last(enableHoverActions)))
+  if (Array.isArray(enableHoverActions)) {
+    const truthyHoverActions = findTruthies(enableHoverActions)
+    if (truthyHoverActions >= 3) {
+      actionColumnWidthBounds = 160
+    }
+    if (truthyHoverActions === 2) {
+      actionColumnWidthBounds = 120
+    }
+    if (truthyHoverActions === 1) {
+      actionColumnWidthBounds = 90
+    }
+  } else if (isBoolean(enableHoverActions)) {
+    actionColumnWidthBounds = 160
+  } else if (isFunction(enableHoverActions)) {
+    actionColumnWidthBounds = 160
+  }
 
-  const oneOrAllAllowedMin = allowAllHoverActions
-    ? 120
-    : allowOneHoverAction
-    ? 90
-    : 60
-  const oneOrAllAllowedMax = allowAllHoverActions
-    ? 140
-    : allowOneHoverAction
-    ? 90
-    : 60
   const actionColumnWidth = clamp(
     columnWidth,
-    oneOrAllAllowedMin,
-    oneOrAllAllowedMax
+    actionColumnWidthBounds,
+    actionColumnWidthBounds
   )
 
   // Adds the remaining value from the clamped actionColumnWidth to the rest of the columns.
-  columnWidth =
-    columnWidth + (columnWidth - actionColumnWidth) / selectedColumnLength
+  // // (columnWidth - actionColumnWidth) / selectedColumnLength -- adds or remove excesses from  evenly from all all the columns
+  // columnWidth =
+  //   columnWidth + (columnWidth - actionColumnWidth) / selectedColumnLength
 
   return (
     <colgroup>

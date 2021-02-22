@@ -57,20 +57,21 @@ class CellMenu extends React.Component<CellMenuProps> {
 
     const showConfirm = (): void => {
       confirm({
-        title: 'Do you Want to delete item?',
+        title: 'Do you want to delete item?',
+        content: 'You might not be able to undo this action!',
         icon: (
           <span className={'anticon'}>
-            <i className='ri-error-warning-line' />
+            <i className='ri-error-warning-line' style={{ fontSize: 20 }} />
           </span>
         ),
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
         onOk() {
           if (onDelete && isFunction(onDelete)) {
             onDelete(source?.key || null)
           }
         },
-        onCancel() {
-          return true
-        }
       })
     }
 

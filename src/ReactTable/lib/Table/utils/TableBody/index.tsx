@@ -22,12 +22,20 @@ interface ITableBody {
   /* Functions to be called on hover actions */
   hoverActions?: {
     onEdit: (source: any) => void
+    onDelete: (key: string) => void
   }
   enableHoverActions?:
+    | [boolean, boolean, boolean]
     | [boolean, boolean]
     | [boolean]
     | boolean
-    | ((source: Array<{}>) => [boolean, boolean] | [boolean] | boolean)
+    | ((
+        source: Array<{}>
+      ) =>
+        | [boolean, boolean, boolean]
+        | [boolean, boolean]
+        | [boolean]
+        | boolean)
   scrollComponentRef: HTMLElement
   disableCell?: (source: any) => boolean
 }
@@ -47,7 +55,6 @@ const TableBody: React.FC<ITableBody> = (props) => {
   } = props
 
   const dimensions = useDimension('element', 'ReactTable___table-container')
-
 
   return (
     <motion.tbody className='ReactTable___table-body'>

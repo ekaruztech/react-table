@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 import React, { useRef, useState, Fragment } from 'react'
-import { Checkbox, Drawer, Button, Tooltip } from 'antd'
+import { Checkbox, Drawer, Button, Tooltip, Modal } from 'antd'
 import { motion } from 'framer-motion'
 import presentationHOC from './utils/presentationHOC'
 import Presentation from './utils/Presentation'
 import { ReactTableContext } from '../../../ReactTableContext'
 import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
 import Padding from '../../../../../Padding'
-import { find, isBoolean, first, last, isFunction } from 'lodash'
+import { find, isBoolean, first, isFunction } from 'lodash'
 import './styles.scss'
 
 interface ITableCell {
@@ -29,6 +29,25 @@ const TableCell: React.FC<ITableCell> = (props) => {
   }
   const onClose = () => {
     setDrawerVisible(false)
+  }
+  const showDeleteConfirm = (onDelete: (key: string) => void): void => {
+    Modal.confirm({
+      title: 'Do you want to delete item?',
+      content: 'You might not be able to undo this action!',
+      icon: (
+        <span className={'anticon'}>
+          <i className='ri-error-warning-line' style={{ fontSize: 20 }} />
+        </span>
+      ),
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
+      onOk() {
+        if (onDelete && isFunction(onDelete)) {
+          onDelete(source?.key || null)
+        }
+      }
+    })
   }
 
   // @ts-ignore
@@ -63,29 +82,56 @@ const TableCell: React.FC<ITableCell> = (props) => {
               (isBoolean(enableHoverActions) && enableHoverActions) ||
               isFunction(enableHoverActions)
 
+            /**
+             * When enableHoverActions is a function, you want to show the hover actions,
+             * but disabled or enable their clicks (button) based on whether the function returns a truthy value or falsy value
+             **/
+            const enableDeleteHoverAction =
+              (Array.isArray(enableHoverActions) &&
+                enableHoverActions.length === 3 &&
+                enableHoverActions[2]) ||
+              (isBoolean(enableHoverActions) && enableHoverActions) ||
+              isFunction(enableHoverActions)
+
+            /**
+             * When enableHoverActions is a function, you want to show the hover actions,
+             * but disabled or enable their clicks (button) based on whether the function returns a truthy value or falsy value
+             **/
+            const enableEditHoverAction =
+              (Array.isArray(enableHoverActions) &&
+                enableHoverActions.length >= 2 &&
+                !!enableHoverActions[1]) ||
+              (isBoolean(enableHoverActions) && enableHoverActions) ||
+              isFunction(enableHoverActions)
+
+            // Returns a result for the hoverActions enabler if it is a function, otherwise default to true.
             const enableHoverActionFnResult = isFunction(enableHoverActions)
               ? enableHoverActions(source)
               : true
 
+            /**
+             * Disabled state is for situation where enableHoverActions is of type `function`
+             * Note: when enableHoverActions is a function that returns an array of boolean, we show the hover actions,
+             * but only disable it based on the return value of the function
+             **/
             const expandedViewHoverActionDisabledState =
               (Array.isArray(enableHoverActionFnResult) &&
                 !first(enableHoverActionFnResult)) ||
               (isBoolean(enableHoverActionFnResult) &&
                 !enableHoverActionFnResult)
 
-            const editHoverActionDisabledState =
+            const editHoverActionDisabledState = isFunction(enableHoverActions)
+              ? Array.isArray(enableHoverActionFnResult)
+                ? enableHoverActionFnResult[1] !== true
+                : !enableHoverActionFnResult
+              : false
+
+            const deleteHoverActionDisabledState =
               (Array.isArray(enableHoverActionFnResult) &&
-                enableHoverActionFnResult.length === 2 &&
-                !last(enableHoverActionFnResult)) ||
+                enableHoverActionFnResult.length === 3 &&
+                !enableHoverActionFnResult[2]) ||
               (isBoolean(enableHoverActionFnResult) &&
                 !enableHoverActionFnResult)
-
-            const enableEditHoverAction =
-              (Array.isArray(enableHoverActions) &&
-                enableHoverActions.length === 2 &&
-                last(enableHoverActions)) ||
-              (isBoolean(enableHoverActions) && enableHoverActions) ||
-              isFunction(enableHoverActions)
 
             const cellMenuCallback = (child: React.ReactElement<any>) => {
               if (React.isValidElement(child)) {
@@ -190,17 +236,17 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     )
                   })}
 
-                  <td
-                    className='ReactTable___table-body-cell table-body-cell-fixed-right'
-                    style={{ opacity: isDisabled ? 0.5 : 1 }}
-                  >
-                    <div className='ReactTable___table-utility'>
+                  <td className='ReactTable___table-body-cell table-body-cell-fixed-right'>
+                    <div
+                      className='ReactTable___table-utility'
+                      style={{ opacity: isDisabled ? 0.5 : 1 }}
+                    >
                       {showHoverActions && (
                         <Fragment>
                           {enableExpandedViewHoverAction && (
                             <Padding
                               right={
-                                !!cellMenu && !enableEditHoverAction ? 10 : 0
+                                !!cellMenu && !enableEditHoverAction ? 5 : 0
                               }
                             >
                               <Tooltip placement='top' title='Quick view'>
@@ -235,7 +281,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                           )}
 
                           {enableEditHoverAction && (
-                            <Padding right={!!cellMenu ? 10 : 0}>
+                            <Padding right={!!cellMenu ? 5 : 0}>
                               <Tooltip placement='top' title={'Edit'}>
                                 <Button
                                   type='text'
@@ -264,6 +310,43 @@ const TableCell: React.FC<ITableCell> = (props) => {
                                       <i
                                         className='ri-edit-line'
                                         style={{ fontSize: 16 }}
+                                      />
+                                    </motion.span>
+                                  }
+                                />
+                              </Tooltip>
+                            </Padding>
+                          )}
+                          {enableDeleteHoverAction && (
+                            <Padding right={5}>
+                              <Tooltip placement='top' title='Delete'>
+                                <Button
+                                  type='text'
+                                  shape='circle'
+                                  onClick={() =>
+                                    showDeleteConfirm(
+                                      hoverActions?.onDelete ?? (() => null)
+                                    )
+                                  }
+                                  disabled={deleteHoverActionDisabledState}
+                                  icon={
+                                    <motion.span
+                                      exit={{ opacity: 0, y: 10 }}
+                                      initial={{ opacity: 0, y: 10 }}
+                                      animate={{ opacity: 0.7, y: 0 }}
+                                      transition={{ delay: 0.3 }}
+                                      whileHover={{
+                                        scale: 1.2,
+                                        opacity: 1
+                                      }}
+                                      className='anticon table-cell-hover-actions-icon'
+                                    >
+                                      <i
+                                        className='ri-delete-bin-line'
+                                        style={{
+                                          fontSize: 16,
+                                          color: '#ef3b4f'
+                                        }}
                                       />
                                     </motion.span>
                                   }

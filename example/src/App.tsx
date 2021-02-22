@@ -702,11 +702,14 @@ const App = () => {
               </Tooltip>
             )}
             hoverActions={{
-              onEdit: () => console.log('Hover Actions On Edit')
+              onEdit: () => console.log('Hover Actions On Edit'),
+              onDelete: () =>
+                console.log(
+                  '%cHover Actions On Delete',
+                  'font-size: 20px; color: goldenrod'
+                )
             }}
-            enableHoverActions={(source: any) => {
-              return [source.hobby !== 'Teaching', true]
-            }}
+            enableHoverActions={[true, true, false]}
             expandedView={(source: any) => {
               return (
                 <div>
