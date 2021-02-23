@@ -709,7 +709,7 @@ const App = () => {
                   'font-size: 20px; color: goldenrod'
                 )
             }}
-            enableHoverActions={[true, true, false]}
+            enableHoverActions={[true, true, true]}
             expandedView={(source: any) => {
               return (
                 <div>

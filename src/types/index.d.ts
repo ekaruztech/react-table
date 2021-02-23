@@ -162,8 +162,8 @@ export interface TableBodyProviderProps {
   expandedView?: (source: any) => React.ReactNode
   allowCellMenu: boolean
   hoverActions?: {
-    onEdit: (source: any) => void
-    onDelete: (key: string) => void
+    onEdit?: (source: any) => void
+    onDelete?: (key: string) => void
   }
   enableHoverActions?:
     | [boolean, boolean, boolean]

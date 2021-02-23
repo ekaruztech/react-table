@@ -25,8 +25,8 @@ interface TableProps {
   cellMenu?: ReactElement<CellMenuProps>
   /* Functions to be called on hover actions */
   hoverActions?: {
-    onEdit: (source: any) => void
-    onDelete: (key: string) => void
+    onEdit?: (source: any) => void
+    onDelete?: (key: string) => void
   }
   enableHoverActions?:
     | [boolean, boolean, boolean]
