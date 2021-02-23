@@ -328,6 +328,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                                       hoverActions?.onDelete ?? (() => null)
                                     )
                                   }
+                                  danger
                                   disabled={deleteHoverActionDisabledState}
                                   icon={
                                     <motion.span
@@ -339,13 +340,12 @@ const TableCell: React.FC<ITableCell> = (props) => {
                                         scale: 1.2,
                                         opacity: 1
                                       }}
-                                      className='anticon table-cell-hover-actions-icon'
+                                      className='anticon table-cell-hover-actions-icon table-cell-hover-actions-icon-delete'
                                     >
                                       <i
                                         className='ri-delete-bin-line'
                                         style={{
-                                          fontSize: 16,
-                                          color: '#ef3b4f'
+                                          fontSize: 16
                                         }}
                                       />
                                     </motion.span>

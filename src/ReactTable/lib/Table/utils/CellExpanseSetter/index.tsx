@@ -35,7 +35,7 @@ const CellExpanseSetter: React.FC<ICellExpanseSetter> = (props) => {
   // width for  checkbox
   const selectColumnWidth = 60
   // min column width
-  const minColumnWidth = 150
+  const minColumnWidth = 160
   // computes column width using the table width and enables resize on dimension change
   // subs the selectColumnWidth from dimension width and divides by the length of selected columns + 1(action column)
   const computedColumnWidth =

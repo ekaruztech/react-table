@@ -598,7 +598,7 @@ const App = () => {
   }
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
-  console.log(pageRenderOrder, onRenderOrderChange, selectMenu, dataSource)
+  console.log({pageRenderOrder, onRenderOrderChange, selectMenu, dataSource, onApply})
   return (
     <Align
       style={{
