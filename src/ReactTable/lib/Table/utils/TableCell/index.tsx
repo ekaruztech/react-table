@@ -369,7 +369,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     onClose={onClose}
                     visible={drawerVisible}
                     key='Table-View-Drawer'
-                    width='45%'
+                    width='50%'
                   >
                     {expandedView && expandedView(source)}
                   </Drawer>
