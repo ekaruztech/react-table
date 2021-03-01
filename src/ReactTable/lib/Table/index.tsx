@@ -21,10 +21,18 @@ interface TableProps {
   cellSelectionMenu?: React.ReactNode[]
   /* JSX element for displaying expanded data for table cell */
   expandedView?: (source: any) => React.ReactNode
+  /* Width of JSX element for displaying expanded data for table cell */
+  expandedViewWidth?: string | number
+  expandedViewTitle?: string
+  expandedViewPlacement?: 'top' | 'right' | 'bottom' | 'left'
+  expandedViewFooter?: null | React.ReactNode[]
+  onExpandedViewClose?: () => void
+  onExpandedViewOpen?: () => void
   /* JSX element for displaying menu for table cell */
   cellMenu?: ReactElement<CellMenuProps>
   /* Functions to be called on hover actions */
   hoverActions?: {
+    onExpandedView?: (source: any) => void
     onEdit?: (source: any) => void
     onDelete?: (key: string) => void
   }
@@ -174,7 +182,13 @@ class Table extends React.Component<TableProps, any> {
       hoverActions,
       enableHoverActions,
       disableCell,
-      cellSelectionMenu
+      cellSelectionMenu,
+      expandedViewWidth,
+      expandedViewPlacement,
+      expandedViewTitle,
+      expandedViewFooter,
+      onExpandedViewClose,
+      onExpandedViewOpen
     } = this.props
     return (
       <ReactTableContext.Consumer>
@@ -248,6 +262,12 @@ class Table extends React.Component<TableProps, any> {
                       loader={loader}
                       cellMenu={cellMenu}
                       expandedView={expandedView}
+                      expandedViewWidth={expandedViewWidth}
+                      expandedViewPlacement={expandedViewPlacement}
+                      expandedViewFooter={expandedViewFooter}
+                      expandedViewTitle={expandedViewTitle}
+                      onExpandedViewClose={onExpandedViewClose}
+                      onExpandedViewOpen={onExpandedViewOpen}
                       allowCellSelect={!isEmpty(cellSelectionMenu)}
                       allowCellMenu={!!cellMenu}
                       hoverActions={hoverActions}

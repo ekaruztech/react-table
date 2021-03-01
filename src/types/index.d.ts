@@ -160,8 +160,15 @@ export interface TableBodyProviderProps {
   cellMenu?: ReactElement<CellMenuProps>
   allowCellSelect: boolean
   expandedView?: (source: any) => React.ReactNode
+  expandedViewWidth?: string | number
+  expandedViewTitle?: string
+  expandedViewPlacement?: 'top' | 'right' | 'bottom' | 'left'
+  expandedViewFooter?: null | React.ReactNode[]
+  onExpandedViewClose?: () => void
+  onExpandedViewOpen?: () => void
   allowCellMenu: boolean
   hoverActions?: {
+    onExpandedView?: (source: any) => void
     onEdit?: (source: any) => void
     onDelete?: (key: string) => void
   }

@@ -7,7 +7,7 @@ import Presentation from './utils/Presentation'
 import { ReactTableContext } from '../../../ReactTableContext'
 import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
 import Padding from '../../../../../Padding'
-import { find, isBoolean, first, isFunction } from 'lodash'
+import { find, isBoolean, first, isFunction, isString, isNumber } from 'lodash'
 import './styles.scss'
 
 interface ITableCell {
@@ -24,9 +24,6 @@ const TableCell: React.FC<ITableCell> = (props) => {
   const trRef = useRef()
   const [drawerVisible, setDrawerVisible] = useState(false)
   const [showHoverActions, setShowHoverActions] = useState(false)
-  const showDrawer = () => {
-    setDrawerVisible(true)
-  }
   const onClose = () => {
     setDrawerVisible(false)
   }
@@ -63,8 +60,41 @@ const TableCell: React.FC<ITableCell> = (props) => {
             cellMenu,
             hoverActions,
             enableHoverActions,
-            disableCell
+            disableCell,
+            expandedViewWidth = '50%',
+            expandedViewTitle = 'Expanded View',
+            expandedViewPlacement = 'left',
+            expandedViewFooter = null,
+            onExpandedViewClose,
+            onExpandedViewOpen
           }) => {
+            const _expandedViewWidth =
+              isString(expandedViewWidth) ||
+              (isNumber(expandedViewWidth) && !isNaN(expandedViewWidth))
+                ? expandedViewWidth
+                : '50%'
+
+            const showDrawer = () => {
+              if (expandedView && isFunction(expandedView)) {
+                if (React.isValidElement(expandedView(source))) {
+                  setDrawerVisible(true)
+                  if (isFunction(onExpandedViewOpen)) {
+                    onExpandedViewOpen()
+                  }
+                }
+              }
+            }
+            const onOpenExpandedView = () => {
+              showDrawer()
+              if (
+                hoverActions &&
+                hoverActions?.onExpandedView &&
+                isFunction(hoverActions?.onExpandedView)
+              ) {
+                const onExpandedView = hoverActions.onExpandedView
+                onExpandedView(source)
+              }
+            }
             const isDisabled = isFunction(disableCell)
               ? disableCell(source)
               : false
@@ -253,7 +283,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
                                 <Button
                                   type='text'
                                   shape='circle'
-                                  onClick={showDrawer}
+                                  onClick={onOpenExpandedView}
                                   disabled={
                                     expandedViewHoverActionDisabledState
                                   }
@@ -363,13 +393,19 @@ const TableCell: React.FC<ITableCell> = (props) => {
 
                 {enableExpandedViewHoverAction && (
                   <Drawer
-                    title={'Expanded View'}
-                    placement='left'
+                    title={expandedViewTitle}
+                    placement={expandedViewPlacement}
                     closable
-                    onClose={onClose}
+                    onClose={() => {
+                      onClose()
+                      if (isFunction(onExpandedViewClose)) {
+                        onExpandedViewClose()
+                      }
+                    }}
                     visible={drawerVisible}
                     key='Table-View-Drawer'
-                    width='50%'
+                    width={_expandedViewWidth}
+                    footer={expandedViewFooter}
                   >
                     {expandedView && expandedView(source)}
                   </Drawer>

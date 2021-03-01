@@ -678,6 +678,8 @@ const App = () => {
             loader={'skeleton'}
             loading={isLoadingContent}
             disableCell={(source: any) => source.hobby === 'Teaching'}
+            expandedViewWidth={'80%'}
+            expandedViewPlacement={'top'}
             cellSelectionMenu={Array(4).fill(
               // <Padding horizontal={10} style={{ height: '100%' }}>
               //   <div

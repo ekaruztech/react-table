@@ -17,10 +17,17 @@ interface ITableBody {
   loader?: 'skeleton' | 'spinner'
   cellMenu?: React.ReactElement<CellMenuProps>
   expandedView?: (source: any) => React.ReactNode
+  expandedViewWidth?: string | number
+  expandedViewTitle?: string
+  expandedViewPlacement?: 'top' | 'right' | 'bottom' | 'left'
+  expandedViewFooter?: null | React.ReactNode[]
+  onExpandedViewClose?: () => void
+  onExpandedViewOpen?: () => void
   allowCellSelect: boolean
   allowCellMenu: boolean
   /* Functions to be called on hover actions */
   hoverActions?: {
+    onExpandedView?: (source: any) => void
     onEdit?: (source: any) => void
     onDelete?: (key: string) => void
   }
@@ -51,7 +58,13 @@ const TableBody: React.FC<ITableBody> = (props) => {
     allowCellMenu,
     hoverActions,
     enableHoverActions = [true],
-    disableCell
+    disableCell,
+    expandedViewWidth,
+    expandedViewTitle,
+    expandedViewPlacement,
+    expandedViewFooter,
+    onExpandedViewClose,
+    onExpandedViewOpen,
   } = props
 
   const dimensions = useDimension('element', 'ReactTable___table-container')
@@ -139,6 +152,12 @@ const TableBody: React.FC<ITableBody> = (props) => {
           cellMenu,
           allowCellSelect,
           expandedView,
+          expandedViewWidth,
+          expandedViewTitle,
+          expandedViewPlacement,
+          expandedViewFooter,
+          onExpandedViewClose,
+          onExpandedViewOpen,
           allowCellMenu,
           hoverActions,
           enableHoverActions,

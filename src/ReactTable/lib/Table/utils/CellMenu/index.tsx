@@ -7,13 +7,12 @@ import { isFunction, isBoolean, first } from 'lodash'
 
 const { confirm } = Modal
 interface CellMenuProps {
-  showDrawer?:
-    | ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
-    | undefined
+  showDrawer?: () => void
   source?: any
   onDelete?: (source: any) => void
   onDuplicate?: (source: any) => void
   onEdit?: (source: any) => void
+  onExpandedView?: (source: any) => void
   children: ({ source }: { source: any }) => React.ReactElement
   enabledMenu?:
     | [boolean, boolean, boolean, boolean]
@@ -52,6 +51,7 @@ class CellMenu extends React.Component<CellMenuProps> {
       onDelete,
       onDuplicate,
       onEdit,
+      onExpandedView,
       enabledMenu = true
     } = this.props
 
@@ -71,7 +71,7 @@ class CellMenu extends React.Component<CellMenuProps> {
           if (onDelete && isFunction(onDelete)) {
             onDelete(source?.key || null)
           }
-        },
+        }
       })
     }
 
@@ -171,7 +171,14 @@ class CellMenu extends React.Component<CellMenuProps> {
                   shape='circle'
                   type='text'
                   disabled={!showExpandedView(enabledMenu)}
-                  onClick={showDrawer}
+                  onClick={() => {
+                    if (showDrawer && isFunction(showDrawer)) {
+                      showDrawer()
+                    }
+                    if (onExpandedView && isFunction(onExpandedView)) {
+                      onExpandedView(source)
+                    }
+                  }}
                   icon={
                     <span
                       className='anticon'
