@@ -598,7 +598,13 @@ const App = () => {
   }
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
-  console.log({pageRenderOrder, onRenderOrderChange, selectMenu, dataSource, onApply})
+  console.log({
+    pageRenderOrder,
+    onRenderOrderChange,
+    selectMenu,
+    dataSource,
+    onApply
+  })
   return (
     <Align
       style={{
@@ -678,8 +684,33 @@ const App = () => {
             loader={'skeleton'}
             loading={isLoadingContent}
             disableCell={(source: any) => source.hobby === 'Teaching'}
+            expandedView={(source: any) => {
+              return (
+                <div>
+                  <span>Hello {source?.name}</span>
+                </div>
+              )
+            }}
             expandedViewWidth={'80%'}
-            expandedViewPlacement={'top'}
+            expandedViewPlacement={'left'}
+            expandedViewTitle={'My View'}
+            onExpandedViewClose={() =>
+              console.log('%cClosed', 'font-size: 25px; color: crimson')
+            }
+            onExpandedViewOpen={() =>
+              console.log('%cOpened', 'font-size: 25px; color: teal')
+            }
+            expandedViewFooter={[<Button key={'Hello-world'}>Hello World</Button>]}
+            hoverActions={{
+              onExpandedView: (source: any) => alert(source?.name ?? 'No name'),
+              onEdit: () => console.log('Hover Actions On Edit'),
+              onDelete: () =>
+                console.log(
+                  '%cHover Actions On Delete',
+                  'font-size: 20px; color: goldenrod'
+                )
+            }}
+            enableHoverActions={[true, true, true]}
             cellSelectionMenu={Array(4).fill(
               // <Padding horizontal={10} style={{ height: '100%' }}>
               //   <div
@@ -703,27 +734,14 @@ const App = () => {
                 </Button>
               </Tooltip>
             )}
-            hoverActions={{
-              onEdit: () => console.log('Hover Actions On Edit'),
-              onDelete: () =>
-                console.log(
-                  '%cHover Actions On Delete',
-                  'font-size: 20px; color: goldenrod'
-                )
-            }}
-            enableHoverActions={[true, true, true]}
-            expandedView={(source: any) => {
-              return (
-                <div>
-                  <span>Hello {source?.name}</span>
-                </div>
-              )
-            }}
             cellMenu={
               <ReactTable.CellMenu
-                // onDelete={() => null}
-                // onDuplicate={() => null}
-                // onEdit={() => null}
+                onDelete={() => null}
+                onDuplicate={() => null}
+                onEdit={() => null}
+                onExpandedView={(source: any) =>
+                  alert(source?.name ?? 'No name')
+                }
                 enabledMenu={[true, false, true, true]}
               >
                 {({ source }: { source: any }) => {
