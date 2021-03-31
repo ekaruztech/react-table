@@ -1,11 +1,11 @@
-import React from 'react'
+// import React from 'react'
 
 import {
   Table as ReactTable,
   Model,
   Align,
   Padding
-} from '@voomsway/react-table/dist'
+} from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import { useState, useEffect } from 'react'
 import { Menu, Tooltip, Button } from 'antd'
