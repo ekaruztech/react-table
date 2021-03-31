@@ -1,5 +1,6 @@
-import React, { useState, FC } from 'react'
+import React, { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { clamp } from 'lodash'
 import { Button, Checkbox, Tooltip } from 'antd'
 import './style.scss'
 import Sortable from './utils/Sortable'
@@ -21,10 +22,10 @@ interface ColumnReorderProps {
   minColumns: number
   defaultColumns: Array<ColumnProps>
 }
-const ColumnReorder: FC<ColumnReorderProps> = (props) => {
+const ColumnReorder = (props: ColumnReorderProps) => {
   const { setColumns, columns, maxColumns, minColumns, defaultColumns } = props
 
-  const Renderer: FC<{ model: Model }> = (props) => {
+  const Renderer = (props: { model: Model }) => {
     const { model } = props
     const [saveAsPreset, setSaveAsPreset] = useState(model.columnReorder.save)
 
@@ -47,7 +48,12 @@ const ColumnReorder: FC<ColumnReorderProps> = (props) => {
               placement='left'
             >
               <span>
-                {columns?.selected?.length || minColumns || 1}/{maxColumns}
+                {columns?.selected?.length || minColumns || 1}/
+                {clamp(
+                  maxColumns,
+                  minColumns,
+                  columns?.all?.length || maxColumns
+                )}
               </span>
             </Tooltip>
           </Align>
