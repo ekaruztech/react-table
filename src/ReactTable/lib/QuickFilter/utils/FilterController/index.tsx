@@ -58,6 +58,9 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
   )
 
   useEffect(() => {
+    // Re-initializes persisted filter to work with the inner table model.
+    // The persisted filter only stores the property: value
+    // This quick filter controller needs every other column property of the filter to work.
     const filters = map(state.filters, (filter) => {
       const findColumn = find(columns.all, (o) => {
         return o.key === filter.property
@@ -95,6 +98,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
       onFieldsChange(filters)
     }
   }
+
   const clearFilter = () => {
     dispatch({ type: 'RESET' })
 
@@ -105,6 +109,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
     // Reset pagination to page 1 when quick filter is resetted
     model.store('pagination', Model.DEFAULT_VALUES.pagination)
   }
+
   const applyFilter = () => {
     const filters = state.filters.map((value) =>
       pick(value, ['property', 'value'])
