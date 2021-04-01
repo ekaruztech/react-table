@@ -46,7 +46,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
   const validColumns = useMemo(
     () =>
       columns.all.filter(
-        (o: ColumnProps) => o.type !== 'action' && o.quickFilter !== false
+        (o: ColumnProps) => o.type !== 'action' && !o.noQuickFilter
       ),
     [columns.all]
   )
@@ -62,7 +62,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
     // The persisted filter only stores the property: value
     // This quick filter controller needs every other column property of the filter to work.
     const filters = map(state.filters, (filter) => {
-      const findColumn = find(columns.all, (o) => {
+      const findColumn = find(validColumns, (o) => {
         return o.key === filter.property
       })
       if (findColumn) {

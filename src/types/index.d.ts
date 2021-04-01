@@ -56,7 +56,8 @@ export interface ColumnProps {
   dateFormat?: string
   currency?: string
   columnSpan?: number
-  quickFilter?: boolean
+  noQuickFilter?: boolean
+  quickFilterOnly?: boolean
   advancedFilter?: boolean
 }
 export interface TableColumnProps {
@@ -127,7 +128,7 @@ export interface ReactTableState {
   columns: TableColumnProps
   selectedTableItems: SelectedTableItems
   isControlsPresent: boolean
-  unusedDefaultColumns: ColumnProps[]
+  __DEFAULT_PROPS_COLUMNS_: ColumnProps[]
 }
 export interface ReactTableProps {
   columns: ColumnProps[]
@@ -139,6 +140,7 @@ export interface ReactTableProps {
 }
 export interface ReactTableProviderProps {
   columns: TableColumnProps
+  withQuickFilterOnlyColumns: TableColumnProps
   dataSource: Array<any>
   columnKeys: string[]
   minColumns: number

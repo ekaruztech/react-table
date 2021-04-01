@@ -417,6 +417,34 @@ const db = {
       autoComplete: true
     },
     {
+      title: 'Middle name',
+      dataIndex: 'middle_name',
+      key: 'middle_name',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Surname',
+      dataIndex: 'surname',
+      key: 'surname',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Leverage',
+      dataIndex: 'leverage',
+      key: 'leverage',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bond',
+      dataIndex: 'bond',
+      key: 'bond',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
       title: 'DOB',
       dataIndex: 'dooob',
       key: 'dooob',
@@ -433,7 +461,7 @@ const db = {
       currency: 'USD',
       presentationColor: 'gold',
       columnSpan: 2,
-      quickFilter: true
+      noQuickFilter: true
     },
     {
       title: 'Hobby',
@@ -700,7 +728,9 @@ const App = () => {
             onExpandedViewOpen={() =>
               console.log('%cOpened', 'font-size: 25px; color: teal')
             }
-            expandedViewFooter={[<Button key={'Hello-world'}>Hello World</Button>]}
+            expandedViewFooter={[
+              <Button key={'Hello-world'}>Hello World</Button>
+            ]}
             hoverActions={{
               onExpandedView: (source: any) => alert(source?.name ?? 'No name'),
               onEdit: () => console.log('Hover Actions On Edit'),

@@ -10,7 +10,7 @@ import 'antd/es/date-picker/style/index'
 
 const DatePicker = generatePicker<Date>(dateFnsGenerateConfig)
 
-const enumeratePresets = (
+const initializeColumnsWithReorderPresets = (
   model: Model,
   columns: ColumnProps[],
   maxColumns: number,
@@ -24,7 +24,7 @@ const enumeratePresets = (
     !!model?.columnReorder?.presets?.length
   ) {
     const presets = model.columnReorder.presets
-    // Checks if the preset length with the range of the minColumns and maxColumns
+    // Checks if the column reorder preset length with the range of the minColumns and maxColumns
     // Checks if the properties in the presets still exists in the provided columns
     const presetIsUsable =
       model.columnReorder.presets.length <= maxColumns &&
@@ -79,6 +79,9 @@ const isDate = (date: Date): boolean => {
     _isDate(date) && new Date(date).toString().toLowerCase() !== 'invalid date'
   )
 }
+
+const getNonQuickFiltersOnlyColumns = (columns: ColumnProps[]) =>
+  columns?.filter((column) => !column.quickFilterOnly)
 
 const EmptyImage = (
   <svg
@@ -158,4 +161,12 @@ const findTruthies = (array: boolean[]) =>
       current ? accumulator + 1 : accumulator,
     0
   )
-export { enumeratePresets, isDate, EmptyImage, DatePicker, findTruthies }
+
+export {
+  initializeColumnsWithReorderPresets,
+  isDate,
+  getNonQuickFiltersOnlyColumns,
+  EmptyImage,
+  DatePicker,
+  findTruthies
+}

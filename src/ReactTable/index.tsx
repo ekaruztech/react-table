@@ -23,11 +23,13 @@ import 'remixicon/fonts/remixicon.css'
 import '../styles/override.scss'
 import '../styles/styles.scss'
 import Model from '../_utils/model'
-import { enumeratePresets } from '../_utils'
+import {
+  getNonQuickFiltersOnlyColumns,
+  initializeColumnsWithReorderPresets
+} from '../_utils'
 
 // TODO: Create filter priority field. defaults to advanced filter.
 // TODO: If advanced filter is priority and show in quick filter that advanced filter was enabled and add button to open for clearing
-// TODO add ways to disable data-management
 
 class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   static Controls = Controls
@@ -57,9 +59,9 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
 
     const model = Model.instantiate(this.props.name)
 
-    const presets = enumeratePresets(
+    const presets = initializeColumnsWithReorderPresets(
       model,
-      this.props.columns,
+      getNonQuickFiltersOnlyColumns(this.props.columns),
       this.maxColumns,
       this.minColumns
     )
@@ -70,11 +72,13 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
         checkAll: false
       },
       columns: {
-        all: presets.selected.concat(presets.unselected),
+        all: this.props.columns,
         selected: presets.selected,
         unselected: presets.unselected
       },
-      unusedDefaultColumns: this.props.columns,
+      // Used to remember the initial columns in getDerivedStateFromProps after the values of the columns change on re-render
+      // This is important especially in the case of column type list where the list menu might be dynamic.
+      __DEFAULT_PROPS_COLUMNS_: this.props.columns,
       isControlsPresent: false
       // isTableOnly: false,
     }
@@ -123,19 +127,19 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     // Todo: see if _.isEqual or fe.deepEqual could be manipulated to overlook functions
     if (
       JSON.stringify(props.columns) !==
-      JSON.stringify(state.unusedDefaultColumns)
+      JSON.stringify(state.__DEFAULT_PROPS_COLUMNS_)
     ) {
       const model = Model.instantiate(props.name)
-      const presets = enumeratePresets(
+      const presets = initializeColumnsWithReorderPresets(
         model,
-        props.columns,
+        getNonQuickFiltersOnlyColumns(props.columns),
         props.maxColumns,
         props.minColumns
       )
       return {
-        unusedDefaultColumns: props.columns,
+        __DEFAULT_PROPS_COLUMNS_: props.columns,
         columns: {
-          all: presets.selected.concat(presets.unselected),
+          all: props.columns,
           selected: presets.selected,
           unselected: presets.unselected
         }
@@ -229,9 +233,16 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     // Instantiates Model
     const model = Model.instantiate(this.props.name)
 
+    const nonQuickFilterOnlyColumns = getNonQuickFiltersOnlyColumns(
+      this.state.columns.all
+    )
+
     const providerValue = {
       columnKeys: columnKeys,
-      columns: this.state.columns,
+      columns: Object.assign({}, this.state.columns, {
+        all: nonQuickFilterOnlyColumns
+      }),
+      withQuickFilterOnlyColumns: this.state.columns,
       minColumns: this.minColumns,
       maxColumns: this.maxColumns,
       dataSource,

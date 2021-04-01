@@ -42,11 +42,11 @@ class QuickFilter extends React.Component<IQuickFilter> {
 
     return (
       <ReactTableContext.Consumer>
-        {({ dataSource, columns, model }) => {
+        {({ dataSource, withQuickFilterOnlyColumns, model }) => {
           return (
             <FilterController
               dataSource={dataSource}
-              columns={columns}
+              columns={withQuickFilterOnlyColumns}
               onClear={onClear}
               onApply={onApply}
               onFieldsChange={onFieldsChange}
