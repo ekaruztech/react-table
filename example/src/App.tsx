@@ -445,6 +445,69 @@ const db = {
       quickFilterOnly: true
     },
     {
+      title: 'Bondu',
+      dataIndex: 'bondu',
+      key: 'bondu',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bondy',
+      dataIndex: 'bondy',
+      key: 'bondy',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bondo',
+      dataIndex: 'bondo',
+      key: 'bondo',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bondv',
+      dataIndex: 'bondv',
+      key: 'bondv',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bondm',
+      dataIndex: 'bondm',
+      key: 'bondm',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bondl',
+      dataIndex: 'bondl',
+      key: 'bondl',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bonds',
+      dataIndex: 'bonds',
+      key: 'bonds',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bondk',
+      dataIndex: 'bondk',
+      key: 'bondk',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bondx',
+      dataIndex: 'bondx',
+      key: 'bondx',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
       title: 'DOB',
       dataIndex: 'dooob',
       key: 'dooob',

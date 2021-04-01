@@ -1,48 +1,57 @@
-.ReactTable___QuickFilter{
+.ReactTable___QuickFilter {
   border-left: 1.3px solid var(--border);
   border-right: 1.3px solid var(--border);
   border-bottom: 1.3px solid var(--border);
-    .ant-collapse {
-        border: 0 !important;
-        //border-top: 1px solid var(--border-color-split) !important;
-        border-radius: 0 !important;
-    }
-    .ant-collapse-content > .ant-collapse-content-box {
-        padding: 0 !important;
-    }
-    .ant-collapse > .ant-collapse-item {
-        border: 0 !important;
-    }
-    .ant-collapse > .ant-collapse-item:last-child, .ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header {
-        border-radius: 0 !important;
-    }
-    .ant-collapse-content {
-        border-top: 1px solid var(--border) !important;
-    }
-    .filter-container{
-        width: 100%;
-        min-height: 240px;
-        position: relative;
-    }
-    .filter-body{
-        width: 100%;
-        position: relative;
-        min-height: 240px;
-    }
-    .filter-elements-wrapper {
-        margin-bottom: 50px;
-    }
-    .filter-header{
-        width: 100%; border-bottom: 1px solid var(--border);
-        padding: 10px;
-    }
-    .filter-footer{
-        width: 100%;
-        border-top: 1px solid var(--border);
-        padding: 10px 16px;
-        height: 50px;
-    }
-    .filter-title{
-        color: var(--text-color);
-    }
+  .ant-collapse {
+    border: 0 !important;
+    //border-top: 1px solid var(--border-color-split) !important;
+    border-radius: 0 !important;
+  }
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0 !important;
+  }
+  .ant-collapse > .ant-collapse-item {
+    border: 0 !important;
+  }
+  .ant-collapse > .ant-collapse-item:last-child,
+  .ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header {
+    border-radius: 0 !important;
+  }
+  .ant-collapse-content {
+    border-top: 1px solid var(--border) !important;
+  }
+
+  .filter-container {
+    width: 100%;
+    min-height: 240px;
+    position: relative;
+  }
+  .filter-body {
+    width: 100%;
+    position: relative;
+    min-height: 240px;
+  }
+  .filter-elements-wrapper {
+    margin-bottom: 50px;
+  }
+  .filter-header {
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+    padding: 10px;
+  }
+  .filter-footer {
+    width: 100%;
+    border-top: 1px solid var(--border);
+    padding: 10px 16px;
+    height: 50px;
+  }
+  .filter-title {
+    color: var(--text-color);
+  }
+}
+.ReactTable___QuickFilter-dropdown {
+  .ant-dropdown-menu {
+    height: 350px !important;
+    overflow: scroll !important;
+  }
 }

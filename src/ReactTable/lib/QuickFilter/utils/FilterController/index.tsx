@@ -199,7 +199,12 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                     </Padding>
                   }
                 >
-                  <Dropdown overlay={menu} trigger={['click']} arrow>
+                  <Dropdown
+                    overlay={menu}
+                    trigger={['click']}
+                    arrow
+                    overlayClassName={'ReactTable___QuickFilter-dropdown'}
+                  >
                     <Button
                       type='default'
                       icon={
@@ -217,7 +222,12 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
               <motion.div style={{ width: '100%' }}>
                 <Align className='filter-body' type='column'>
                   <Align alignStart className='filter-header'>
-                    <Dropdown overlay={menu} trigger={['click']}>
+                    <Dropdown
+                      overlay={menu}
+                      trigger={['click']}
+                      overlayClassName={'ReactTable___QuickFilter-dropdown'}
+                      arrow
+                    >
                       <Button
                         type='link'
                         icon={
