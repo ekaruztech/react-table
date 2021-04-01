@@ -7,6 +7,7 @@ import { isDate as _isDate } from 'lodash'
 import dateFnsGenerateConfig from 'rc-picker/lib/generate/dateFns'
 import generatePicker from 'antd/es/date-picker/generatePicker'
 import 'antd/es/date-picker/style/index'
+type NumberFormatOptions = Intl.NumberFormatOptions
 
 const DatePicker = generatePicker<Date>(dateFnsGenerateConfig)
 
@@ -162,11 +163,69 @@ const findTruthies = (array: boolean[]) =>
     0
   )
 
+const formatCurrency = (
+  value: number | string,
+  currencyCode = 'NGN',
+  currencySign: 'accounting' | 'standard' = 'standard',
+  notation: 'standard' | 'compact' = 'standard'
+): string => {
+  try {
+    return Intl.NumberFormat('en-NG', {
+      currency: currencyCode || 'NGN',
+      style: 'currency',
+      currencySign,
+      currencyDisplay: 'narrowSymbol',
+      notation: notation ?? 'standard'
+    } as NumberFormatOptions).format(Number(value) || 0) as string
+  } catch {
+    return value.toString()
+  }
+}
+
+type FormatNumberOptionType = {
+  style?: 'currency' | 'unit' | 'percent' | 'decimal'
+  currency?: string
+  unit?: string
+  unitDisplay?: 'long' | 'short' | 'narrow'
+  notation?: 'standard' | 'compact'
+  minimumFractionDigits?: number
+  maximumSignificantDigits?: number
+  locale?: string
+}
+
+const defaultFormatOptions: FormatNumberOptionType = {
+  style: 'decimal',
+  maximumSignificantDigits: 21,
+  minimumFractionDigits: 3,
+  notation: 'standard'
+}
+const formatNumber = (
+  value: string | number,
+  options: FormatNumberOptionType = defaultFormatOptions
+) => {
+  try {
+    return new Intl.NumberFormat(options?.locale ?? 'en-NG', {
+      style: options?.style ?? 'decimal',
+      currency: options?.currency ?? 'NGN',
+      notation: options?.notation ?? 'standard',
+      currencyDisplay: 'narrowSymbol',
+      minimumFractionDigits: options?.minimumFractionDigits ?? 3,
+      maximumSignificantDigits: options?.maximumSignificantDigits ?? 12,
+      ...(options?.unit ? { unit: options.unit } : {}),
+      ...(options?.unitDisplay ? { unitDisplay: options.unitDisplay } : {})
+    } as NumberFormatOptions).format(parseFloat((value as string) ?? 0))
+  } catch (e) {
+    return value
+  }
+}
+
 export {
   initializeColumnsWithReorderPresets,
   isDate,
   getNonQuickFiltersOnlyColumns,
   EmptyImage,
   DatePicker,
-  findTruthies
+  findTruthies,
+  formatNumber,
+  formatCurrency
 }

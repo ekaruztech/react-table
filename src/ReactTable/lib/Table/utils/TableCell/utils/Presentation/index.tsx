@@ -12,6 +12,7 @@ import {
 } from '../../../../../../../types'
 import { isFunction } from 'lodash'
 import { format } from 'date-fns'
+import { formatCurrency } from '../../../../../../../_utils'
 
 interface PresentationProps {
   columnType: ColumnType | undefined
@@ -67,10 +68,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
         </Button>
       )
     case 'currency': {
-      const currency = Intl.NumberFormat('en-NG', {
-        currency: currencyType || 'NGN',
-        style: 'currency'
-      }).format(Number(data) || 0)
+      const currency = formatCurrency(Number(data), currencyType)
       if (presentationType === 'tag') {
         return (
           <Tag
@@ -104,7 +102,9 @@ const Presentation: React.FC<PresentationProps> = (props) => {
     case 'date':
     case 'datetime': {
       const _dateFormat = dateFormat || 'MMM dd, yyyy hh:mm aaa'
-      const date = format(new Date(data || Date.now()), _dateFormat)
+      const date = data
+        ? format(new Date(data || Date.now()), _dateFormat)
+        : '--'
       if (presentationType === 'tag') {
         return (
           <Tag
@@ -133,7 +133,8 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           </Tag>
         )
     }
-    case 'number':
+    case 'number': {
+      // TODO: format number based on locale
       if (presentationType === 'tag') {
         return (
           <Tag
@@ -163,6 +164,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
             {data ?? '--'}
           </Tag>
         )
+    }
     default:
       if (presentationType === 'tag') {
         return (
