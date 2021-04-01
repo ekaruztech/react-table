@@ -229,7 +229,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                       arrow
                     >
                       <Button
-                        type='link'
+                        type='default'
                         icon={
                           <span className='anticon'>
                             <i
