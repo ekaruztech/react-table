@@ -50,11 +50,11 @@ const db = {
       food_choice: 'Vegan',
       id: '#9iopp785der0011',
       id2: 'World',
-      // dooob: new Date(
-      //   Math.floor(Math.random() * 50) + 1955,
-      //   Math.floor(Math.random() * 11),
-      //   Math.floor(Math.random() + 28)
-      // ),
+      dooob: new Date(
+        Math.floor(Math.random() * 50) + 1955,
+        Math.floor(Math.random() * 11),
+        Math.floor(Math.random() + 28)
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'

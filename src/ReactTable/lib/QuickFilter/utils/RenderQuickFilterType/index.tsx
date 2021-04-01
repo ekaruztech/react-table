@@ -1,5 +1,5 @@
 import { AutoComplete, InputNumber, Select, Input } from 'antd'
-import { has, isNumber } from 'lodash'
+import { has, isNumber, first, last } from 'lodash'
 import React from 'react'
 import TagRender from '../../../Controls/utils/DataManagement/Filter/utils/TagRender'
 import { isDate, DatePicker } from '../../../../../_utils'
@@ -64,16 +64,12 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           value={
             Array.isArray(value)
               ? [
-                  new Date(
-                    value[0] && isDate(new Date(value[0]))
-                      ? value[0]
-                      : new Date()
-                  ),
-                  new Date(
-                    value[1] && isDate(new Date(value[1]))
-                      ? value[1]
-                      : new Date()
-                  )
+                  first(value) && isDate(new Date(first(value)))
+                    ? new Date(first(value))
+                    : undefined,
+                  last(value) && isDate(new Date(last(value)))
+                    ? new Date(last(value))
+                    : undefined
                 ]
               : [new Date(), add(new Date(), { weeks: 1 })]
           }
@@ -88,9 +84,7 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
         <DatePicker
           showTime={type === 'datetime'}
           style={{ width: '100%' }}
-          value={
-            new Date(value && isDate(new Date(value)) ? value : new Date())
-          }
+          value={value && isDate(new Date(value)) ? new Date(value) : undefined}
           onChange={(date) =>
             handleFilterValueChange(new Date(date || Date.now()))
           }
