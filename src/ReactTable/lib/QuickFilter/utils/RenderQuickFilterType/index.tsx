@@ -109,15 +109,26 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
             }
             value={value || undefined}
             onChange={(value) => handleFilterValueChange(value)}
-            filterOption
             options={property?.listMenu || []}
             showSearch
             showArrow
             tagRender={TagRender}
+            optionFilterProp='label'
+            filterOption={(input: any, option: any) =>
+              option?.label?.toLowerCase()?.indexOf?.(input?.toLowerCase?.()) >=
+              0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA?.label
+                ?.toLowerCase?.()
+                ?.localeCompare?.(optionB?.label?.toLowerCase?.())
+            }
           />
         )
       } else {
-        throw new Error("Column of type 'List' expects an array listMenu props")
+        throw new Error(
+          "Column of type 'List' expects an 'Array' listMenu props"
+        )
       }
     default:
       if (property.autoComplete) {
