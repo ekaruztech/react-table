@@ -5,9 +5,9 @@ import DataManagement from './utils/DataManagement'
 import { Export, RenderOrder } from './utils/TableUtilities'
 import { ReactTableContext } from '../ReactTableContext'
 // eslint-disable-next-line no-unused-vars
-import { DataFilterObject, DataSortObject } from '../../../types'
+import { DataFilterObject, DataSortObject } from '../../../typings'
 import Margin from '../../../Margin'
-import './styles.scss'
+import './styles/index.scss'
 
 interface ReactTableControlsProps {
   onRenderOrderChange: (renderOrder: number) => void

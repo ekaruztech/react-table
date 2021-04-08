@@ -1,11 +1,11 @@
 import { formatNumber } from '../../../../../../../../../_utils'
-import { presetColors } from '../../../../../../../../../_utils/colors'
+import { PresetColors } from '../../../../../../../../../_utils/colors'
 import { Tag } from 'antd'
 import React from 'react'
 import {
   ColumnCurrencyFormat,
   ColumnTextFormat
-} from '../../../../../../../../../types'
+} from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
 
 type CurrencyPresentationProps = {
@@ -43,20 +43,18 @@ const CurrencyPresentation = (props: CurrencyPresentationProps) => {
         </TextFormat>
       </Tag>
     )
-  } else
-    return (
-      <div
-        style={{
-          color: presetColors[presentationColor || 'default'],
-          opacity: isDisabled ? 0.5 : 1,
-          overflow: 'hidden'
-        }}
-      >
-        <TextFormat textFormat={textFormat}>
-          {data ? currency : '--'}
-        </TextFormat>
-      </div>
-    )
+  }
+  return (
+    <div
+      style={{
+        color: PresetColors[presentationColor || 'default'],
+        opacity: isDisabled ? 0.5 : 1,
+        overflow: 'hidden'
+      }}
+    >
+      <TextFormat textFormat={textFormat}>{data ? currency : '--'}</TextFormat>
+    </div>
+  )
 }
 
 export default CurrencyPresentation

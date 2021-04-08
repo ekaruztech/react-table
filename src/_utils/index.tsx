@@ -1,6 +1,6 @@
 import React from 'react'
 // eslint-disable-next-line no-unused-vars
-import { ColumnProps } from '../types'
+import { ColumnProps } from '../typings'
 // eslint-disable-next-line no-unused-vars
 import Model from './model'
 import { isDate as _isDate } from 'lodash'

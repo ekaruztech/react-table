@@ -15,7 +15,7 @@ import {
   DataFilterObject,
   // eslint-disable-next-line no-unused-vars
   DataSortObject
-} from '../../../../../types'
+} from '../../../../../typings'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../_utils/model'
 import ModalFooter from './ModalFooter'

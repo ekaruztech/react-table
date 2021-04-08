@@ -1,6 +1,6 @@
 import React from 'react'
 // eslint-disable-next-line no-unused-vars
-import { ColumnProps, TableColumnProps } from '../../../../../types'
+import { ColumnProps, TableColumnProps } from '../../../../../typings'
 import { clamp, isBoolean, isFunction } from 'lodash'
 import { useDimension } from '../../../../../hooks'
 import { findTruthies } from '../../../../../_utils'

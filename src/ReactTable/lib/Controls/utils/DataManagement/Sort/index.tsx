@@ -7,7 +7,7 @@ import {
   DateManagementState,
   // eslint-disable-next-line no-unused-vars
   TableColumnProps
-} from '../../../../../../types'
+} from '../../../../../../typings'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../../_utils/model'
 import ScrollBar from 'react-perfect-scrollbar'
@@ -19,7 +19,7 @@ import { Button, Empty, Row, Col, Typography } from 'antd'
 import { EmptyImage } from '../../../../../../_utils'
 import Align from '../../../../../../Align'
 import SortItem from './utils/SortItem'
-import './styles.scss'
+import './styles/index.scss'
 
 interface SortProps {
   columns: TableColumnProps

@@ -14,7 +14,7 @@ import {
   DateManagementAction,
   // eslint-disable-next-line no-unused-vars
   TableFilterProps
-} from '../../../../../../../../types'
+} from '../../../../../../../../typings'
 import RenderFilterType from '../RenderFilterType'
 
 const { Option } = Select

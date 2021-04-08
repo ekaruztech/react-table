@@ -4,9 +4,9 @@ import React from 'react'
 import {
   ColumnNumberFormat,
   ColumnTextFormat
-} from '../../../../../../../../../types'
+} from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
-import { presetColors } from '../../../../../../../../../_utils/colors'
+import { PresetColors } from '../../../../../../../../../_utils/colors'
 
 type NumberPresentationProps = {
   presentationType: 'tag' | undefined
@@ -38,18 +38,18 @@ const NumberPresentation = (props: NumberPresentationProps) => {
         <TextFormat textFormat={textFormat}>{data ? number : '--'}</TextFormat>
       </Tag>
     )
-  } else
-    return (
-      <div
-        style={{
-          color: presetColors[presentationColor || 'default'],
-          opacity: isDisabled ? 0.5 : 1,
-          overflow: 'hidden'
-        }}
-      >
-        <TextFormat textFormat={textFormat}>{data ? number : '--'}</TextFormat>
-      </div>
-    )
+  }
+  return (
+    <div
+      style={{
+        color: PresetColors[presentationColor || 'default'],
+        opacity: isDisabled ? 0.5 : 1,
+        overflow: 'hidden'
+      }}
+    >
+      <TextFormat textFormat={textFormat}>{data ? number : '--'}</TextFormat>
+    </div>
+  )
 }
 
 export default NumberPresentation

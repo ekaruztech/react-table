@@ -7,7 +7,7 @@ import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
 import { TableBodyContext } from './utils/TableBodyContext'
 import { CellMenuProps } from '../CellMenu'
-import './styles.scss'
+import './styles/index.scss'
 import { useDimension } from '../../../../../hooks'
 
 interface ITableBody {

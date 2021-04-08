@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { ColumnProps } from '../../../../../../../../../types'
+import { ColumnProps } from '../../../../../../../../../typings'
 
 const reorder = (
   list: Array<ColumnProps>,

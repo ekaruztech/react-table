@@ -11,14 +11,14 @@ import {
   DateManagementState,
   // eslint-disable-next-line no-unused-vars
   DateManagementAction
-} from '../../../../../../types'
+} from '../../../../../../typings'
 import FilterItem from './utils/FilterItem'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../../_utils/model'
 import { isEmpty } from 'lodash'
 import { motion } from 'framer-motion'
 import { EmptyImage } from '../../../../../../_utils'
-import './styles.scss'
+import './styles/index.scss'
 
 interface DataManagementFilterProps {
   columns: TableColumnProps

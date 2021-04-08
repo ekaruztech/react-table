@@ -8,7 +8,7 @@ import {
   QuickFilterProps
 } from './reducer'
 // eslint-disable-next-line no-unused-vars
-import { ColumnProps } from '../../../../types'
+import { ColumnProps } from '../../../../typings'
 // eslint-disable-next-line no-unused-vars
 import Model, {
   // eslint-disable-next-line no-unused-vars

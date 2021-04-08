@@ -1,5 +1,5 @@
 import React from 'react'
-import { ColumnTextFormat } from '../../../../../../../../../types'
+import { ColumnTextFormat } from '../../../../../../../../../typings'
 type TextFormatProps = {
   textFormat: ColumnTextFormat | undefined
   children: React.ReactNode[] | React.ReactNode

@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import Padding from '../../../../../Padding'
 import { isFunction } from 'lodash'
 // eslint-disable-next-line no-unused-vars
-import { TableColumnProps, ColumnProps } from '../../../../../types'
+import { TableColumnProps, ColumnProps } from '../../../../../typings'
 
 interface TableHeadProps {
   columns: TableColumnProps

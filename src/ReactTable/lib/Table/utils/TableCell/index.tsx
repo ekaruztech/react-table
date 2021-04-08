@@ -8,8 +8,8 @@ import { ReactTableContext } from '../../../ReactTableContext'
 import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
 import Padding from '../../../../../Padding'
 import { find, isBoolean, first, isFunction, isString, isNumber } from 'lodash'
-import './styles.scss'
-import { ColumnProps } from '../../../../../types'
+import './styles/index.scss'
+import { ColumnProps } from '../../../../../typings'
 import { formatColumnsToKey } from '../../../../../_utils'
 
 interface ITableCell {

@@ -2,7 +2,7 @@
 import { Storage, StorageAPI } from '../storage'
 import { isPlainObject, isString, isUndefined, isNull, isNaN } from 'lodash'
 // eslint-disable-next-line no-unused-vars
-import { DataSortObject } from '../../types'
+import { DataSortObject } from '../../typings'
 
 export type ColumnReorderModel = {
   save: boolean

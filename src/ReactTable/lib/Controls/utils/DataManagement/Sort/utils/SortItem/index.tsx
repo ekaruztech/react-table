@@ -11,7 +11,7 @@ import {
   TableColumnProps,
   // eslint-disable-next-line no-unused-vars
   DateManagementAction
-} from '../../../../../../../../types'
+} from '../../../../../../../../typings'
 
 const { Option } = Select
 

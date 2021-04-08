@@ -10,7 +10,7 @@ import {
   SelectedTableItems,
   // eslint-disable-next-line no-unused-vars
   TableColumnProps
-} from '../types'
+} from '../typings'
 import { clamp, isFunction, isString } from 'lodash'
 import invariant from 'invariant'
 import { ReactTableContext } from './lib/ReactTableContext'
@@ -280,5 +280,5 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
 
 export { QuickFilterProps, QuickFilterApplyFn } from './lib/QuickFilter'
 export { CellMenuProps } from './lib/Table'
-export { ColumnProps } from '../types'
+export { ColumnProps } from '../typings'
 export { ReactTable as Table }

@@ -6,7 +6,7 @@ import { isEmpty, find } from 'lodash'
 // @ts-ignore
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 // eslint-disable-next-line no-unused-vars
-import { TableColumnProps, ColumnProps } from '../../../../../../../../../types'
+import { TableColumnProps, ColumnProps } from '../../../../../../../../../typings'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../../../../../_utils/model'
 

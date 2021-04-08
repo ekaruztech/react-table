@@ -4,6 +4,8 @@ import React, { ReactElement } from 'react'
 import { CellMenuProps } from '../ReactTable/lib/Table/utils/CellMenu'
 // eslint-disable-next-line no-unused-vars
 import Model from '../_utils/model'
+import { SupportedDateLocales } from '../_utils/locales'
+
 
 export declare type PresentationColor =
   | 'magenta'
@@ -50,6 +52,11 @@ export interface ColumnNumberFormat {
   minimumFractionDigits?: number
   maximumSignificantDigits?: number
   locale?: string
+}
+
+export interface ColumnDateFormat {
+  formatString?: string,
+  locale?: SupportedDateLocales
 }
 
 export interface ColumnCurrencyFormat {
@@ -108,7 +115,6 @@ export interface ColumnProps {
   listMenu?: Array<{ label: string; value: string | number }>
   actionCallback?: (source: any) => void
   actionTitle?: string
-  dateFormat?: string
   columnSpan?: number
   noQuickFilter?: boolean
   quickFilterOnly?: boolean
@@ -116,6 +122,7 @@ export interface ColumnProps {
   numberFormat?: ColumnNumberFormat
   currencyFormat?: ColumnCurrencyFormat
   textFormat?: ColumnTextFormat
+  dateFormat?: ColumnDateFormat
 }
 export interface TableColumnProps {
   all: Array<ColumnProps>

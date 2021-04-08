@@ -1,8 +1,8 @@
 import { Tag } from 'antd'
 import React from 'react'
-import { ColumnTextFormat } from '../../../../../../../../../types'
+import { ColumnTextFormat } from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
-import { presetColors } from '../../../../../../../../../_utils/colors'
+import { PresetColors } from '../../../../../../../../../_utils/colors'
 
 type TextPresentationProps = {
   presentationType: 'tag' | undefined
@@ -31,18 +31,18 @@ const TextPresentation = (props: TextPresentationProps) => {
         <TextFormat textFormat={textFormat}>{data ?? '--'}</TextFormat>
       </Tag>
     )
-  } else
-    return (
-      <div
-        style={{
-          color: presetColors[presentationColor || 'default'],
-          opacity: isDisabled ? 0.5 : 1,
-          overflow: 'hidden'
-        }}
-      >
-        <TextFormat textFormat={textFormat}>{data ?? '--'}</TextFormat>
-      </div>
-    )
+  }
+  return (
+    <div
+      style={{
+        color: PresetColors[presentationColor || 'default'],
+        opacity: isDisabled ? 0.5 : 1,
+        overflow: 'hidden'
+      }}
+    >
+      <TextFormat textFormat={textFormat}>{data ?? '--'}</TextFormat>
+    </div>
+  )
 }
 
 export default TextPresentation

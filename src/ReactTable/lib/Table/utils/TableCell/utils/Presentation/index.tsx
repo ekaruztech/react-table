@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from 'antd'
-import { ColumnProps } from '../../../../../../../types'
+import { ColumnProps } from '../../../../../../../typings'
 import { isFunction } from 'lodash'
 import NumberPresentation from './lib/Number'
 import DatePresentation from './lib/Date'

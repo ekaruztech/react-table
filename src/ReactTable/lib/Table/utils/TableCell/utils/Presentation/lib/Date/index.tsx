@@ -1,29 +1,75 @@
 import { format } from 'date-fns'
 import { Tag } from 'antd'
-import React from 'react'
-import { ColumnTextFormat } from '../../../../../../../../../types'
+import React, { useEffect, useRef, useState } from 'react'
+import {
+  ColumnDateFormat,
+  ColumnTextFormat
+} from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
-import { presetColors } from '../../../../../../../../../_utils/colors'
+import { PresetColors } from '../../../../../../../../../_utils/colors'
+import {
+  SupportedDateLocales,
+  throwUnsupportedDateLocaleError
+} from '../../../../../../../../../_utils/locales'
+import { isDate } from '../../../../../../../../../_utils'
 
 type DatePresentationProps = {
   presentationType: 'tag' | undefined
   presentationColor: string | null
   isDisabled: boolean
   data: Date | undefined
-  dateFormat: string | undefined
+  dateFormat: ColumnDateFormat | undefined
   textFormat: ColumnTextFormat | undefined
 }
+
 const DatePresentation = (props: DatePresentationProps) => {
   const {
     data,
     isDisabled,
     presentationColor,
     presentationType,
-    dateFormat,
+    dateFormat: _DateFormat,
     textFormat
   } = props
-  const _dateFormat = dateFormat || 'MMM dd, yyyy hh:mm aaa'
-  const date = data ? format(new Date(data || Date.now()), _dateFormat) : '--'
+
+  const dateFormat = {
+    formatString: _DateFormat?.formatString ?? 'MMM dd, yyyy hh:mm aaa',
+    locale: _DateFormat?.locale ?? SupportedDateLocales.enGB
+  }
+
+  throwUnsupportedDateLocaleError(dateFormat.locale)
+
+  const locale = useRef(require('date-fns/locale/en-GB'))
+  const [formattedDate, setFormattedDate] = useState('--')
+
+  const onFormattedDateChange = (date: Date) => {
+    const formatString = dateFormat.formatString
+    if (data && isDate(date)) {
+      setFormattedDate(
+        format(date, formatString, {
+          locale: locale.current
+        })
+      )
+      return
+    }
+    setFormattedDate('--')
+  }
+
+  useEffect(() => {
+    if (data) {
+      try {
+        locale.current = require(`date-fns/locale/${dateFormat.locale}`)
+      } catch (e) {
+        console.error(`React Table: could not retrieve date locale`)
+      }
+    }
+  }, [dateFormat])
+
+  useEffect(() => {
+    const date = new Date(data as string | Date)
+    onFormattedDateChange(date)
+  }, [locale.current, data])
+
   if (presentationType === 'tag') {
     return (
       <Tag
@@ -32,21 +78,21 @@ const DatePresentation = (props: DatePresentationProps) => {
           opacity: isDisabled ? 0.5 : 1
         }}
       >
-        <TextFormat textFormat={textFormat}>{date}</TextFormat>
+        <TextFormat textFormat={textFormat}>{formattedDate}</TextFormat>
       </Tag>
     )
-  } else
-    return (
-      <div
-        style={{
-          color: presetColors[presentationColor || 'default'],
-          opacity: isDisabled ? 0.5 : 1,
-          overflow: 'hidden'
-        }}
-      >
-        <TextFormat textFormat={textFormat}>{date}</TextFormat>
-      </div>
-    )
+  }
+  return (
+    <div
+      style={{
+        color: PresetColors[presentationColor || 'default'],
+        opacity: isDisabled ? 0.5 : 1,
+        overflow: 'hidden'
+      }}
+    >
+      <TextFormat textFormat={textFormat}>{formattedDate}</TextFormat>
+    </div>
+  )
 }
 
 export default DatePresentation

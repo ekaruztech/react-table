@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Button, Divider, InputNumber, Select, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
-import './styles.scss'
+import './styles/index.scss'
 import Align from '../../../../../../Align'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../../_utils/model'
 import { motion } from 'framer-motion'
-import './styles.scss'
+import './styles/index.scss'
 
 interface RenderOrderProps {
   onRenderOrderChange: (renderOrder: number) => void

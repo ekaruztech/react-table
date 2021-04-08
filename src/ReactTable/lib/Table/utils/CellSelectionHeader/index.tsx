@@ -5,7 +5,7 @@ import React from 'react'
 import { isEmpty, clamp } from 'lodash'
 import { motion } from 'framer-motion'
 import { ReactTableContext } from '../../../ReactTableContext'
-import './styles.scss'
+import './styles/index.scss'
 
 interface ICellSelectionHeader {
   cellSelectionMenu?: React.ReactNode[]

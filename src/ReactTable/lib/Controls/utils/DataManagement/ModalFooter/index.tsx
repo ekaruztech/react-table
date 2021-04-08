@@ -13,7 +13,7 @@ import {
   DataSortObject,
   // eslint-disable-next-line no-unused-vars
   DataManagementSortProps
-} from '../../../../../../types'
+} from '../../../../../../typings'
 import Align from '../../../../../../Align'
 import { Button, Popover, Tooltip } from 'antd'
 import Margin from '../../../../../../Margin'

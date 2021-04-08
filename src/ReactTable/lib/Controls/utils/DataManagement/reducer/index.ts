@@ -6,7 +6,7 @@ import {
   DateManagementAction,
   // eslint-disable-next-line no-unused-vars
   DateManagementState
-} from '../../../../../../types'
+} from '../../../../../../typings'
 // eslint-disable-next-line no-unused-vars
 import Model from '../../../../../../_utils/model'
 

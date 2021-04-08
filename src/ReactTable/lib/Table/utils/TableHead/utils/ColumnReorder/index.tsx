@@ -5,7 +5,7 @@ import { Button, Checkbox, Tooltip } from 'antd'
 import './style.scss'
 import Sortable from './utils/Sortable'
 // eslint-disable-next-line no-unused-vars
-import { ColumnProps, TableColumnProps } from '../../../../../../../types'
+import { ColumnProps, TableColumnProps } from '../../../../../../../typings'
 // eslint-disable-next-line no-unused-vars
 import { CheckboxChangeEvent } from 'antd/es/checkbox'
 import { ReactTableContext } from '../../../../../ReactTableContext'

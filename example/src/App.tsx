@@ -4,7 +4,8 @@ import {
   Table as ReactTable,
   Model,
   Align,
-  Padding
+  Padding,
+  // SupportedDateLocales
 } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import { useState, useEffect } from 'react'
@@ -456,7 +457,10 @@ const db = {
       type: 'datetime',
       presentationType: 'date',
       presentationColor: 'processing',
-      columnSpan: 1
+      columnSpan: 1.5,
+      dateFormat: {
+        locale: 'po'
+      }
     },
     {
       title: 'Cost',
@@ -464,7 +468,7 @@ const db = {
       key: 'cost',
       type: 'currency',
       presentationColor: 'volcano',
-      columnSpan: 2,
+      columnSpan: 1,
       noQuickFilter: true,
       currencyFormat: {
         locale: 'jp-JP',

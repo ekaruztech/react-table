@@ -2,7 +2,7 @@ import { Button, Dropdown, Menu, Tooltip, Modal } from 'antd'
 import { motion } from 'framer-motion'
 import React from 'react'
 
-import './_styles.scss'
+import './styles/index.scss'
 import { isFunction, isBoolean, first } from 'lodash'
 
 const { confirm } = Modal
@@ -148,7 +148,7 @@ class CellMenu extends React.Component<CellMenuProps> {
           background: 'var(--background-primary)'
         }}
       >
-        <Menu className='CellMenu__menu'>
+        <Menu className='ReactTable__CellMenu__menu'>
           <Menu.Item key='expand'>
             <motion.div
               initial={{

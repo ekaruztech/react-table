@@ -4,7 +4,11 @@ export { default as Align } from './Align'
 export { default as Position } from './Position'
 export { ExposedModel as Model } from './_utils/model'
 export { Table } from './ReactTable'
-export { useDimension, toPercentage } from './hooks'
+export {
+  SupportedDateLocales,
+  supportedDateLocalesArray
+} from './_utils/locales'
+// export { PresetColors } from './_utils/colors'
 
 // Types
 export { MarginProps } from './Margin'

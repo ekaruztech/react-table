@@ -1,7 +1,7 @@
 import { Button, Dropdown, Menu, Tooltip } from 'antd'
 import React from 'react'
 import { first, last, isFunction, isBoolean, isPlainObject } from 'lodash'
-import './styles.scss'
+import './styles/index.scss'
 
 type EnableExport = { csv?: boolean; pdf?: boolean; excel?: boolean }
 
