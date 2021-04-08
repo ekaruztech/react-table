@@ -9,6 +9,8 @@ import { TableBodyContext } from '../TableBody/utils/TableBodyContext'
 import Padding from '../../../../../Padding'
 import { find, isBoolean, first, isFunction, isString, isNumber } from 'lodash'
 import './styles.scss'
+import { ColumnProps } from '../../../../../types'
+import { formatColumnsToKey } from '../../../../../_utils'
 
 interface ITableCell {
   /** DataSource item. */
@@ -68,6 +70,7 @@ const TableCell: React.FC<ITableCell> = (props) => {
             onExpandedViewClose,
             onExpandedViewOpen
           }) => {
+            const tableColumnsObject = formatColumnsToKey(columns.all ?? [])
             const _expandedViewWidth =
               isString(expandedViewWidth) ||
               (isNumber(expandedViewWidth) && !isNaN(expandedViewWidth))
@@ -230,37 +233,22 @@ const TableCell: React.FC<ITableCell> = (props) => {
                     </td>
                   )}
 
-                  {columnKeys.map((value, cellIndex) => {
-                    const retrieved = columns.all.find((c) => c?.key === value)
-                    // const retrievedIsAnObject = isObject(retrieved);
-                    const presentationType = retrieved?.presentationType
-                    const presentationColor = retrieved?.presentationColor
+                  {columnKeys.map((key, cellIndex) => {
+                    const retrieved = tableColumnsObject[key]
                     /** Value is mapped to the key of the column */
-                    const data = source[value]
+                    const data = source[key]
 
                     return presentationHOC({
                       extraColumnsLength,
                       columnKeys,
-                      key: `presentation__${
-                        source?.key || index
-                      }__of__column_${cellIndex}`,
+                      key: `#PRESENTATION_${source?.key || index}_${cellIndex}`,
                       cellIndex,
                       isDisabled
                     })(
                       <Presentation
                         data={data}
-                        presentationColor={presentationColor}
-                        presentationType={presentationType}
-                        actionCallback={retrieved?.actionCallback}
-                        actionPresentationType={
-                          retrieved?.actionPresentationType
-                        }
-                        columnType={retrieved?.type}
-                        bold={retrieved?.bold}
-                        actionTitle={retrieved?.actionTitle}
+                        columnProps={retrieved as ColumnProps}
                         source={source}
-                        dateFormat={retrieved?.dateFormat}
-                        currency={retrieved?.currency}
                         isDisabled={isDisabled}
                       />
                     )

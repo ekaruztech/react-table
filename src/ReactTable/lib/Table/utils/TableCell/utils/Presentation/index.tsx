@@ -1,51 +1,32 @@
 import React from 'react'
-import { Tag, Button } from 'antd'
-import {
-  // eslint-disable-next-line no-unused-vars
-  ColumnType,
-  // eslint-disable-next-line no-unused-vars
-  PresentationType,
-  // eslint-disable-next-line no-unused-vars
-  ActionPresentationType,
-  // eslint-disable-next-line no-unused-vars
-  PresentationColor
-} from '../../../../../../../types'
+import { Button } from 'antd'
+import { ColumnProps } from '../../../../../../../types'
 import { isFunction } from 'lodash'
-import { format } from 'date-fns'
-import { formatCurrency } from '../../../../../../../_utils'
+import NumberPresentation from './lib/Number'
+import DatePresentation from './lib/Date'
+import CurrencyPresentation from './lib/Currency'
+import TextPresentation from './lib/Text'
 
 interface PresentationProps {
-  columnType: ColumnType | undefined
   data: string | Date | number | undefined
-  actionPresentationType: ActionPresentationType | undefined
-  presentationType: PresentationType | undefined
-  presentationColor:
-    | PresentationColor
-    | ((value: string) => PresentationColor)
-    | undefined
-  actionCallback: undefined | ((source: any) => void)
-  bold: boolean | undefined
-  actionTitle?: string
   source: any
-  dateFormat: string | undefined
-  currency: string | undefined
   isDisabled: boolean
+  columnProps: ColumnProps
 }
 const Presentation: React.FC<PresentationProps> = (props) => {
+  const { data, source, isDisabled, columnProps } = props
   const {
-    columnType,
-    data,
+    type: columnType,
     presentationType,
     actionCallback,
     actionPresentationType,
     actionTitle,
     presentationColor: pColor,
-    bold,
-    source,
     dateFormat,
-    currency: currencyType,
-    isDisabled
-  } = props
+    currencyFormat,
+    numberFormat,
+    textFormat
+  } = columnProps
 
   const fnPresentationColor =
     pColor && isFunction(pColor) ? pColor(String(data).toLowerCase()) : pColor
@@ -68,133 +49,52 @@ const Presentation: React.FC<PresentationProps> = (props) => {
         </Button>
       )
     case 'currency': {
-      const currency = formatCurrency(Number(data), currencyType)
-      if (presentationType === 'tag') {
-        return (
-          <Tag
-            color={presentationColor || 'orange'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              marginRight: 0,
-              opacity: isDisabled ? 0.5 : 1
-            }}
-          >
-            {currency}
-          </Tag>
-        )
-      } else
-        return (
-          <Tag
-            color={presentationColor || 'default'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              borderColor: 'transparent',
-              background: 'transparent',
-              marginRight: 0,
-              paddingLeft: 0,
-              opacity: isDisabled ? 0.5 : 1
-            }}
-          >
-            {currency}
-          </Tag>
-        )
+      return (
+        <CurrencyPresentation
+          presentationType={presentationType}
+          presentationColor={presentationColor}
+          isDisabled={isDisabled}
+          data={data as number | string}
+          currencyFormat={currencyFormat}
+          textFormat={textFormat}
+        />
+      )
     }
     case 'date':
     case 'datetime': {
-      const _dateFormat = dateFormat || 'MMM dd, yyyy hh:mm aaa'
-      const date = data
-        ? format(new Date(data || Date.now()), _dateFormat)
-        : '--'
-      if (presentationType === 'tag') {
-        return (
-          <Tag
-            color={presentationColor || 'default'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              opacity: isDisabled ? 0.5 : 1
-            }}
-          >
-            {date}
-          </Tag>
-        )
-      } else
-        return (
-          <Tag
-            color={presentationColor || 'default'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              borderColor: 'transparent',
-              background: 'transparent',
-              paddingLeft: 0,
-              opacity: isDisabled ? 0.5 : 1
-            }}
-          >
-            {date}
-          </Tag>
-        )
+      return (
+        <DatePresentation
+          presentationType={presentationType}
+          presentationColor={presentationColor}
+          isDisabled={isDisabled}
+          data={data as Date | undefined}
+          dateFormat={dateFormat}
+          textFormat={textFormat}
+        />
+      )
     }
     case 'number': {
-      // TODO: format number based on locale
-      if (presentationType === 'tag') {
-        return (
-          <Tag
-            color={presentationColor || 'orange'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              marginRight: 0,
-              opacity: isDisabled ? 0.5 : 1
-            }}
-          >
-            {data ?? '--'}
-          </Tag>
-        )
-      } else
-        return (
-          <Tag
-            color={presentationColor || 'default'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              borderColor: 'transparent',
-              background: 'transparent',
-              marginRight: 0,
-              paddingLeft: 0,
-              opacity: isDisabled ? 0.5 : 1
-            }}
-          >
-            {data ?? '--'}
-          </Tag>
-        )
+      return (
+        <NumberPresentation
+          presentationType={presentationType}
+          presentationColor={presentationColor}
+          isDisabled={isDisabled}
+          data={data as string | number}
+          numberFormat={numberFormat}
+          textFormat={textFormat}
+        />
+      )
     }
     default:
-      if (presentationType === 'tag') {
-        return (
-          <Tag
-            color={presentationColor || 'orange'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              marginRight: 0,
-              opacity: isDisabled ? 0.5 : 1
-            }}
-          >
-            {data || '--'}
-          </Tag>
-        )
-      } else
-        return (
-          <Tag
-            color={presentationColor || 'default'}
-            style={{
-              fontWeight: bold ? 'bold' : 'normal',
-              borderColor: 'transparent',
-              background: 'transparent',
-              marginRight: 0,
-              paddingLeft: 0,
-              opacity: isDisabled ? 0.5 : 1
-            }}
-          >
-            {data || '--'}
-          </Tag>
-        )
+      return (
+        <TextPresentation
+          presentationType={presentationType}
+          presentationColor={presentationColor}
+          isDisabled={isDisabled}
+          data={data as string | number}
+          textFormat={textFormat}
+        />
+      )
   }
 }
 

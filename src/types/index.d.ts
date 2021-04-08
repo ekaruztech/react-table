@@ -17,7 +17,9 @@ export declare type PresentationColor =
   | 'cyan'
   | 'processing'
   | 'blue'
+  | 'pink'
   | 'purple'
+  | 'yellow'
   | 'default'
 
 export declare type PresentationType = 'tag'
@@ -39,6 +41,60 @@ export declare type ColumnType =
   | 'currency'
   | 'list'
 
+export interface ColumnNumberFormat {
+  style?: 'currency' | 'unit' | 'percent' | 'decimal'
+  currency?: string
+  unit?: string
+  unitDisplay?: 'long' | 'short' | 'narrow'
+  notation?: 'standard' | 'compact'
+  minimumFractionDigits?: number
+  maximumSignificantDigits?: number
+  locale?: string
+}
+
+export interface ColumnCurrencyFormat {
+  currency?: string
+  notation?: 'standard' | 'compact'
+  minimumFractionDigits?: number
+  maximumSignificantDigits?: number
+  locale?: string
+}
+
+export interface ColumnTextFormat {
+  direction?: 'ltr' | 'rtl'
+  fontWeight?:
+    | 100
+    | 200
+    | 300
+    | 400
+    | 500
+    | 600
+    | 700
+    | 800
+    | 900
+    | 'bold'
+    | 'normal'
+    | 'lighter'
+  fontStyle?: 'italic' | 'normal' | 'oblique'
+  fontStretch?:
+    | 'ultra-condensed'
+    | 'extra-condensed'
+    | 'condensed'
+    | 'semi-condensed'
+    | 'normal'
+    | 'semi-expanded'
+    | 'expanded'
+    | 'extra-expanded'
+    | 'ultra-expanded'
+  textAlign?: 'left' | 'right' | 'center' | 'justify'
+  textDecorationLine?: 'underline' | 'line-through' | 'overline' | 'none'
+  textDecorationStyle?: 'solid' | 'double' | 'dotted' | 'dashed' | 'wavy'
+  textTransform?: 'none' | 'capitalize' | 'uppercase' | 'lowercase'
+  wordSpacing?: number
+  wordWrap?: 'normal' | 'break-word'
+  textOverflow?: 'clip' | 'ellipsis' | 'string'
+}
+
 export interface ColumnProps {
   title: string
   dataIndex: string
@@ -46,7 +102,6 @@ export interface ColumnProps {
   type: ColumnType
   autoComplete?: boolean
   multiple?: boolean
-  bold?: boolean
   presentationType?: PresentationType
   presentationColor?: PresentationColor | ((value: string) => PresentationColor)
   actionPresentationType?: ActionPresentationType
@@ -54,11 +109,13 @@ export interface ColumnProps {
   actionCallback?: (source: any) => void
   actionTitle?: string
   dateFormat?: string
-  currency?: string
   columnSpan?: number
   noQuickFilter?: boolean
   quickFilterOnly?: boolean
   advancedFilter?: boolean
+  numberFormat?: ColumnNumberFormat
+  currencyFormat?: ColumnCurrencyFormat
+  textFormat?: ColumnTextFormat
 }
 export interface TableColumnProps {
   all: Array<ColumnProps>

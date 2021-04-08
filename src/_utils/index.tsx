@@ -219,6 +219,15 @@ const formatNumber = (
   }
 }
 
+const formatColumnsToKey = (columns: ColumnProps[]) => {
+  return columns.reduce((accumulator, current) => {
+    return {
+      ...accumulator,
+      [current.key]: current
+    }
+  }, {})
+}
+
 export {
   initializeColumnsWithReorderPresets,
   isDate,
@@ -227,5 +236,6 @@ export {
   DatePicker,
   findTruthies,
   formatNumber,
-  formatCurrency
+  formatCurrency,
+  formatColumnsToKey
 }

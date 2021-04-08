@@ -42,8 +42,9 @@ const db = {
   dataSource: [
     {
       key: '1',
-      name: 'Simeon Akpanudo',
-      cost: 3200000000,
+      name:
+        'Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo',
+      cost: 9200000 * 3e5,
       address: '10 Downing Street',
       hobby: 'coding',
 
@@ -51,7 +52,7 @@ const db = {
       id: '#9iopp785der0011',
       id2: 'World',
       dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
+        Math.floor(Math.random() * 10) + 1950,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
       ),
@@ -414,14 +415,18 @@ const db = {
       dataIndex: 'name',
       key: 'name',
       type: 'text',
-      autoComplete: true
-    },
-    {
-      title: 'Middle name',
-      dataIndex: 'middle_name',
-      key: 'middle_name',
-      type: 'text',
-      quickFilterOnly: true
+      autoComplete: true,
+      textFormat: {
+        fontWeight: 400,
+        fontStyle: 'normal',
+        // textAlign: 'right',
+        fontStretch: 'expanded',
+        // textDecorationLine: 'overline',
+        // textDecorationStyle: 'wavy',
+        // wordSpacing: 30,
+        textOverflow: 'clip',
+        textTransform: 'uppercase'
+      }
     },
     {
       title: 'Surname',
@@ -445,69 +450,6 @@ const db = {
       quickFilterOnly: true
     },
     {
-      title: 'Bondu',
-      dataIndex: 'bondu',
-      key: 'bondu',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
-      title: 'Bondy',
-      dataIndex: 'bondy',
-      key: 'bondy',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
-      title: 'Bondo',
-      dataIndex: 'bondo',
-      key: 'bondo',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
-      title: 'Bondv',
-      dataIndex: 'bondv',
-      key: 'bondv',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
-      title: 'Bondm',
-      dataIndex: 'bondm',
-      key: 'bondm',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
-      title: 'Bondl',
-      dataIndex: 'bondl',
-      key: 'bondl',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
-      title: 'Bonds',
-      dataIndex: 'bonds',
-      key: 'bonds',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
-      title: 'Bondk',
-      dataIndex: 'bondk',
-      key: 'bondk',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
-      title: 'Bondx',
-      dataIndex: 'bondx',
-      key: 'bondx',
-      type: 'text',
-      quickFilterOnly: true
-    },
-    {
       title: 'DOB',
       dataIndex: 'dooob',
       key: 'dooob',
@@ -521,10 +463,14 @@ const db = {
       dataIndex: 'cost',
       key: 'cost',
       type: 'currency',
-      currency: 'USD',
-      presentationColor: 'gold',
+      presentationColor: 'volcano',
       columnSpan: 2,
-      noQuickFilter: true
+      noQuickFilter: true,
+      currencyFormat: {
+        locale: 'jp-JP',
+        notation: 'compact',
+        currency: 'jpy'
+      }
     },
     {
       title: 'Hobby',
@@ -559,7 +505,6 @@ const db = {
       dataIndex: 'id',
       key: 'id5',
       type: 'text',
-      bold: true,
       presentationColor: 'volcano',
       quickFilter: false
     },
@@ -601,7 +546,7 @@ const App = () => {
         data: db.dataSource.slice(0, model?.renderOrder)
       }))
       setIsLoadingContent(false)
-    }, 5000)
+    }, 2000)
 
     const b = setTimeout(() => {
       setMenu([
@@ -611,7 +556,7 @@ const App = () => {
         { label: 'Gaming', value: 'gaming' },
         { label: 'Movies', value: 'movies' }
       ])
-    }, 10000)
+    }, 2000)
 
     return () => {
       clearTimeout(a)
