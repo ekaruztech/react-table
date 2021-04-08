@@ -5,7 +5,7 @@ import {
   Model,
   Align,
   Padding,
-  // SupportedDateLocales
+  SupportedDateLocales
 } from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
 import { useState, useEffect } from 'react'
@@ -409,7 +409,8 @@ const db = {
       type: 'action',
       actionPresentationType: 'default',
       actionCallback: (source: any) => console.log('action clicked id', source),
-      actionTitle: 'Print ID'
+      actionTitle: 'Print ID',
+      noQuickFilter: true,
     },
     {
       title: 'Name',
@@ -427,7 +428,8 @@ const db = {
         // wordSpacing: 30,
         textOverflow: 'clip',
         textTransform: 'uppercase'
-      }
+      },
+      noQuickFilter: true,
     },
     {
       title: 'Surname',
@@ -459,8 +461,9 @@ const db = {
       presentationColor: 'processing',
       columnSpan: 1.5,
       dateFormat: {
-        locale: 'po'
-      }
+        locale: SupportedDateLocales.DE
+      },
+      noQuickFilter: true,
     },
     {
       title: 'Cost',
@@ -474,7 +477,7 @@ const db = {
         locale: 'jp-JP',
         notation: 'compact',
         currency: 'jpy'
-      }
+      },
     },
     {
       title: 'Hobby',
@@ -484,13 +487,15 @@ const db = {
       presentationType: 'tag',
       presentationColor: (value: string) => evalStatusColor(value),
       multiple: true,
-      listMenu: menu
+      listMenu: menu,
+      noQuickFilter: true,
     },
     {
       title: 'Food choice',
       dataIndex: 'food_choice',
       key: 'food_choice',
-      type: 'boolean'
+      type: 'boolean',
+      noQuickFilter: true,
     },
 
     // //
@@ -502,7 +507,8 @@ const db = {
       actionPresentationType: 'primary',
       actionCallback: (source: any) =>
         console.log('action clicked id2', source),
-      actionTitle: 'Print ID-2'
+      actionTitle: 'Print ID-2',
+      noQuickFilter: true,
     },
     {
       title: 'ID-5',
@@ -510,7 +516,7 @@ const db = {
       key: 'id5',
       type: 'text',
       presentationColor: 'volcano',
-      quickFilter: false
+      noQuickFilter: true,
     },
     {
       title: 'ID-6',
@@ -518,7 +524,7 @@ const db = {
       key: 'id6',
       type: 'text',
       presentationColor: 'lime',
-      quickFilter: false
+      noQuickFilter: true,
     },
     {
       title: 'ID-10',
@@ -526,7 +532,7 @@ const db = {
       key: 'id10',
       type: 'text',
       presentationColor: 'geekblue',
-      quickFilter: false
+      noQuickFilter: true,
     }
   ],
   maxColumns: 10,
