@@ -41,17 +41,11 @@
   overflow: visible;
   position: relative;
   height: 52px;
-  line-height: 52px;
+  //line-height: 52px;
   border-bottom: 1px solid var(--border);
   .ReactTable___table-body-cell-inner {
     width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
     &:first-child {
-      //white-space: nowrap;
-      overflow: hidden;
-      //text-overflow: ellipsis;
       padding: 0 10px;
     }
   }
@@ -72,7 +66,7 @@
 }
 .ReactTable___table-body-cell.table-body-cell-fixed-left.table-cell-fixed-left-shadow::before {
   content: '';
-  height: 52px;
+  height: 100%;
   width: 100%;
   position: absolute;
   left: 100%;
@@ -90,7 +84,7 @@
 }
 .ReactTable___table-body-cell.table-body-cell-fixed-right.table-cell-fixed-right-shadow::before {
   content: '';
-  height: 52px;
+  height: 100%;
   width: 100%;
   position: absolute;
   right: 100%;
