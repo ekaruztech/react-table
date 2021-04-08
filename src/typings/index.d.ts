@@ -6,8 +6,7 @@ import { CellMenuProps } from '../ReactTable/lib/Table/utils/CellMenu'
 import Model from '../_utils/model'
 import { SupportedDateLocales } from '../_utils/locales'
 
-
-export declare type PresentationColor =
+export type PresentationColor =
   | 'magenta'
   | 'volcano'
   | 'orange'
@@ -24,8 +23,8 @@ export declare type PresentationColor =
   | 'yellow'
   | 'default'
 
-export declare type PresentationType = 'tag'
-export declare type ActionPresentationType =
+export type PresentationType = 'tag'
+export type ActionPresentationType =
   | 'primary'
   | 'default'
   | 'link'
@@ -33,7 +32,7 @@ export declare type ActionPresentationType =
   | 'ghost'
   | 'dashed'
 
-export declare type ColumnType =
+export type ColumnType =
   | 'text'
   | 'boolean'
   | 'datetime'
@@ -43,7 +42,7 @@ export declare type ColumnType =
   | 'currency'
   | 'list'
 
-export interface ColumnNumberFormat {
+export interface NumberFormat {
   style?: 'currency' | 'unit' | 'percent' | 'decimal'
   currency?: string
   unit?: string
@@ -54,12 +53,19 @@ export interface ColumnNumberFormat {
   locale?: string
 }
 
-export interface ColumnDateFormat {
-  formatString?: string,
+export type ColumnNumberFormat =
+  | NumberFormat
+  | ((text?: number | string, source?: any) => NumberFormat)
+
+export interface DateFormat {
+  formatString?: string
   locale?: SupportedDateLocales
 }
+export type ColumnDateFormat =
+  | DateFormat
+  | ((text?: Date | string | undefined, source?: any) => DateFormat)
 
-export interface ColumnCurrencyFormat {
+export interface CurrencyFormat {
   currency?: string
   notation?: 'standard' | 'compact'
   minimumFractionDigits?: number
@@ -67,7 +73,11 @@ export interface ColumnCurrencyFormat {
   locale?: string
 }
 
-export interface ColumnTextFormat {
+export type ColumnCurrencyFormat =
+  | CurrencyFormat
+  | ((text?: number | string, source?: any) => CurrencyFormat)
+
+export interface TextFormat {
   direction?: 'ltr' | 'rtl'
   fontWeight?:
     | 100
@@ -101,6 +111,10 @@ export interface ColumnTextFormat {
   wordWrap?: 'normal' | 'break-word'
   textOverflow?: 'clip' | 'ellipsis' | 'string'
 }
+
+export type ColumnTextFormat =
+  | TextFormat
+  | ((text?: number | string, source?: any) => TextFormat)
 
 export interface ColumnProps {
   title: string

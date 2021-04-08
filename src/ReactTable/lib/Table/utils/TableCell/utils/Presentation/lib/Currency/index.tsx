@@ -1,4 +1,7 @@
-import { formatNumber } from '../../../../../../../../../_utils'
+import {
+  formatNumber,
+  FormatNumberOptionStyle
+} from '../../../../../../../../../_utils'
 import { PresetColors } from '../../../../../../../../../_utils/colors'
 import { Tag } from 'antd'
 import React from 'react'
@@ -7,8 +10,10 @@ import {
   ColumnTextFormat
 } from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
+import { isFunction, isPlainObject } from 'lodash'
 
 type CurrencyPresentationProps = {
+  source: any
   presentationType: 'tag' | undefined
   presentationColor: string | null
   isDisabled: boolean
@@ -21,14 +26,27 @@ const CurrencyPresentation = (props: CurrencyPresentationProps) => {
     data,
     presentationColor,
     presentationType,
-    currencyFormat,
-    textFormat,
-    isDisabled
+    currencyFormat: _CurrencyFormat,
+    textFormat: _TextFormat,
+    isDisabled,
+    source
   } = props
-  const currency = formatNumber(Number(data ?? 0), {
-    ...currencyFormat,
-    style: 'currency'
-  })
+
+  const textFormat = isFunction(_TextFormat)
+    ? _TextFormat(data, source)
+    : _TextFormat
+
+  const currencyFormat = isFunction(_CurrencyFormat)
+    ? _CurrencyFormat(data, source)
+    : _CurrencyFormat
+
+  const currency = formatNumber(
+    Number(data ?? 0),
+    Object.assign({}, isPlainObject(currencyFormat) ? currencyFormat : {}, {
+      style: 'currency' as FormatNumberOptionStyle
+    })
+  )
+
   if (presentationType === 'tag') {
     return (
       <Tag
@@ -38,7 +56,7 @@ const CurrencyPresentation = (props: CurrencyPresentationProps) => {
           opacity: isDisabled ? 0.5 : 1
         }}
       >
-        <TextFormat textFormat={textFormat}>
+        <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
           {data ? currency : '--'}
         </TextFormat>
       </Tag>
@@ -52,7 +70,9 @@ const CurrencyPresentation = (props: CurrencyPresentationProps) => {
         overflow: 'hidden'
       }}
     >
-      <TextFormat textFormat={textFormat}>{data ? currency : '--'}</TextFormat>
+      <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
+        {data ? currency : '--'}
+      </TextFormat>
     </div>
   )
 }

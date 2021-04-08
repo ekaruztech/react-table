@@ -57,6 +57,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           data={data as number | string}
           currencyFormat={currencyFormat}
           textFormat={textFormat}
+          source={source}
         />
       )
     }
@@ -70,6 +71,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           data={data as Date | undefined}
           dateFormat={dateFormat}
           textFormat={textFormat}
+          source={source}
         />
       )
     }
@@ -82,6 +84,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           data={data as string | number}
           numberFormat={numberFormat}
           textFormat={textFormat}
+          source={source}
         />
       )
     }
@@ -93,6 +96,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           isDisabled={isDisabled}
           data={data as string | number}
           textFormat={textFormat}
+          source={source}
         />
       )
   }

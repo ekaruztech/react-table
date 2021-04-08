@@ -49,9 +49,6 @@ const TableCell: React.FC<ITableCell> = (props) => {
     })
   }
 
-  // @ts-ignore
-
-  // TODO: Add table numbering.
   return (
     <ReactTableContext.Consumer>
       {({ onSelectedItemChange, selectedTableItems, columnKeys, columns }) => (
@@ -181,6 +178,8 @@ const TableCell: React.FC<ITableCell> = (props) => {
               cellMenu,
               cellMenuCallback
             )
+
+            console.count('Rerenders')
 
             return (
               <Fragment>

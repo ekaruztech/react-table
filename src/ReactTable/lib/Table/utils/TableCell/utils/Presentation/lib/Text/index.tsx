@@ -3,6 +3,7 @@ import React from 'react'
 import { ColumnTextFormat } from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
 import { PresetColors } from '../../../../../../../../../_utils/colors'
+import { isFunction, isPlainObject } from 'lodash'
 
 type TextPresentationProps = {
   presentationType: 'tag' | undefined
@@ -10,6 +11,7 @@ type TextPresentationProps = {
   isDisabled: boolean
   data: string | number
   textFormat: ColumnTextFormat | undefined
+  source: any
 }
 const TextPresentation = (props: TextPresentationProps) => {
   const {
@@ -17,8 +19,14 @@ const TextPresentation = (props: TextPresentationProps) => {
     presentationType,
     data,
     isDisabled,
-    textFormat
+    textFormat: _TextFormat,
+    source
   } = props
+
+  const textFormat = isFunction(_TextFormat)
+    ? _TextFormat(data, source)
+    : _TextFormat
+
   if (presentationType === 'tag') {
     return (
       <Tag
@@ -28,7 +36,9 @@ const TextPresentation = (props: TextPresentationProps) => {
           opacity: isDisabled ? 0.5 : 1
         }}
       >
-        <TextFormat textFormat={textFormat}>{data ?? '--'}</TextFormat>
+        <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
+          {data ?? '--'}
+        </TextFormat>
       </Tag>
     )
   }
@@ -40,7 +50,9 @@ const TextPresentation = (props: TextPresentationProps) => {
         overflow: 'hidden'
       }}
     >
-      <TextFormat textFormat={textFormat}>{data ?? '--'}</TextFormat>
+      <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
+        {data ?? '--'}
+      </TextFormat>
     </div>
   )
 }

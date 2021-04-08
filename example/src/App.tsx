@@ -410,7 +410,7 @@ const db = {
       actionPresentationType: 'default',
       actionCallback: (source: any) => console.log('action clicked id', source),
       actionTitle: 'Print ID',
-      noQuickFilter: true,
+      noQuickFilter: true
     },
     {
       title: 'Name',
@@ -426,10 +426,75 @@ const db = {
         // textDecorationLine: 'overline',
         // textDecorationStyle: 'wavy',
         // wordSpacing: 30,
-        textOverflow: 'clip',
+        textOverflow: 'ellipsis',
         textTransform: 'uppercase'
       },
+      noQuickFilter: true
+    },
+    {
+      title: 'DOB',
+      dataIndex: 'dooob',
+      key: 'dooob',
+      type: 'datetime',
+      presentationType: 'date',
+      presentationColor: 'processing',
+      columnSpan: 1.5,
+      dateFormat: () => {
+        // console.count(text)
+        return {
+          locale: SupportedDateLocales.JA
+        }
+      },
+      noQuickFilter: true
+    },
+    {
+      title: 'Cost',
+      dataIndex: 'cost',
+      key: 'cost',
+      type: 'currency',
+      presentationColor: 'volcano',
+      columnSpan: 1,
       noQuickFilter: true,
+      currencyFormat: {
+        locale: 'ja',
+        notation: 'compact',
+        currency: 'jpy'
+      },
+      textFormat: {
+        // textAlign: 'right'
+        fontWeight: 500,
+      }
+    },
+    {
+      title: 'Hobby',
+      dataIndex: 'hobby',
+      key: 'hobby',
+      type: 'list',
+      presentationType: 'tag',
+      presentationColor: (value: string) => evalStatusColor(value),
+      multiple: true,
+      listMenu: menu,
+      noQuickFilter: true
+    },
+    {
+      title: 'Food choice',
+      dataIndex: 'food_choice',
+      key: 'food_choice',
+      type: 'boolean',
+      noQuickFilter: true
+    },
+
+    // //
+    {
+      title: 'ID-2',
+      dataIndex: 'id',
+      key: 'id2',
+      type: 'action',
+      actionPresentationType: 'primary',
+      actionCallback: (source: any) =>
+        console.log('action clicked id2', source),
+      actionTitle: 'Print ID-2',
+      noQuickFilter: true
     },
     {
       title: 'Surname',
@@ -453,70 +518,12 @@ const db = {
       quickFilterOnly: true
     },
     {
-      title: 'DOB',
-      dataIndex: 'dooob',
-      key: 'dooob',
-      type: 'datetime',
-      presentationType: 'date',
-      presentationColor: 'processing',
-      columnSpan: 1.5,
-      dateFormat: {
-        locale: SupportedDateLocales.DE
-      },
-      noQuickFilter: true,
-    },
-    {
-      title: 'Cost',
-      dataIndex: 'cost',
-      key: 'cost',
-      type: 'currency',
-      presentationColor: 'volcano',
-      columnSpan: 1,
-      noQuickFilter: true,
-      currencyFormat: {
-        locale: 'jp-JP',
-        notation: 'compact',
-        currency: 'jpy'
-      },
-    },
-    {
-      title: 'Hobby',
-      dataIndex: 'hobby',
-      key: 'hobby',
-      type: 'list',
-      presentationType: 'tag',
-      presentationColor: (value: string) => evalStatusColor(value),
-      multiple: true,
-      listMenu: menu,
-      noQuickFilter: true,
-    },
-    {
-      title: 'Food choice',
-      dataIndex: 'food_choice',
-      key: 'food_choice',
-      type: 'boolean',
-      noQuickFilter: true,
-    },
-
-    // //
-    {
-      title: 'ID-2',
-      dataIndex: 'id',
-      key: 'id2',
-      type: 'action',
-      actionPresentationType: 'primary',
-      actionCallback: (source: any) =>
-        console.log('action clicked id2', source),
-      actionTitle: 'Print ID-2',
-      noQuickFilter: true,
-    },
-    {
       title: 'ID-5',
       dataIndex: 'id',
       key: 'id5',
       type: 'text',
       presentationColor: 'volcano',
-      noQuickFilter: true,
+      noQuickFilter: true
     },
     {
       title: 'ID-6',
@@ -524,7 +531,7 @@ const db = {
       key: 'id6',
       type: 'text',
       presentationColor: 'lime',
-      noQuickFilter: true,
+      noQuickFilter: true
     },
     {
       title: 'ID-10',
@@ -532,7 +539,7 @@ const db = {
       key: 'id10',
       type: 'text',
       presentationColor: 'geekblue',
-      noQuickFilter: true,
+      noQuickFilter: true
     }
   ],
   maxColumns: 10,

@@ -12,6 +12,7 @@ import {
   throwUnsupportedDateLocaleError
 } from '../../../../../../../../../_utils/locales'
 import { isDate } from '../../../../../../../../../_utils'
+import { isFunction } from 'lodash'
 
 type DatePresentationProps = {
   presentationType: 'tag' | undefined
@@ -20,6 +21,7 @@ type DatePresentationProps = {
   data: Date | undefined
   dateFormat: ColumnDateFormat | undefined
   textFormat: ColumnTextFormat | undefined
+  source: any
 }
 
 const DatePresentation = (props: DatePresentationProps) => {
@@ -28,19 +30,30 @@ const DatePresentation = (props: DatePresentationProps) => {
     isDisabled,
     presentationColor,
     presentationType,
-    dateFormat: _DateFormat,
-    textFormat
+    dateFormat: _DateFormatSettings,
+    textFormat: _TextFormat,
+    source
   } = props
 
+  const dateFormatSettings =
+    (isFunction(_DateFormatSettings)
+      ? _DateFormatSettings(data, source)
+      : _DateFormatSettings) ?? {}
+
   const dateFormat = {
-    formatString: _DateFormat?.formatString ?? 'MMM dd, yyyy hh:mm aaa',
-    locale: _DateFormat?.locale ?? SupportedDateLocales.enGB
+    formatString: dateFormatSettings?.formatString ?? 'MMM dd, yyyy hh:mm aaa',
+    locale: dateFormatSettings?.locale ?? SupportedDateLocales.enGB
   }
 
   throwUnsupportedDateLocaleError(dateFormat.locale)
 
   const locale = useRef(require('date-fns/locale/en-GB'))
+
   const [formattedDate, setFormattedDate] = useState('--')
+
+  const textFormat = isFunction(_TextFormat)
+    ? _TextFormat(new Date(data as string | Date).toString(), source)
+    : _TextFormat
 
   const onFormattedDateChange = (date: Date) => {
     const formatString = dateFormat.formatString

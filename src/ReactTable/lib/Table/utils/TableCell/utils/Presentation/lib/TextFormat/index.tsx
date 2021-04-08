@@ -1,9 +1,11 @@
 import React from 'react'
-import { ColumnTextFormat } from '../../../../../../../../../typings'
+import { TextFormat as TextFormatType } from '../../../../../../../../../typings'
+
 type TextFormatProps = {
-  textFormat: ColumnTextFormat | undefined
+  textFormat: TextFormatType | undefined
   children: React.ReactNode[] | React.ReactNode
 }
+
 const TextFormat = (props: TextFormatProps) => {
   const { children, textFormat } = props
 

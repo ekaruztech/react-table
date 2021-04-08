@@ -7,6 +7,7 @@ import {
 } from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
 import { PresetColors } from '../../../../../../../../../_utils/colors'
+import { isFunction, isPlainObject } from 'lodash'
 
 type NumberPresentationProps = {
   presentationType: 'tag' | undefined
@@ -15,6 +16,7 @@ type NumberPresentationProps = {
   data: string | number
   numberFormat: ColumnNumberFormat | undefined
   textFormat: ColumnTextFormat | undefined
+  source: any
 }
 const NumberPresentation = (props: NumberPresentationProps) => {
   const {
@@ -22,10 +24,24 @@ const NumberPresentation = (props: NumberPresentationProps) => {
     isDisabled,
     presentationColor,
     presentationType,
-    numberFormat,
-    textFormat
+    numberFormat: _NumberFormat,
+    textFormat: _TextFormat,
+    source
   } = props
-  const number = formatNumber(Number(data), Object.assign({}, numberFormat))
+
+  const textFormat = isFunction(_TextFormat)
+    ? _TextFormat(data, source)
+    : _TextFormat
+
+  const numberFormat = isFunction(_NumberFormat)
+    ? _NumberFormat(data, source)
+    : _NumberFormat
+
+  const number = formatNumber(
+    Number(data),
+    Object.assign({}, isPlainObject(numberFormat) ? numberFormat : {})
+  )
+
   if (presentationType === 'tag') {
     return (
       <Tag
@@ -35,7 +51,9 @@ const NumberPresentation = (props: NumberPresentationProps) => {
           opacity: isDisabled ? 0.5 : 1
         }}
       >
-        <TextFormat textFormat={textFormat}>{data ? number : '--'}</TextFormat>
+        <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
+          {data ? number : '--'}
+        </TextFormat>
       </Tag>
     )
   }
@@ -47,7 +65,9 @@ const NumberPresentation = (props: NumberPresentationProps) => {
         overflow: 'hidden'
       }}
     >
-      <TextFormat textFormat={textFormat}>{data ? number : '--'}</TextFormat>
+      <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
+        {data ? number : '--'}
+      </TextFormat>
     </div>
   )
 }

@@ -182,8 +182,14 @@ const formatCurrency = (
   }
 }
 
+export type FormatNumberOptionStyle =
+  | 'currency'
+  | 'unit'
+  | 'percent'
+  | 'decimal'
+
 type FormatNumberOptionType = {
-  style?: 'currency' | 'unit' | 'percent' | 'decimal'
+  style?: FormatNumberOptionStyle
   currency?: string
   unit?: string
   unitDisplay?: 'long' | 'short' | 'narrow'
@@ -199,6 +205,7 @@ const defaultFormatOptions: FormatNumberOptionType = {
   minimumFractionDigits: 3,
   notation: 'standard'
 }
+
 const formatNumber = (
   value: string | number,
   options: FormatNumberOptionType = defaultFormatOptions
