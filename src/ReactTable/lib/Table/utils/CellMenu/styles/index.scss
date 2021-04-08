@@ -1,0 +1,22 @@
+.ReactTable__CellMenu__menu {
+  padding: 0 10px 0 10px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between;
+  width: 240px !important;
+  border: 0 !important;
+  background: var(--background-secondary);
+  // Override
+  .ant-menu-item {
+    height: 32px !important;
+    line-height: 32px !important;
+    border-radius: 32px !important;
+    width: 32px !important;
+    background: var(--background-primary) !important;
+    padding: 0 !important;
+  }
+  .anticon {
+    margin-right: 0 !important;
+  }
+}

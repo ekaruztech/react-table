@@ -1,12 +1,14 @@
 import { Button, Checkbox, Popover, Tooltip } from 'antd'
 import ColumnReorder from './utils/ColumnReorder'
-
+import './styles.scss'
 import React from 'react'
 import { motion } from 'framer-motion'
+import Padding from '../../../../../Padding'
+import { isFunction } from 'lodash'
 // eslint-disable-next-line no-unused-vars
-import { TableColumnProps, ColumnProps } from '../../../../../types'
+import { TableColumnProps, ColumnProps } from '../../../../../typings'
 
-interface ITableHead {
+interface TableHeadProps {
   columns: TableColumnProps
   columnKeys: string[]
   selectedTableItems: any
@@ -18,9 +20,11 @@ interface ITableHead {
   minColumns: number
   defaultColumns: ColumnProps[]
   allowCellSelect: boolean
+  loading: boolean
+  onRefresh?: () => void
 }
 
-const TableHead: React.FC<ITableHead> = (props) => {
+const TableHead: React.FC<TableHeadProps> = (props) => {
   const {
     columns,
     // columnKeys,
@@ -30,9 +34,15 @@ const TableHead: React.FC<ITableHead> = (props) => {
     maxColumns,
     minColumns,
     defaultColumns,
-    allowCellSelect
+    allowCellSelect,
+    loading,
+    onRefresh
   } = props
-
+  const handleRefresh = () => {
+    if (isFunction(onRefresh)) {
+      onRefresh()
+    }
+  }
   return (
     <motion.thead
       className='ReactTable___table-header'
@@ -98,10 +108,47 @@ const TableHead: React.FC<ITableHead> = (props) => {
           }}
           className='ReactTable___table-header-cell selectable-header-cell table-header-cell-fixed-right'
         >
-          <motion.div
-            whileHover={{ scale: 1.1 }}
-            className='ReactTable___table-selectable-header-cell-child-container'
-          >
+          {isFunction(onRefresh) && (
+            <Padding componentType={'span'} right={10}>
+              <motion.span
+                className='ReactTable___table-selectable-header-cell-child-container header-refresh-control'
+                whileTap={{ scale: 0.8 }}
+                whileHover={{ scale: 1.15 }}
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'var(--background-secondary)'
+                }}
+              >
+                <Tooltip title='Refresh' placement='left'>
+                  <Button
+                    type='text'
+                    shape={'circle'}
+                    disabled={loading}
+                    onClick={handleRefresh}
+                    icon={
+                      <span
+                        className={`anticon ${
+                          loading ? 'anticon-loading' : ''
+                        }`}
+                      >
+                        <i
+                          className={`ri-refresh-line column-refresh-button ${
+                            loading ? 'anticon-spin' : ''
+                          }`}
+                          style={{ fontSize: 17 }}
+                        />
+                      </span>
+                    }
+                  />
+                </Tooltip>
+              </motion.span>
+            </Padding>
+          )}
+          <motion.span className='ReactTable___table-selectable-header-cell-child-container'>
             <Popover
               placement='bottomRight'
               content={() => (
@@ -113,27 +160,30 @@ const TableHead: React.FC<ITableHead> = (props) => {
                   defaultColumns={defaultColumns}
                 />
               )}
+              overlayClassName={'ReactTable__table-selectable-header-popover'}
               trigger='click'
               style={{ borderRadius: 10 }}
             >
               <Tooltip title='Customize columns' placement='left'>
                 <Button
-                  type='link'
-                  style={{ background: 'transaparent' }}
+                  type='text'
+                  shape={'circle'}
                   icon={
-                    <span className='anticon'>
-                      <span className='anticon'>
-                        <i
-                          className='ri-list-settings-line'
-                          style={{ fontSize: 17 }}
-                        />
-                      </span>
-                    </span>
+                    <motion.span
+                      className='anticon'
+                      whileTap={{ scale: 0.8 }}
+                      whileHover={{ scale: 1.15 }}
+                    >
+                      <i
+                        className='ri-order-play-line column-reorder-button'
+                        style={{ fontSize: 17 }}
+                      />
+                    </motion.span>
                   }
                 />
               </Tooltip>
             </Popover>
-          </motion.div>
+          </motion.span>
         </motion.th>
       </tr>
     </motion.thead>

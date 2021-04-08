@@ -1,23 +1,26 @@
 import React from 'react'
-import { Checkbox } from 'antd'
+import { Checkbox, Tooltip } from 'antd'
 import { reorder } from '../reorder'
 // @ts-ignore
 import { isEmpty, find } from 'lodash'
 // @ts-ignore
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 // eslint-disable-next-line no-unused-vars
-import { TableColumnProps, ColumnProps } from '../../../../../../../../../types'
+import { TableColumnProps, ColumnProps } from '../../../../../../../../../typings'
+// eslint-disable-next-line no-unused-vars
+import Model from '../../../../../../../../../_utils/model'
 
-interface ISortable {
+interface SortableProvider {
   setColumns: (
     state: ((prev: TableColumnProps) => TableColumnProps) | TableColumnProps
   ) => void
   columns: TableColumnProps
   maxColumns: number
   minColumns: number
+  model: Model
 }
-const Sortable: React.FC<ISortable> = (props) => {
-  const { setColumns, columns, maxColumns, minColumns } = props
+const Sortable: React.FC<SortableProvider> = (props) => {
+  const { setColumns, columns, maxColumns, minColumns, model } = props
 
   const onChange = (
     value: ColumnProps,
@@ -26,16 +29,32 @@ const Sortable: React.FC<ISortable> = (props) => {
     setColumns((prev: TableColumnProps) => {
       // Value is already existing in the selected array.
       if (isSelected) {
+        const selected = prev.selected.filter((o) => o?.key !== value?.key)
+        // Store value to local storage
+        if (model.columnReorder.save) {
+          model.store('columnReorder', {
+            presets: selected.map((column) => column.key)
+          })
+        }
         return {
-          selected: prev.selected.filter((o) => o?.key !== value?.key),
+          selected,
           unselected: prev.unselected.concat(value),
           all: prev.selected
             .filter((o) => o?.key !== value?.key)
             .concat(prev.unselected.concat(value))
         }
       } else {
+        const selected = prev.selected.concat(value)
+
+        // Store value to local storage
+        if (model.columnReorder.save) {
+          model.store('columnReorder', {
+            presets: selected.map((column) => column.key)
+          })
+        }
+
         return {
-          selected: prev.selected.concat(value),
+          selected,
           unselected: prev.unselected.filter((f) => f?.key !== value?.key),
           all: prev.selected.concat(
             value,
@@ -68,6 +87,14 @@ const Sortable: React.FC<ISortable> = (props) => {
           isEmpty(find(prev.selected, (o: ColumnProps) => o.key === value.key))
         )
       )
+
+      // Store value to local storage
+      if (model.columnReorder.save) {
+        model.store('columnReorder', {
+          presets: selected.map((column) => column.key)
+        })
+      }
+
       return {
         ...prev,
         all,
@@ -79,8 +106,8 @@ const Sortable: React.FC<ISortable> = (props) => {
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     // some basic styles to make the items look a bit nicer
     userSelect: 'none',
-    padding: '8px',
     margin: `10px 0`,
+    padding: '10px',
 
     // change background colour if dragging
     background: isDragging
@@ -140,44 +167,51 @@ const Sortable: React.FC<ISortable> = (props) => {
                         opacity: dragDisabled ? 0.5 : 2
                       }}
                     >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between'
-                        }}
+                      <Tooltip
+                        title='Click and drag up or down to reorder'
+                        placement='left'
                       >
-                        <Checkbox
-                          disabled={
-                            (columns.selected.length >= maxColumns &&
-                              !isSelected) ||
-                            (isSelected !== undefined &&
-                              columns.selected.length <= minColumns)
-                          }
-                          checked={isSelected !== undefined || false}
-                          onChange={() => onChange(value, isSelected)}
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                          }}
                         >
-                          {value?.title}
-                        </Checkbox>
-                        <span style={{ display: 'flex', alignItems: 'center' }}>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            height='24'
-                            viewBox='0 0 24 24'
-                            width='24'
+                          <Checkbox
+                            disabled={
+                              (columns.selected.length >= maxColumns &&
+                                !isSelected) ||
+                              (isSelected !== undefined &&
+                                columns.selected.length <= minColumns)
+                            }
+                            checked={isSelected !== undefined || false}
+                            onChange={() => onChange(value, isSelected)}
                           >
-                            <path d='M0 0h24v24H0V0z' fill='none' />
-                            <path
-                              fill={
-                                snapshot.isDragging
-                                  ? 'var(--accent)'
-                                  : 'var(--accent35)'
-                              }
-                              d='M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'
-                            />
-                          </svg>
-                        </span>
-                      </div>
+                            {value?.title}
+                          </Checkbox>
+                          <span
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              height='24'
+                              viewBox='0 0 24 24'
+                              width='24'
+                            >
+                              <path d='M0 0h24v24H0V0z' fill='none' />
+                              <path
+                                fill={
+                                  snapshot.isDragging
+                                    ? 'var(--accent)'
+                                    : 'var(--disabled-color)'
+                                }
+                                d='M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </Tooltip>
                     </div>
                   )}
                 </Draggable>

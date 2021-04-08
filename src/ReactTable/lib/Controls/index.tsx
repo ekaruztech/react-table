@@ -1,27 +1,40 @@
 import React from 'react'
 import { Button, Tooltip } from 'antd'
 import { isFunction } from 'lodash'
-import DataManagement from './utils/DataControls'
-import {
-  TableRefresh,
-  ControlActions,
-  RenderOrder
-} from './utils/TableControls'
+import DataManagement from './utils/DataManagement'
+import { Export, RenderOrder } from './utils/TableUtilities'
 import { ReactTableContext } from '../ReactTableContext'
+// eslint-disable-next-line no-unused-vars
+import { DataFilterObject, DataSortObject } from '../../../typings'
+import Margin from '../../../Margin'
+import './styles/index.scss'
 
-interface IReactTableControls {
-  renderOrder: number
+interface ReactTableControlsProps {
   onRenderOrderChange: (renderOrder: number) => void
-  onRefresh?: () => void
+  onFilterApply?: (value: {
+    filters: DataFilterObject[]
+    queryType: 'or' | 'and'
+  }) => void
+  onFilterClear?: () => void
+  enableExport?:
+    | [boolean, boolean, boolean]
+    | [boolean, boolean]
+    | [boolean]
+    | boolean
+    | { csv?: boolean; pdf?: boolean; excel?: boolean }
+  onExport?: (exportType: 'csv' | 'pdf' | 'excel') => void
+  onSortApply?: (filters: DataSortObject[]) => void
+  onSortClear?: () => void
+  enableDataManagement?: boolean
 }
 
-interface IReactTableControlsState {
+interface ReactTableControlsPropsState {
   filterColumn: { visible: boolean }
 }
 
 class Controls extends React.Component<
-  IReactTableControls,
-  IReactTableControlsState
+  ReactTableControlsProps,
+  ReactTableControlsPropsState
 > {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE =
     '$$REACT_TABLE_CONTROLS'
@@ -56,59 +69,70 @@ class Controls extends React.Component<
     | null
     | undefined {
     const {
-      renderOrder: pageRenderOrder,
       onRenderOrderChange,
-      onRefresh
+      onFilterApply,
+      onFilterClear,
+      onExport,
+      enableExport,
+      onSortApply,
+      onSortClear,
+      enableDataManagement = true
     } = this.props
-
-    // const [filterColumn, setFilterColumn] = useState({ visible: false })
 
     return (
       <ReactTableContext.Consumer>
-        {({ dataSource, columns }) => {
+        {({ dataSource, columns, model }) => {
           return (
             <div className='ReactTable___table-container-header'>
               <div className='ReactTable___table-container-header-inner-left'>
-                <div className='ReactTable___table-filter-radio-sort'>
-                  <Tooltip title='Manage data'>
-                    <Button
-                      icon={
-                        <span className='anticon'>
-                          <i
-                            className='ri-database-2-line'
-                            style={{ fontSize: 17 }}
-                          />
-                        </span>
-                      }
-                      onClick={() => {
-                        this.setFilterColumn((prev) => ({
-                          ...prev,
-                          visible: true
-                        }))
-                      }}
-                      type='primary'
-                    >
-                      Data Management
-                    </Button>
-                  </Tooltip>
-                  <DataManagement
-                    visible={this.state.filterColumn.visible}
-                    handleCancel={this.handleFilterColumnCancel}
-                    columns={columns}
-                    dataSource={dataSource}
-                  />
-                </div>
+                {enableDataManagement && (
+                  <div className='ReactTable___table-filter-radio-sort'>
+                    <Margin right={20}>
+                      <Tooltip title='Manage data'>
+                        <Button
+                          icon={
+                            <span className='anticon'>
+                              <i
+                                className='ri-database-2-line'
+                                style={{ fontSize: 17 }}
+                              />
+                            </span>
+                          }
+                          onClick={() => {
+                            this.setFilterColumn((prev) => ({
+                              ...prev,
+                              visible: true
+                            }))
+                          }}
+                          type='primary'
+                        >
+                          Data Management
+                        </Button>
+                      </Tooltip>
+                    </Margin>
 
+                    <DataManagement
+                      visible={this.state.filterColumn.visible}
+                      handleCancel={this.handleFilterColumnCancel}
+                      columns={columns}
+                      dataSource={dataSource}
+                      model={model}
+                      onFilterApply={onFilterApply}
+                      onFilterClear={onFilterClear}
+                      onSortApply={onSortApply}
+                      onSortClear={onSortClear}
+                    />
+                  </div>
+                )}
                 <div className='ReactTable___table-filter-btn-container'>
-                  <ControlActions />
+                  <Export onExport={onExport} enableExport={enableExport} />
                 </div>
               </div>
 
               <div className='ReactTable___table-container-header-inner-right'>
-                <TableRefresh onRefresh={onRefresh} />
                 <RenderOrder
-                  renderOrder={pageRenderOrder}
-                  setRenderOrder={onRenderOrderChange}
+                  onRenderOrderChange={onRenderOrderChange}
+                  model={model}
                 />
               </div>
             </div>
@@ -119,4 +143,4 @@ class Controls extends React.Component<
   }
 }
 
-export { Controls as default, IReactTableControls as ControlsProps }
+export { Controls as default, ReactTableControlsProps as ControlsProps }

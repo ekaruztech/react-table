@@ -1,24 +1,24 @@
-import { Button, Tooltip, Popconfirm } from 'antd'
+import { Button, Row, Col } from 'antd'
 import Align from '../../../../../Align'
-import Padding from '../../../../../Padding'
-import React, { Fragment } from 'react'
+import React from 'react'
 // eslint-disable-next-line no-unused-vars
-import { OnCellSelect } from '../../../../../types'
-import { isEmpty, isFunction } from 'lodash'
+import { isEmpty, clamp } from 'lodash'
 import { motion } from 'framer-motion'
 import { ReactTableContext } from '../../../ReactTableContext'
+import './styles/index.scss'
 
 interface ICellSelectionHeader {
-  onCellSelect?: (selectCount: number) => OnCellSelect
+  cellSelectionMenu?: React.ReactNode[]
+  cellSelectionSpacing?: number[] | number
 }
 const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
-  const { onCellSelect } = props
+  const { cellSelectionMenu, cellSelectionSpacing = 4 } = props
 
   // TODO: moved inline styles to css file
-  return (
+
+  return !isEmpty(cellSelectionMenu) ? (
     <ReactTableContext.Consumer>
       {({ selectedTableItems, onSelectedItemChange }) => {
-        const controls = onCellSelect?.(selectedTableItems?.itemList?.length)
         return !isEmpty(selectedTableItems.itemList) ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -31,24 +31,16 @@ const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
               damping: 13
             }}
           >
-            <Align
-              style={{
-                width: '100%',
-                borderTop: '1px solid var(--border)',
-                borderLeft: '1px solid var(--border)',
-                borderRight: '1px solid var(--border)',
-                background: 'var(--background-primary)',
-                height: 60
-              }}
-              alignCenter
-            >
-              <Padding
-                left={5}
-                right={20}
-                vertical={10}
-                style={{ height: '100%' }}
-              >
-                <Align alignCenter style={{ height: '100%' }}>
+            <Align className='ReactTable___CellSelection' alignCenter>
+              <Row gutter={[10, 20]} className='ReactTable___CellSelection-row'>
+                <Col
+                  span={4}
+                  className={`ReactTable___CellSelection-col ${
+                    !((cellSelectionMenu || []).length < 1)
+                      ? 'CellSelection-border'
+                      : ''
+                  }`}
+                >
                   <Button
                     type='text'
                     icon={
@@ -60,81 +52,48 @@ const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
                   >
                     {selectedTableItems?.itemList?.length || 0} selected
                   </Button>
-
-                  {controls?.onPin && isFunction(controls?.onPin) && (
-                    <Fragment>
-                      <Padding horizontal={10} style={{ height: '100%' }}>
-                        <div
-                          style={{
-                            height: '100%',
-                            borderLeft: '1px solid var(--border-color-split)'
-                          }}
-                        />
-                      </Padding>
-                      <Tooltip title='Pin selected'>
-                        <Button
-                          type='text'
-                          onClick={() =>
-                            controls?.onPin && isFunction(controls?.onPin)
-                              ? controls.onPin(selectedTableItems?.itemList)
-                              : null
-                          }
-                          icon={
-                            <span className='anticon'>
-                              <i className='ri-pushpin-line' />
-                            </span>
-                          }
-                        >
-                          Pin
-                        </Button>
-                      </Tooltip>
-                    </Fragment>
-                  )}
-
-                  {controls?.onDelete && isFunction(controls?.onDelete) && (
-                    <Fragment>
-                      <Padding horizontal={10} style={{ height: '100%' }}>
-                        <div
-                          style={{
-                            height: '100%',
-                            borderLeft: '1px solid var(--border-color-split)'
-                          }}
-                        />
-                      </Padding>
-                      <Popconfirm
-                        title='Are you sure you want to delete all selected data?'
-                        onConfirm={() =>
-                          controls?.onDelete && isFunction(controls?.onDelete)
-                            ? controls.onDelete(selectedTableItems?.itemList)
-                            : null
-                        }
-                        okText='Yes'
-                        cancelText='No'
+                </Col>
+                {(cellSelectionMenu || []).map(
+                  (
+                    menu: React.ReactNode,
+                    index: number,
+                    array: typeof cellSelectionMenu
+                  ) => {
+                    const spacing = Array.isArray(cellSelectionSpacing)
+                      ? cellSelectionSpacing[index] || 4
+                      : clamp(cellSelectionSpacing || 2, 2, 24)
+                    const isLastElement = (array || []).length - 1 === index
+                    return (
+                      <Col
+                        span={spacing}
+                        className={`ReactTable___CellSelection-col ${
+                          !isLastElement ? 'CellSelection-border' : ''
+                        }`}
                       >
-                        <Tooltip title='Delete selected'>
-                          <Button
-                            danger
-                            type='text'
-                            icon={
-                              <span className='anticon'>
-                                <i className='ri-delete-bin-line' />
-                              </span>
-                            }
-                          >
-                            Delete
-                          </Button>
-                        </Tooltip>
-                      </Popconfirm>
-                    </Fragment>
-                  )}
-                </Align>
-              </Padding>
+                        <motion.span
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 100,
+                            delay: 0.1 * (index || 1),
+                            damping: 13
+                          }}
+                        >
+                          {menu}
+                        </motion.span>
+                      </Col>
+                    )
+                  }
+                )}
+              </Row>
             </Align>
           </motion.div>
         ) : null
       }}
     </ReactTableContext.Consumer>
-  )
+  ) : null
 }
 
 export default CellSelectionHeader

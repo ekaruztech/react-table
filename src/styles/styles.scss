@@ -10,26 +10,27 @@
   //color: var(--text-dark)
 }
 .ReactTable___table-container {
-  border-bottom: 1.3px solid var(--border);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  width: 100%;
 }
-.ReactTable___table-container.no-header-present {
-  padding-top: 40px;
+.ReactTable__table-no-header-present {
+  height: 40px;
+  border: 1.3px solid var(--border);
+  border-bottom: 0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   background: var(--background-primary);
 }
-.ReactTable___table-container.no-header-present.pt5 {
+.ReactTable___table-container.ReactTable___pt5 {
   padding-top: 5px;
 }
 .ReactTable___table-wrapper {
   max-width: 100%;
-  //overflow: auto scroll;
-  border-left: 1.3px solid var(--border);
-  border-right: 1.3px solid var(--border);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  min-height: 450px;
+  //border-bottom-left-radius: 10px;
+  //border-bottom-right-radius: 10px;
+  background-color: var(--background-primary);
   .ant-popover-inner {
     border-radius: 10px;
   }
@@ -48,259 +49,12 @@
   label {
     color: var(--accent);
   }
-  thead {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    background: var(--background-secondary);
-  }
-  .button-plus-icon {
-    font-size: 30px;
-    color: var(--text-color);
-  }
 }
-.ReactTable___table-header {
-  //position: sticky;
-}
+
 .ReactTable___table-fixed {
   //background-color: #eaedee;
   z-index: 180;
   //display: none;
-}
-.ReactTable___table-header-row {
-  height: 52px;
-  border-collapse: collapse;
-}
-.ReactTable___table-header-cell:not(.selectable-header-cell) {
-  padding: 0 10px;
-  border-left: 1.3px solid var(--table-header-border);
-  //border-right: 1px solid rgba(0, 0, 0, 0.15);
-}
-.ReactTable___table-header-cell {
-  position: relative;
-  user-select: none;
-  height: 52px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background-color: var(--background-secondary);
-}
-.ReactTable___table-header-cell.table-header-cell-fixed-left {
-  position: sticky;
-  left: 0;
-  z-index: 3;
-  background: var(--background-secondary);
-  &:nth-child(1) {
-    border-left: 1.3px solid var(--table-header-border);
-  }
-  &:nth-child(2) {
-    left: 60px;
-  }
-}
-.ReactTable___table-header-cell.table-header-cell-fixed-left.table-cell-fixed-left-shadow::before {
-  content: '';
-  height: 52px;
-  width: 100%;
-  position: absolute;
-  left: 100%;
-  top: 0;
-  box-shadow: inset 10px 0 8px -8px var(--table-cell-fixed-shadow);
-  transition: box-shadow 150ms ease-in;
-}
-
-.ReactTable___table-header-cell.table-header-cell-fixed-right {
-  position: sticky;
-  right: -1px;
-  z-index: 3;
-  border-right: 1.3px solid var(--table-header-border);
-  background: var(--background-secondary);
-}
-
-.ReactTable___table-header-cell.table-header-cell-fixed-right.table-cell-fixed-right-shadow {
-  border-left: 0;
-}
-.ReactTable___table-header-cell.table-header-cell-fixed-right.table-cell-fixed-right-shadow::before {
-  content: '';
-  height: 52px;
-  width: 100%;
-  position: absolute;
-  right: 100%;
-  top: 0;
-  box-shadow: inset -10px 0 8px -8px var(--table-cell-fixed-shadow);
-  transition: box-shadow 150ms ease-in;
-}
-
-.ReactTable___table-header-cell-container {
-  //display: flex;
-  //align-items: center;
-  //justify-content: space-between;
-}
-.ReactTable___table-container-header-arrow {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: 0.2s var(--transition);
-  &:hover {
-    opacity: 0.5;
-  }
-}
-.ReactTable___table-header-cell-title {
-  font-size: 14px;
-  font-family: var(--font);
-  font-weight: 500;
-  color: var(--text-color);
-}
-.ReactTable___table-body-row {
-  height: 52px;
-  transition: 0.25s var(--transition);
-
-  border-bottom: 1px solid var(--border);
-
-  border-collapse: collapse;
-  background-color: transparent;
-}
-
-.ReactTable___table-body-row:not(.ReactTable___table-body-row-search) {
-  //cursor: pointer;
-}
-.ReactTable___table-body-row-search {
-  .ReactTable___table-body-row-search-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0 8px;
-  }
-}
-.ReactTable___table-body-row-checked {
-  //background-color: var(--row-selected);
-  height: 52px;
-  transition: 0.25s var(--transition);
-  cursor: pointer;
-  border-bottom: 1px solid var(--border);
-  border-collapse: collapse;
-}
-.ReactTable___table-body-cell {
-  padding: 0 10px;
-  font-size: 12px;
-  color: var(--text-color);
-  //border-right: 1px solid var(--border);
-  overflow: visible;
-  position: relative;
-  height: 52px;
-  line-height: 52px;
-  border-bottom: 1px solid var(--border);
-  .ReactTable___table-body-cell-inner {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    &:first-child {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding: 0 10px;
-    }
-  }
-}
-
-.ReactTable___table-body-cell.table-body-cell-fixed-left {
-  background: var(--background-primary);
-  position: sticky;
-  left: 0;
-  z-index: 3;
-  backdrop-filter: blur(10px);
-  &:nth-child(1) {
-    border-left: 1.3px solid var(--table-header-border);
-  }
-  &:nth-child(2) {
-    left: 60px;
-  }
-}
-.ReactTable___table-body-cell.table-body-cell-fixed-left.table-cell-fixed-left-shadow::before {
-  content: '';
-  height: 52px;
-  width: 100%;
-  position: absolute;
-  left: 100%;
-  top: 0;
-  box-shadow: inset 10px 0 8px -8px var(--table-cell-fixed-shadow);
-  transition: box-shadow 150ms ease-in;
-}
-.ReactTable___table-body-cell.table-body-cell-fixed-right {
-  position: sticky;
-  right: -1px;
-  z-index: 3;
-  background: var(--background-primary);
-  //border-left: 1px solid var(--border);
-}
-.ReactTable___table-body-cell.table-body-cell-fixed-right.table-cell-fixed-right-shadow::before {
-  content: '';
-  height: 52px;
-  width: 100%;
-  position: absolute;
-  right: 100%;
-  top: 0;
-  box-shadow: inset -10px 0 8px -8px var(--table-cell-fixed-shadow);
-  transition: box-shadow 150ms ease-in;
-}
-.ReactTable___table-header-checkbox-container {
-  padding: 0 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.ReactTable___table-body-cell-checkbox-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.ReactTable___table-header-cell.selectable-header-cell {
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-left: 1.3px solid var(--table-header-border);
-  .ReactTable___table-selectable-header-cell-child-container {
-  }
-}
-.ReactTable___table-utility {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  .ReactTable___table-utility-icon {
-    &:hover {
-      opacity: 0.7;
-    }
-  }
-  .icon-rotate-90 {
-    transform: rotate(90deg);
-  }
-}
-.ReactTable___table-footer {
-  min-width: 100%;
-  //max-width: 10
-  //position: fixed;
-  //bottom: 0;
-  background: var(--background-primary);
-  padding: 16px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  .page-item.active .page-link {
-    background-color: var(--accent);
-    border-color: var(--accent);
-  }
-}
-
-.ReactTable___table-pagination-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-.ReactTable___table-header-cell-hover-actions-inactive {
-  visibility: hidden;
-  pointer-events: none;
-  opacity: 0;
-}
-.ReactTable___mh-5 {
-  margin: 0 5px 0 5px;
 }
 .ant-picker-suffix,
 .ant-picker-clear {
@@ -319,124 +73,14 @@
     border-bottom-right-radius: 5px !important;
   }
 }
-
-.ReactTable___table-container-header {
-  background-color: var(--background-primary);
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  min-height: 80px;
-  justify-content: space-between;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border: 1.3px solid var(--border);
-  //border-right: 1.3px solid var(--border);
-
-  .ReactTable___table-container-header-inner-left,
-  .ReactTable___table-container-header-inner-right {
-    display: flex;
-    align-items: center;
-    .ReactTable___table-filter-radio-sort {
-      margin-right: 20px;
-    }
-    .ReactTable___table-filter-btn-container {
-      margin: 0 20px 0 0;
-    }
-  }
-}
-.ReactTable___table-main-header {
-  background-color: var(--background-secondary);
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  min-height: 100px;
-  .ReactTable___table-main-header-text {
-    font-size: 25px;
-  }
+.ant-modal-content {
+  border-radius: 10px !important;
 }
 
-.ReactTable___flex-between {
-  display: flex;
-  align-items: center;
-  //justify-content: space-between;
-}
-.ReactTable___table-filter.header-cell-section-header {
-  width: 30%;
-  &:nth-child(2) {
-    margin: 0 10px;
-  }
-  p {
-    font-size: 15px;
-    font-weight: 500;
-  }
-}
-.ReactTable___table-filter.header-cell {
-  margin-bottom: 10px;
-}
-.ReactTable___table-filter.header-cell-section-rows {
-  width: 30%;
-  &:nth-child(2) {
-    margin: 0 10px;
-  }
-}
-.ReactTable___table-filter.header-cell-rows-eject {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 10px;
-  cursor: pointer;
-}
-.ReactTable___table-filter.header-cell-rows-add {
-  margin-top: 20px;
-}
-.ReactTable___data-sort-order-header {
-  margin: 10px 0;
-  padding: 0 10px;
-  p {
-    font-size: 14px;
-    font-family: var(--font);
-    font-weight: 500;
-    color: var(--accent);
-  }
+.ReactTable___scroll-wrapper {
+  overflow: auto hidden !important;
 }
 
-.ReactTable___table-header-cell-reorder {
-  width: 100%;
-  .ReactTable___table-header-cell-reorder-header {
-    width: 100%;
-    height: 30px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .ReactTable___table-header-cell-reorder-header-text {
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .ReactTable___table-header-cell-reorder-body {
-    width: 100%;
-    //max-height: 300px;
-    .ReactTable___table-header-cell-reorder-body-item {
-      height: 40px;
-      display: flex;
-      align-items: center;
-      cursor: move !important;
-      .ant-checkbox-wrapper {
-        cursor: move !important;
-      }
-    }
-  }
-  .ReactTable___table-header-cell-reorder-footer {
-    width: 100%;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid var(--border-color);
-    padding: 5px;
-  }
+.ReactTable___scroll-wrapper-unset {
+  overflow: unset !important;
 }

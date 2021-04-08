@@ -10,11 +10,10 @@ import {
   SelectedTableItems,
   // eslint-disable-next-line no-unused-vars
   TableColumnProps
-} from '../types'
-import { clamp, isFunction } from 'lodash'
+} from '../typings'
+import { clamp, isFunction, isString } from 'lodash'
 import invariant from 'invariant'
 import { ReactTableContext } from './lib/ReactTableContext'
-
 import Controls from './lib/Controls'
 import QuickFilter from './lib/QuickFilter'
 import Table, { CellMenu } from './lib/Table'
@@ -23,6 +22,14 @@ import '../styles/ant-custom.css'
 import 'remixicon/fonts/remixicon.css'
 import '../styles/override.scss'
 import '../styles/styles.scss'
+import Model from '../_utils/model'
+import {
+  getNonQuickFiltersOnlyColumns,
+  initializeColumnsWithReorderPresets
+} from '../_utils'
+
+// TODO: Create filter priority field. defaults to advanced filter.
+// TODO: If advanced filter is priority and show in quick filter that advanced filter was enabled and add button to open for clearing
 
 class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
   static Controls = Controls
@@ -38,6 +45,26 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
     this.minColumns = clamp(this.props.minColumns || 3, 3, 10)
     /* Clamps max column to (min, 6) */
     this.maxColumns = clamp(this.props.maxColumns || 3, this.minColumns, 10)
+
+    if (!this.props.name) {
+      invariant(false, 'Name property is required in react table')
+    }
+    if (!isString(this.props.name)) {
+      invariant(
+        false,
+        `Name property in react table expected a string, got ${typeof this.props
+          .name} instead.`
+      )
+    }
+
+    const model = Model.instantiate(this.props.name)
+
+    const presets = initializeColumnsWithReorderPresets(
+      model,
+      getNonQuickFiltersOnlyColumns(this.props.columns),
+      this.maxColumns,
+      this.minColumns
+    )
     this.state = {
       selectedTableItems: {
         itemList: [],
@@ -45,16 +72,13 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
         checkAll: false
       },
       columns: {
-        all: this.props.columns || [],
-        selected: this.props.columns?.slice?.(0, this.maxColumns) || [],
-        unselected:
-          this.props.columns?.length > this.maxColumns
-            ? this.props.columns?.slice?.(
-                this.maxColumns,
-                this.props.columns.length
-              )
-            : []
+        all: this.props.columns,
+        selected: presets.selected,
+        unselected: presets.unselected
       },
+      // Used to remember the initial columns in getDerivedStateFromProps after the values of the columns change on re-render
+      // This is important especially in the case of column type list where the list menu might be dynamic.
+      __DEFAULT_PROPS_COLUMNS_: this.props.columns,
       isControlsPresent: false
       // isTableOnly: false,
     }
@@ -91,6 +115,37 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       indeterminate: false,
       checkAll: e.target.checked
     })
+  }
+
+  static getDerivedStateFromProps(
+    props: ReactTableProps,
+    state: ReactTableState
+  ) {
+    // JSON.stringify is used in place of lodash.isEqual or Fast-equal.deepEqual, because (column) has non-serializable objects (functions)
+    // JSON.stringify removes functions from the object before stringifying it.
+    // Comparison will always return false if the order of props.columns changes
+    // Todo: see if _.isEqual or fe.deepEqual could be manipulated to overlook functions
+    if (
+      JSON.stringify(props.columns) !==
+      JSON.stringify(state.__DEFAULT_PROPS_COLUMNS_)
+    ) {
+      const model = Model.instantiate(props.name)
+      const presets = initializeColumnsWithReorderPresets(
+        model,
+        getNonQuickFiltersOnlyColumns(props.columns),
+        props.maxColumns,
+        props.minColumns
+      )
+      return {
+        __DEFAULT_PROPS_COLUMNS_: props.columns,
+        columns: {
+          all: props.columns,
+          selected: presets.selected,
+          unselected: presets.unselected
+        }
+      }
+    }
+    return null
   }
 
   componentDidMount(): void {
@@ -175,9 +230,19 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       (value: ColumnProps) => value?.key
     )
 
+    // Instantiates Model
+    const model = Model.instantiate(this.props.name)
+
+    const nonQuickFilterOnlyColumns = getNonQuickFiltersOnlyColumns(
+      this.state.columns.all
+    )
+
     const providerValue = {
       columnKeys: columnKeys,
-      columns: this.state.columns,
+      columns: Object.assign({}, this.state.columns, {
+        all: nonQuickFilterOnlyColumns
+      }),
+      withQuickFilterOnlyColumns: this.state.columns,
       minColumns: this.minColumns,
       maxColumns: this.maxColumns,
       dataSource,
@@ -186,23 +251,25 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
       onSelectedItemChange: this.onSelectedItemChange,
       selectedTableItems: this.state.selectedTableItems,
       setSelectedTableItems: this.setSelectedTableItems,
-      defaultColumns: this.props.columns
+      defaultColumns: this.props.columns,
+      model,
+      isControlsPresent: this.state.isControlsPresent,
+      onRefresh: this.props.onRefresh
     }
 
     const childrenLength = React.Children.count(children)
     return (
       <div
-        style={
-          !this.state.isControlsPresent
-            ? { borderTop: '1.3px solid var(--border)' }
-            : {}
-        }
         className={`ReactTable___table-container${
-          this.state.isControlsPresent
-            ? ''
-            : ` no-header-present${childrenLength > 1 ? ' pt5' : ''}`
+          !this.state.isControlsPresent && childrenLength > 1
+            ? ' ReactTable___pt5'
+            : ''
         }`}
+        id='ReactTable___table-container'
       >
+        {!this.state.isControlsPresent && (
+          <div className='ReactTable__table-no-header-present' />
+        )}
         <ReactTableContext.Provider value={providerValue}>
           {children}
         </ReactTableContext.Provider>
@@ -213,5 +280,5 @@ class ReactTable extends React.Component<ReactTableProps, ReactTableState> {
 
 export { QuickFilterProps, QuickFilterApplyFn } from './lib/QuickFilter'
 export { CellMenuProps } from './lib/Table'
-export { ColumnProps } from '../types'
+export { ColumnProps } from '../typings'
 export { ReactTable as Table }

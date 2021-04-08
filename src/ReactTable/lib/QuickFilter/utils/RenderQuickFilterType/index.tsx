@@ -1,9 +1,9 @@
-import { AutoComplete, DatePicker, InputNumber, Select, Input } from 'antd'
-// eslint-disable-next-line no-unused-vars
-import moment, { Moment } from 'moment'
-import { has, isDate, isEmpty, isNumber } from 'lodash'
+import { AutoComplete, InputNumber, Select, Input } from 'antd'
+import { has, isNumber, first, last } from 'lodash'
 import React from 'react'
-import TagRender from '../../../Controls/utils/DataControls/Filter/utils/TagRender'
+import TagRender from '../../../Controls/utils/DataManagement/Filter/utils/TagRender'
+import { isDate, DatePicker } from '../../../../../_utils'
+import { add } from 'date-fns'
 
 interface IRenderFilterType {
   type: string
@@ -37,68 +37,61 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           onChange={(num) => handleFilterValueChange(num)}
         />
       )
-    case 'date':
-      return toRangePicker ? (
-        <DatePicker.RangePicker
+    case 'currency':
+      // const currencyCode = property?.currency;
+      // TODO: Add currency code / sign to the currency formatter during localisation
+      return (
+        <InputNumber
+          defaultValue={0}
+          value={isNumber(value) ? value : 0}
           style={{ width: '100%' }}
-          // @ts-ignore
-          value={
-            Array.isArray(value)
-              ? [
-                  moment(isDate(value[0]) ? value[0] : new Date()),
-                  moment(isDate(value[1]) ? value[1] : new Date())
-                ]
-              : [moment(), moment().add(1, 'week')]
+          onChange={(num) => handleFilterValueChange(num)}
+          formatter={(value: number | string | undefined) =>
+            `${value || ''}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
           }
-          onChange={(dates) =>
-            handleFilterValueChange(
-              // @ts-ignore
-              (dates || []).map((value: Moment) => value.toDate())
-            )
-          }
-        />
-      ) : (
-        <DatePicker
-          style={{ width: '100%' }}
-          value={moment(isDate(value) ? value : new Date())}
-          onChange={(date) =>
-            handleFilterValueChange(moment(date || new Date()).toDate())
+          parser={(value: string | undefined) =>
+            value ? value.replace(/₦\s?|(,*)/g, '') : ''
           }
         />
       )
+    case 'date':
     case 'datetime':
       return toRangePicker ? (
         <DatePicker.RangePicker
-          showTime
+          showTime={type === 'datetime'}
           style={{ width: '100%' }}
           // @ts-ignore
           value={
             Array.isArray(value)
               ? [
-                  moment(isDate(value[0]) ? value[0] : new Date()),
-                  moment(isDate(value[1]) ? value[1] : new Date())
+                  first(value) && isDate(new Date(first(value)))
+                    ? new Date(first(value))
+                    : undefined,
+                  last(value) && isDate(new Date(last(value)))
+                    ? new Date(last(value))
+                    : undefined
                 ]
-              : [moment(), moment().add(1, 'week')]
+              : [new Date(), add(new Date(), { weeks: 1 })]
           }
           onChange={(dates) =>
             handleFilterValueChange(
               // @ts-ignore
-              (dates || []).map((value: Moment) => value.toDate())
+              (dates || []).map((value: any) => new Date(value || Date.now()))
             )
           }
         />
       ) : (
         <DatePicker
-          showTime
+          showTime={type === 'datetime'}
           style={{ width: '100%' }}
-          value={moment(isDate(value) ? value : new Date())}
+          value={value && isDate(new Date(value)) ? new Date(value) : undefined}
           onChange={(date) =>
-            handleFilterValueChange(moment(date || new Date()).toDate())
+            handleFilterValueChange(new Date(date || Date.now()))
           }
         />
       )
     case 'list':
-      if (has(property, 'listMenu') && !isEmpty(property?.listMenu)) {
+      if (has(property, 'listMenu') && Array.isArray(property?.listMenu)) {
         return (
           <Select
             mode={property?.multiple ? 'multiple' : undefined}
@@ -110,14 +103,27 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
             }
             value={value || undefined}
             onChange={(value) => handleFilterValueChange(value)}
-            filterOption
             options={property?.listMenu || []}
             showSearch
             showArrow
             tagRender={TagRender}
+            optionFilterProp='label'
+            filterOption={(input: any, option: any) =>
+              option?.label?.toLowerCase()?.indexOf?.(input?.toLowerCase?.()) >=
+              0
+            }
+            filterSort={(optionA: any, optionB: any) =>
+              optionA?.label
+                ?.toLowerCase?.()
+                ?.localeCompare?.(optionB?.label?.toLowerCase?.())
+            }
           />
         )
-      } else return null
+      } else {
+        throw new Error(
+          "Column of type 'List' expects an 'Array' listMenu props"
+        )
+      }
     default:
       if (property.autoComplete) {
         return (
@@ -125,6 +131,7 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
             options={autoCompleteOptions}
             onSelect={(value) => handleFilterValueChange(value)}
             onSearch={handleAutoComplete}
+            defaultValue={value}
             style={{ width: '100%' }}
             placeholder={
               property?.title

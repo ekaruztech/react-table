@@ -1,22 +1,36 @@
-import { Button, Dropdown, Menu, Tooltip } from 'antd'
+import { Button, Dropdown, Menu, Tooltip, Modal } from 'antd'
 import { motion } from 'framer-motion'
 import React from 'react'
 
-import './_styles.scss'
-import { isFunction } from 'lodash'
+import './styles/index.scss'
+import { isFunction, isBoolean, first } from 'lodash'
 
-interface ICellMenu {
-  showDrawer?:
-    | ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
-    | undefined
+const { confirm } = Modal
+interface CellMenuProps {
+  showDrawer?: () => void
   source?: any
-  onDelete: (source: any) => void
-  onDuplicate: (source: any) => void
-  onEdit: (source: any) => void
+  onDelete?: (source: any) => void
+  onDuplicate?: (source: any) => void
+  onEdit?: (source: any) => void
+  onExpandedView?: (source: any) => void
   children: ({ source }: { source: any }) => React.ReactElement
+  enabledMenu?:
+    | [boolean, boolean, boolean, boolean]
+    | [boolean, boolean, boolean]
+    | [boolean, boolean]
+    | [boolean]
+    | boolean
+    | ((
+        source: any
+      ) =>
+        | [boolean, boolean, boolean, boolean]
+        | [boolean, boolean, boolean]
+        | [boolean, boolean]
+        | [boolean]
+        | boolean)
 }
 
-class CellMenu extends React.Component<ICellMenu> {
+class CellMenu extends React.Component<CellMenuProps> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE =
     'REACT_-_TABLE_-_CELL_-_MENU'
 
@@ -36,8 +50,97 @@ class CellMenu extends React.Component<ICellMenu> {
       children,
       onDelete,
       onDuplicate,
-      onEdit
+      onEdit,
+      onExpandedView,
+      enabledMenu = true
     } = this.props
+
+    const showConfirm = (): void => {
+      confirm({
+        title: 'Do you want to delete item?',
+        content: 'You might not be able to undo this action!',
+        icon: (
+          <span className={'anticon'}>
+            <i className='ri-error-warning-line' style={{ fontSize: 20 }} />
+          </span>
+        ),
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk() {
+          if (onDelete && isFunction(onDelete)) {
+            onDelete(source?.key || null)
+          }
+        }
+      })
+    }
+
+    const showExpandedView = (enabler: typeof enabledMenu) => {
+      if (isFunction(enabler)) {
+        const enablerRn = enabler(source)
+        return (
+          (Array.isArray(enablerRn) &&
+            enablerRn.length > 0 &&
+            first(enablerRn)) ||
+          (isBoolean(enabler) && enabler)
+        )
+      }
+
+      if (Array.isArray(enabler)) {
+        return enabler.length > 0 && first(enabler)
+      }
+
+      return isBoolean(enabler) && enabler
+    }
+
+    const showEdit = (enabler: typeof enabledMenu) => {
+      if (isFunction(enabler)) {
+        const enablerRn = enabler(source)
+        return (
+          (Array.isArray(enablerRn) && enablerRn.length > 1 && enablerRn[1]) ||
+          (isBoolean(enabler) && enabler)
+        )
+      }
+
+      if (Array.isArray(enabler)) {
+        return enabler.length > 1 && enabler[1]
+      }
+
+      return isBoolean(enabler) && enabler
+    }
+
+    const showDuplicate = (enabler: typeof enabledMenu) => {
+      if (isFunction(enabler)) {
+        const enablerRn = enabler(source)
+        return (
+          (Array.isArray(enablerRn) && enablerRn.length > 2 && enablerRn[2]) ||
+          (isBoolean(enabler) && enabler)
+        )
+      }
+
+      if (Array.isArray(enabler)) {
+        return enabler.length > 2 && enabler[2]
+      }
+
+      return isBoolean(enabler) && enabler
+    }
+
+    const showDelete = (enabler: typeof enabledMenu) => {
+      if (isFunction(enabler)) {
+        const enablerRn = enabler(source)
+        return (
+          (Array.isArray(enablerRn) && enablerRn.length > 3 && enablerRn[3]) ||
+          (isBoolean(enabler) && enabler)
+        )
+      }
+
+      if (Array.isArray(enabler)) {
+        return enabler.length > 3 && enabler[3]
+      }
+
+      return isBoolean(enabler) && enabler
+    }
+
     const menu = (
       <Menu
         style={{
@@ -45,7 +148,7 @@ class CellMenu extends React.Component<ICellMenu> {
           background: 'var(--background-primary)'
         }}
       >
-        <Menu className='CellMenu__menu'>
+        <Menu className='ReactTable__CellMenu__menu'>
           <Menu.Item key='expand'>
             <motion.div
               initial={{
@@ -53,14 +156,29 @@ class CellMenu extends React.Component<ICellMenu> {
                 cursor: 'pointer',
                 opacity: 0.5
               }}
-              whileHover={{ scale: 1.25, opacity: 1 }}
-              whileTap={{ scale: 0.85 }}
-              onClick={showDrawer}
+              whileHover={
+                showExpandedView(enabledMenu)
+                  ? {
+                      scale: 1.25,
+                      opacity: 1
+                    }
+                  : {}
+              }
+              whileTap={showExpandedView(enabledMenu) ? { scale: 0.85 } : {}}
             >
               <Tooltip title='Quick view'>
                 <Button
-                  shape={'circle'}
-                  type={'text'}
+                  shape='circle'
+                  type='text'
+                  disabled={!showExpandedView(enabledMenu)}
+                  onClick={() => {
+                    if (showDrawer && isFunction(showDrawer)) {
+                      showDrawer()
+                    }
+                    if (onExpandedView && isFunction(onExpandedView)) {
+                      onExpandedView(source)
+                    }
+                  }}
                   icon={
                     <span
                       className='anticon'
@@ -76,23 +194,29 @@ class CellMenu extends React.Component<ICellMenu> {
               </Tooltip>
             </motion.div>
           </Menu.Item>
-          <Menu.Item key='edit'>
+          <Menu.Item key='edit' disabled={!showEdit(enabledMenu)}>
             <motion.div
               initial={{
-                color: 'var(--text-color)',
-                cursor: 'pointer',
                 opacity: 0.5
               }}
-              whileHover={{ scale: 1.25, opacity: 1 }}
-              whileTap={{ scale: 0.85 }}
-              onClick={() =>
-                onEdit && isFunction(onEdit) ? onEdit(source) : null
+              whileHover={
+                showEdit(enabledMenu)
+                  ? {
+                      scale: 1.25,
+                      opacity: 1
+                    }
+                  : {}
               }
+              whileTap={showEdit(enabledMenu) ? { scale: 0.85 } : {}}
             >
               <Tooltip title='Edit'>
                 <Button
-                  shape={'circle'}
-                  type={'text'}
+                  shape='circle'
+                  type='text'
+                  disabled={!showEdit(enabledMenu)}
+                  onClick={() =>
+                    onEdit && isFunction(onEdit) ? onEdit(source) : null
+                  }
                   icon={
                     <span className='anticon'>
                       <i
@@ -105,25 +229,33 @@ class CellMenu extends React.Component<ICellMenu> {
               </Tooltip>
             </motion.div>
           </Menu.Item>
-          <Menu.Item key='duplicate'>
+          <Menu.Item key='duplicate' disabled={!showDuplicate(enabledMenu)}>
             <motion.div
               initial={{
                 color: 'var(--text-color)',
                 cursor: 'pointer',
                 opacity: 0.5
               }}
-              whileHover={{ scale: 1.25, opacity: 1 }}
-              whileTap={{ scale: 0.85 }}
-              onClick={() =>
-                onDuplicate && isFunction(onDuplicate)
-                  ? onDuplicate(source)
-                  : null
+              whileHover={
+                showDuplicate(enabledMenu)
+                  ? {
+                      scale: 1.25,
+                      opacity: 1
+                    }
+                  : {}
               }
+              whileTap={showDuplicate(enabledMenu) ? { scale: 0.85 } : {}}
             >
               <Tooltip title='Duplicate'>
                 <Button
-                  shape={'circle'}
-                  type={'text'}
+                  disabled={!showDuplicate(enabledMenu)}
+                  onClick={() =>
+                    onDuplicate && isFunction(onDuplicate)
+                      ? onDuplicate(source)
+                      : null
+                  }
+                  shape='circle'
+                  type='text'
                   icon={
                     <span className='anticon'>
                       <i
@@ -136,21 +268,25 @@ class CellMenu extends React.Component<ICellMenu> {
               </Tooltip>
             </motion.div>
           </Menu.Item>
-          <Menu.Item key='delete'>
+          <Menu.Item key='delete' disabled={!showDelete(enabledMenu)}>
             <motion.div
-              initial={{ color: 'var(--text-color)', cursor: 'pointer' }}
-              whileHover={{ scale: 1.25 }}
-              whileTap={{ scale: 0.85 }}
-              onClick={() =>
-                onDelete && isFunction(onDelete)
-                  ? onDelete(source?.key || null)
-                  : null
+              initial={{ cursor: 'pointer' }}
+              whileHover={
+                showDelete(enabledMenu)
+                  ? {
+                      scale: 1.25,
+                      opacity: 1
+                    }
+                  : {}
               }
+              whileTap={showDelete(enabledMenu) ? { scale: 0.85 } : {}}
             >
               <Tooltip title='Delete'>
                 <Button
-                  shape={'circle'}
-                  type={'text'}
+                  shape='circle'
+                  type='text'
+                  onClick={() => showConfirm()}
+                  disabled={!showDelete(enabledMenu)}
                   icon={
                     <span className='anticon'>
                       <i
@@ -158,7 +294,9 @@ class CellMenu extends React.Component<ICellMenu> {
                         style={{
                           fontSize: 16,
                           cursor: 'pointer',
-                          color: 'red'
+                          ...(showDelete(enabledMenu)
+                            ? { color: '#ef3b4f' }
+                            : {})
                         }}
                       />
                     </span>
@@ -193,4 +331,4 @@ class CellMenu extends React.Component<ICellMenu> {
   }
 }
 
-export { CellMenu as default, ICellMenu as CellMenuProps }
+export { CellMenu as default, CellMenuProps }

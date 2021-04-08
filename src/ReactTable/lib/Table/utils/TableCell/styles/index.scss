@@ -1,0 +1,22 @@
+.table-cell-hover-actions-icon {
+  &:hover:not(.table-cell-hover-actions-icon-delete) {
+    color: var(--accent);
+    transition: color 200ms ease-in-out;
+    transition-delay: 150ms;
+  }
+}
+.table-cell-hover-actions-icon-delete:hover {
+  transition: color 200ms ease-in-out;
+  transition-delay: 150ms;
+}
+
+.ReactTable___table-utility {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  .ReactTable___table-utility-icon {
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+}

@@ -1,10 +1,15 @@
-import React from 'react'
+// import React from 'react'
 
-import { Table as ReactTable } from '@voomsway/react-table'
+import {
+  Table as ReactTable,
+  Model,
+  Align,
+  Padding,
+  SupportedDateLocales
+} from '@voomsway/react-table'
 import '@voomsway/react-table/dist/index.css'
-import moment from 'moment'
 import { useState, useEffect } from 'react'
-import { Menu } from 'antd'
+import { Menu, Tooltip, Button } from 'antd'
 
 export const evalStatusColor = (status: string) => {
   switch (status) {
@@ -16,7 +21,20 @@ export const evalStatusColor = (status: string) => {
     case 'gymnastics':
       return 'green'
     case 'movies':
+    case 'comedy':
       return 'volcano'
+    case 'writing':
+      return 'blue'
+    case 'photography':
+      return 'lime'
+    case 'arguing':
+      return 'red'
+    case 'landscaping':
+      return 'volcano'
+    case 'teaching':
+      return 'orange'
+    case 'poetry':
+      return 'yellow'
     default:
       return 'default'
   }
@@ -25,19 +43,20 @@ const db = {
   dataSource: [
     {
       key: '1',
-      name: 'Simeon Akpanudo',
-      cost: 3200000000,
+      name:
+        'Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo',
+      cost: 9200000 * 3e5,
       address: '10 Downing Street',
       hobby: 'coding',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9iopp785der0011',
       id2: 'World',
-      dob: moment([
-        Math.floor(Math.random() * 50) + 1955,
+      dooob: new Date(
+        Math.floor(Math.random() * 10) + 1950,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -49,14 +68,14 @@ const db = {
       address: '30 Downing Avenue',
       hobby: 'hunting',
 
-      food_type: 'Meaty',
+      food_choice: 'Meaty',
       id: '#990uiopcfe11',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -67,14 +86,14 @@ const db = {
       cost: 22001,
       address: '40 Floor Street',
       hobby: 'baking',
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99vvgty88031',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -85,14 +104,14 @@ const db = {
       cost: 30,
       address: '4 14th Avenue',
       hobby: 'Biking',
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9x70tyu31',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -103,14 +122,14 @@ const db = {
       cost: 27,
       address: '45 Boston Avenue',
       hobby: 'Gymnastics',
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99bg831',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -120,15 +139,15 @@ const db = {
       name: 'Masi klones',
       cost: 42,
       address: '1 Main Street',
-      hobby: 'teaching',
-      food_type: 'Vegan',
+      hobby: 'Writing',
+      food_choice: 'Vegan',
       id: '#90bgg431',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -136,18 +155,18 @@ const db = {
     {
       key: '8',
       name: 'Joseph Xi Lee',
-      cost: 6,
+      cost: 0,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Teaching',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#999nhh31',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -157,16 +176,16 @@ const db = {
       name: 'Mikel Leeland',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Photography',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99@6770111',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -176,16 +195,16 @@ const db = {
       name: 'Hanna Klose',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Landscaping',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '12',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -195,16 +214,16 @@ const db = {
       name: 'Hanna Um',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Teaching',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#4599r931',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -214,16 +233,16 @@ const db = {
       name: 'Josh Butland',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Acting',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9s99vbb31',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -233,16 +252,16 @@ const db = {
       name: 'Gideon Morning',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Poetry',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9vb993f1',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -252,16 +271,16 @@ const db = {
       name: 'James Levi',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Teaching',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99f931',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -271,16 +290,16 @@ const db = {
       name: 'Priah Singh',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Movies',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9d99g31',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -290,16 +309,16 @@ const db = {
       name: 'Johanna Lee',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Jogging',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99d931',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -309,16 +328,16 @@ const db = {
       name: 'Emerald Lalong',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Comedy',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#99h931',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -328,16 +347,17 @@ const db = {
       name: 'Lulu Oyetola',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Arguing',
 
-      food_type: 'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
+      food_choice:
+        'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
       id: '#99v931',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -347,16 +367,16 @@ const db = {
       name: 'Matthew Lee',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Writing',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9993100',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
+      ),
       id5: 'World',
       id6: 'Hello',
       id10: 'Finally'
@@ -366,22 +386,22 @@ const db = {
       name: 'Gretchen Spears',
       cost: 6,
       address: '40 Houstin Street',
-      hobby: 'Running',
+      hobby: 'Reading',
 
-      food_type: 'Vegan',
+      food_choice: 'Vegan',
       id: '#9vbb99u31',
       id2: 'World',
-      dob: moment([
+      dooob: new Date(
         Math.floor(Math.random() * 50) + 1955,
         Math.floor(Math.random() * 11),
         Math.floor(Math.random() + 28)
-      ]),
-      id5: 'World',
+      ),
+      id5: '',
       id6: 'Hello',
       id10: 'Finally'
     }
   ],
-  columns: [
+  columns: (menu: { label: string; value: string }[] | Array<{}>) => [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -389,31 +409,75 @@ const db = {
       type: 'action',
       actionPresentationType: 'default',
       actionCallback: (source: any) => console.log('action clicked id', source),
-      actionTitle: 'Print ID'
+      actionTitle: 'Print ID',
+      noQuickFilter: true,
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
       type: 'text',
-      autoComplete: true
+      autoComplete: true,
+      textFormat: {
+        fontWeight: 400,
+        fontStyle: 'normal',
+        // textAlign: 'right',
+        fontStretch: 'expanded',
+        // textDecorationLine: 'overline',
+        // textDecorationStyle: 'wavy',
+        // wordSpacing: 30,
+        textOverflow: 'clip',
+        textTransform: 'uppercase'
+      },
+      noQuickFilter: true,
+    },
+    {
+      title: 'Surname',
+      dataIndex: 'surname',
+      key: 'surname',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Leverage',
+      dataIndex: 'leverage',
+      key: 'leverage',
+      type: 'text',
+      quickFilterOnly: true
+    },
+    {
+      title: 'Bond',
+      dataIndex: 'bond',
+      key: 'bond',
+      type: 'text',
+      quickFilterOnly: true
     },
     {
       title: 'DOB',
-      dataIndex: 'dob',
-      key: 'dob',
+      dataIndex: 'dooob',
+      key: 'dooob',
       type: 'datetime',
       presentationType: 'date',
       presentationColor: 'processing',
-      dateFormat: 'lll'
+      columnSpan: 1.5,
+      dateFormat: {
+        locale: SupportedDateLocales.DE
+      },
+      noQuickFilter: true,
     },
     {
       title: 'Cost',
       dataIndex: 'cost',
       key: 'cost',
       type: 'currency',
-      currency: 'USD',
-      presentationColor: 'gold'
+      presentationColor: 'volcano',
+      columnSpan: 1,
+      noQuickFilter: true,
+      currencyFormat: {
+        locale: 'jp-JP',
+        notation: 'compact',
+        currency: 'jpy'
+      },
     },
     {
       title: 'Hobby',
@@ -423,19 +487,15 @@ const db = {
       presentationType: 'tag',
       presentationColor: (value: string) => evalStatusColor(value),
       multiple: true,
-      listMenu: [
-        { label: 'Swimming', value: 'swimming' },
-        { label: 'Skipping', value: 'skipping' },
-        { label: 'Skiing', value: 'skiing' },
-        { label: 'Gaming', value: 'gaming' },
-        { label: 'Movies', value: 'movies' }
-      ]
+      listMenu: menu,
+      noQuickFilter: true,
     },
     {
-      title: 'Food type',
-      dataIndex: 'food_type',
-      key: 'food_type',
-      type: 'boolean'
+      title: 'Food choice',
+      dataIndex: 'food_choice',
+      key: 'food_choice',
+      type: 'boolean',
+      noQuickFilter: true,
     },
 
     // //
@@ -447,29 +507,32 @@ const db = {
       actionPresentationType: 'primary',
       actionCallback: (source: any) =>
         console.log('action clicked id2', source),
-      actionTitle: 'Print ID-2'
+      actionTitle: 'Print ID-2',
+      noQuickFilter: true,
     },
     {
       title: 'ID-5',
       dataIndex: 'id',
       key: 'id5',
       type: 'text',
-      bold: true,
-      presentationColor: 'volcano'
+      presentationColor: 'volcano',
+      noQuickFilter: true,
     },
     {
       title: 'ID-6',
       dataIndex: 'id',
       key: 'id6',
       type: 'text',
-      presentationColor: 'lime'
+      presentationColor: 'lime',
+      noQuickFilter: true,
     },
     {
       title: 'ID-10',
       dataIndex: 'id',
       key: 'id10',
       type: 'text',
-      presentationColor: 'geekblue'
+      presentationColor: 'geekblue',
+      noQuickFilter: true,
     }
   ],
   maxColumns: 10,
@@ -479,18 +542,36 @@ const db = {
 const App = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoadingContent, setIsLoadingContent] = useState(true)
+  const [menu, setMenu] = useState<
+    { label: string; value: string }[] | Array<{}>
+  >([])
+  // const [show, setShow] = useState(true)
+  const model = Model.instantiate('TestTable')
 
   useEffect(() => {
     setIsLoadingContent(true)
     const a = setTimeout(() => {
       setDataSource((prev) => ({
         ...prev,
-        data: db.dataSource.slice(0, 15)
+        data: db.dataSource.slice(0, model?.renderOrder)
       }))
       setIsLoadingContent(false)
-    }, 5000)
+    }, 2000)
 
-    return () => clearTimeout(a)
+    const b = setTimeout(() => {
+      setMenu([
+        { label: 'Swimming', value: 'swimming' },
+        { label: 'Skipping', value: 'skipping' },
+        { label: 'Skiing', value: 'skiing' },
+        { label: 'Gaming', value: 'gaming' },
+        { label: 'Movies', value: 'movies' }
+      ])
+    }, 2000)
+
+    return () => {
+      clearTimeout(a)
+      clearTimeout(b)
+    }
   }, [])
 
   const [dataSource, setDataSource] = useState<{
@@ -498,11 +579,13 @@ const App = () => {
     range: { from: number; to: number }
   }>({ data: [], range: { from: 0, to: 15 } })
 
-  const [pageRenderOrder, setPageRenderOrder] = useState(15)
+  const [pageRenderOrder, setPageRenderOrder] = useState(
+    model?.renderOrder || 15
+  )
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [pagination, setPagination] = useState({
     all: db.dataSource.length,
-    currentPage: 1
+    currentPage: model?.pagination?.page || 1
   })
   // console.log(() setPagination, pagination)
 
@@ -533,7 +616,7 @@ const App = () => {
       onClick: (value: any) => console.log(value),
       icon: (
         <span className='anticon'>
-          <i className='ri-focus-line'></i>
+          <i className='ri-focus-line' />
         </span>
       )
     },
@@ -542,84 +625,202 @@ const App = () => {
       onClick: (value: any) => console.log(value),
       icon: (
         <span className='anticon'>
-          <i className='ri-switch-line'></i>
+          <i className='ri-switch-line' />
         </span>
       )
     }
   ]
-  // TODO: add a confirmation to the select delete.
+  const onApply = (
+    value: {
+      property: string
+      value: string[] | number | number[] | string
+    }[]
+  ): void => {
+    console.log(
+      '%c ' + model?.hasAppliedQuickFilter,
+      'font-size: 25px; color: orange;',
+      value
+    )
+  }
   // TODO: add a cancel button to close the cell selection.
   // TODO: put borderBottom in quick filter and in controls instead of borderTop in table-head.
-  console.log(pageRenderOrder, onRenderOrderChange, selectMenu)
+  console.log({
+    pageRenderOrder,
+    onRenderOrderChange,
+    selectMenu,
+    dataSource,
+    onApply
+  })
   return (
-    <div style={{ padding: 20, background: '#f7f8fa' }}>
-      <ReactTable
-        name={'TestTable'}
-        columns={db.columns}
-        dataSource={dataSource.data}
-        maxColumns={db.maxColumns}
-        minColumns={db.minColumns}
-      >
-        <ReactTable.Controls
-          renderOrder={pageRenderOrder}
-          onRenderOrderChange={onRenderOrderChange}
-          onRefresh={() => null}
-        />
-        <ReactTable.QuickFilter
-          onApply={(value: any) => console.log(value)}
-          onClear={() => console.log('cleared')}
-        />
+    <Align
+      style={{
+        padding: 20,
+        background: '#f7f8fa',
+        overflow: 'hidden',
+        width: '100%'
+      }}
+      type={'column'}
+    >
+      <Padding vertical={20} style={{ width: '100%' }}>
+        <Align style={{ width: '100%' }} alignCenter justifyAround>
+          <Button
+            onClick={() => {
+              model?.updateField('pagination', { page: 2 }, { override: true })
+            }}
+          >
+            Update Pagination
+          </Button>
+          <Button
+            onClick={() => {
+              model?.resetField?.('quickFilter')
+            }}
+          >
+            Reset quick filter
+          </Button>
+          <Button
+            onClick={() => {
+              model?.resetFields?.()
+            }}
+          >
+            Reset all
+          </Button>
+          <Button
+            onClick={() => {
+              model?.resetFields?.(['pagination', 'quickFilter'])
+            }}
+          >
+            Reset pagination and quickFilter
+          </Button>
+        </Align>
+      </Padding>
+      <div style={{ width: `100%` }}>
+        <ReactTable
+          name={'TestTable'}
+          columns={db.columns(menu)}
+          dataSource={dataSource.data}
+          maxColumns={db.maxColumns}
+          minColumns={db.minColumns}
+          onRefresh={() => console.log('refreshing')}
+        >
+          <ReactTable.Controls
+            onRenderOrderChange={onRenderOrderChange}
+            enableExport
+            onExport={(key) => console.log(key)}
+            onSortApply={(sort: any) => console.log(sort)}
+            onSortClear={() => console.log('sort cleared')}
+            onFilterApply={(filter: any) => console.log(filter)}
+            onFilterClear={() => console.log('sort cleared')}
+            enableDataManagement={true}
+          />
+          <ReactTable.QuickFilter
+            onApply={onApply}
+            onClear={() => console.log('cleared')}
+            onFieldsRemove={(o, l) => {
+              console.log(o)
+              console.table(l)
+            }}
+            onFieldsChange={(d) => {
+              console.log(d)
+            }}
+          />
 
-        <ReactTable.Body
-          pagination={pagination}
-          onPaginate={onPaginate}
-          loader={'skeleton'}
-          loading={isLoadingContent}
-          onCellSelect={(selectCount: number) => ({
-            onDelete: (source: any[]) => console.log(source, selectCount),
-            onPin: (source: any[]) => console.log(source, selectCount)
-          })}
-          expandedView={(source: any) => {
-            return (
-              <div>
-                <span>Hello {source?.name}</span>
-              </div>
-            )
-          }}
-          cellMenu={
-            <ReactTable.CellMenu
-              onDelete={() => null}
-              onDuplicate={() => null}
-              onEdit={() => null}
-            >
-              {({ source }: { source: any }) => {
-                return (
-                  <Menu
-                    style={{
-                      border: 0,
-                      background: 'var(--background-primary)'
-                    }}
-                  >
-                    <Menu.Divider />
-                    {selectMenu.map(
-                      ({ onClick, icon, title }, index: number) => (
-                        <Menu.Item
-                          onClick={() => onClick(source)}
-                          icon={icon}
-                          key={title + index}
-                        >
-                          {title}
-                        </Menu.Item>
-                      )
-                    )}
-                  </Menu>
+          <ReactTable.Body
+            pagination={pagination}
+            onPaginate={onPaginate}
+            loader={'skeleton'}
+            loading={isLoadingContent}
+            disableCell={(source: any) => source.hobby === 'Teaching'}
+            expandedView={(source: any) => {
+              return (
+                <div>
+                  <span>Hello {source?.name}</span>
+                </div>
+              )
+            }}
+            expandedViewWidth={'80%'}
+            expandedViewPlacement={'left'}
+            expandedViewTitle={'My View'}
+            onExpandedViewClose={() =>
+              console.log('%cClosed', 'font-size: 25px; color: crimson')
+            }
+            onExpandedViewOpen={() =>
+              console.log('%cOpened', 'font-size: 25px; color: teal')
+            }
+            expandedViewFooter={[
+              <Button key={'Hello-world'}>Hello World</Button>
+            ]}
+            hoverActions={{
+              onExpandedView: (source: any) => alert(source?.name ?? 'No name'),
+              onEdit: () => console.log('Hover Actions On Edit'),
+              onDelete: () =>
+                console.log(
+                  '%cHover Actions On Delete',
+                  'font-size: 20px; color: goldenrod'
                 )
-              }}
-            </ReactTable.CellMenu>
-          }
-        />
-      </ReactTable>
-    </div>
+            }}
+            enableHoverActions={[true, true, true]}
+            cellSelectionMenu={Array(4).fill(
+              // <Padding horizontal={10} style={{ height: '100%' }}>
+              //   <div
+              //     style={{
+              //       height: '100%',
+              //       borderLeft: '1px solid var(--border-color-split)'
+              //     }}
+              //   />
+              // </Padding>
+              <Tooltip title='Pin selected'>
+                <Button
+                  type='text'
+                  onClick={() => null}
+                  icon={
+                    <span className='anticon'>
+                      <i className='ri-pushpin-line' />
+                    </span>
+                  }
+                >
+                  Pin
+                </Button>
+              </Tooltip>
+            )}
+            cellMenu={
+              <ReactTable.CellMenu
+                onDelete={() => null}
+                onDuplicate={() => null}
+                onEdit={() => null}
+                onExpandedView={(source: any) =>
+                  alert(source?.name ?? 'No name')
+                }
+                enabledMenu={[true, false, true, true]}
+              >
+                {({ source }: { source: any }) => {
+                  return (
+                    <Menu
+                      style={{
+                        border: 0,
+                        background: 'var(--background-primary)'
+                      }}
+                    >
+                      <Menu.Divider />
+                      {selectMenu.map(
+                        ({ onClick, icon, title }, index: number) => (
+                          <Menu.Item
+                            onClick={() => onClick(source)}
+                            icon={icon}
+                            key={title + index}
+                          >
+                            {title}
+                          </Menu.Item>
+                        )
+                      )}
+                    </Menu>
+                  )
+                }}
+              </ReactTable.CellMenu>
+            }
+          />
+        </ReactTable>
+      </div>
+    </Align>
   )
 }
 

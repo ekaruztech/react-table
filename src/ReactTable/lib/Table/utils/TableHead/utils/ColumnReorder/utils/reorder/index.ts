@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { ColumnProps } from '../../../../../../../../../types'
+import { ColumnProps } from '../../../../../../../../../typings'
 
 const reorder = (
   list: Array<ColumnProps>,
@@ -8,8 +8,10 @@ const reorder = (
 ) => {
   const result = Array.from(list)
   // Removes the value from the start index
-  const [removed] = result.splice(startIndex, 1)
+  const [removed]: ColumnProps[] = result.splice(startIndex, 1)
   // Inserts at the end index.
+
+  // Delete count of zero removes nothing instead with the third argument of splice, inserts at the given position
   result.splice(endIndex, 0, removed)
 
   return result

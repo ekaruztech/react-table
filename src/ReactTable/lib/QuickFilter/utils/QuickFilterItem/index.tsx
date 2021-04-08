@@ -1,26 +1,50 @@
 import React, { useState, useCallback, useEffect } from 'react'
-
+import { isDate, pick, isFunction, map, filter, isEmpty } from 'lodash'
 import { Button, Col, Tooltip } from 'antd'
 import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
 import RenderQuickFilterType from '../RenderQuickFilterType'
 import { motion } from 'framer-motion'
 // eslint-disable-next-line no-unused-vars
-import { QuickFilterProps, QuickFilterAction } from '../../reducer/reducer'
+import {
+  QuickFilterProps,
+  QuickFilterAction,
+  QuickFilterState
+} from '../../reducer/reducer'
+import Model from '../../../../../_utils/model'
+import { QuickFilterApplyFn, QuickFilterOnFieldsRemoveFn } from '../../index'
 
 interface IQuickFilterItem {
   dataSource: Array<any>
   property: QuickFilterProps
   dispatch: React.Dispatch<QuickFilterAction>
+  onFieldsChange?: QuickFilterApplyFn
+  onFieldsRemove?: QuickFilterOnFieldsRemoveFn
+  state: QuickFilterState
+  model: Model
 }
 const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
-  const { dataSource, property, dispatch } = props
+  const {
+    dataSource,
+    property,
+    dispatch,
+    onFieldsChange,
+    state,
+    model,
+    onFieldsRemove
+  } = props
 
   const type: string = property?.type || 'text'
   const [autoCompleteProps, setAutoCompleteProps] = useState<string | null>(
     null
   )
-  const [toRangePicker, setToRangePicker] = useState<boolean>(false)
+
+  const [toRangePicker, setToRangePicker] = useState<boolean>(
+    (property.type === 'date' || property.type === 'datetime') &&
+      Array.isArray(property.value) &&
+      isDate(new Date(property.value[0])) &&
+      isDate(new Date(property.value[1]))
+  )
 
   const [autoCompleteOptions, setAutoCompleteOptions] = useState<
     Array<{ value: string }> | undefined
@@ -43,6 +67,7 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
 
   useEffect(() => {
     if (type === 'text' && property?.autoComplete) {
+      // Tokenizes the text type, if it's autoComplete props is set to true
       setAutoCompleteProps(dataSource.reduce(handleAutoCompleteResource, ''))
     }
   }, [dataSource, handleAutoCompleteResource, property, type])
@@ -53,13 +78,16 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
    * @param value
    */
   const handleAutoComplete = (value: string): void => {
+    // Regex tries to match the value with to tokenized  string
     const regex = new RegExp(
       `(^|\\s)${value}+(?:\\w)*(\\s|$)|(^|\\s)\\w+(?:\\w)*(?:_)${value}+(?:\\w)*(\\s|$)`,
       'gim'
     )
+    // Returns the value that matches
     const options = autoCompleteProps?.match(regex)
     if (options) {
       setAutoCompleteOptions(
+        // De-tokenizes the returned values.
         (options || []).map((o) => ({ value: o.split('_').join(' ').trim() }))
       )
     }
@@ -70,7 +98,35 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
    * @param filterIndex
    */
   const handleFilterRemoval = (filterIndex: number): void => {
-    dispatch({ type: 'REMOVE_FILTER', payload: { filterIndex } })
+    const newFilterState = filter(
+      state.filters,
+      (o: QuickFilterProps) => o.filterIndex !== filterIndex
+    )
+
+    const removed = state.filters.find((o) => o.filterIndex === filterIndex)
+      ?.property
+    // Remove the value from the persisted state
+    const newPersistedQuickFilter = filter(
+      model?.quickFilter || [],
+      (o) => o.property !== removed
+    )
+    // Updating a state  is asynchronous.
+    // Updating the model the model in the reducer also makes it synchronous
+    // In cases where the data is needed immediately, it poses a lot of issues.
+    model.store('quickFilter', newPersistedQuickFilter, { override: true })
+    if (isEmpty(newFilterState)) model.store('hasAppliedQuickFilter', false)
+
+    dispatch({ type: 'REMOVE_FILTER', payload: newFilterState })
+
+    const returnValue = map(newFilterState, (o: QuickFilterProps) =>
+      pick(o, ['property', 'value'])
+    )
+    if (onFieldsChange && isFunction(onFieldsChange)) {
+      onFieldsChange(returnValue)
+    }
+    if (onFieldsRemove && isFunction(onFieldsRemove)) {
+      onFieldsRemove(removed, returnValue)
+    }
   }
 
   const handleFilterValueChange = (
@@ -84,7 +140,7 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
   }
 
   return (
-    <Col span={6}>
+    <Col span={6} sm={24} md={12} lg={8} xl={6}>
       <motion.div
         exit={{ opacity: 0, y: 40 }}
         initial={{ opacity: 0, y: 40 }}
@@ -112,7 +168,7 @@ const QuickFilterItem: React.FC<IQuickFilterItem> = (props) => {
                         }
                         icon={
                           <span className='anticon'>
-                            <i className='ri-arrow-left-right-line'></i>
+                            <i className='ri-arrow-left-right-line' />
                           </span>
                         }
                       />

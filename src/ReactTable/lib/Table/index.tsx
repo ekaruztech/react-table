@@ -7,32 +7,50 @@ import TableFooter from './utils/TableFooter'
 import CellSelectionHeader from './utils/CellSelectionHeader'
 // import FixHeader from './utils/FixHeader'
 import { ReactTableContext } from '../ReactTableContext'
-// eslint-disable-next-line no-unused-vars
-import {
-  // eslint-disable-next-line no-unused-vars
-  OnCellSelect
-} from '../../../types'
 import CellMenu, { CellMenuProps } from './utils/CellMenu'
 import { isEmpty, last } from 'lodash'
 import CellExpanseSetter from './utils/CellExpanseSetter'
 
 // TODO: Find a reasonable way to make a sticky header for table
-interface ITable {
+interface TableProps {
   pagination: { all: number; currentPage: number }
   onPaginate: (page: number) => void
   loading?: boolean
   loader?: 'skeleton' | 'spinner'
-  onCellSelect?: (selectCount: number) => OnCellSelect
+  cellSelectionSpacing?: number[] | number
+  cellSelectionMenu?: React.ReactNode[]
   /* JSX element for displaying expanded data for table cell */
   expandedView?: (source: any) => React.ReactNode
+  /* Width of JSX element for displaying expanded data for table cell */
+  expandedViewWidth?: string | number
+  expandedViewTitle?: string
+  expandedViewPlacement?: 'top' | 'right' | 'bottom' | 'left'
+  expandedViewFooter?: null | React.ReactNode[]
+  onExpandedViewClose?: () => void
+  onExpandedViewOpen?: () => void
   /* JSX element for displaying menu for table cell */
   cellMenu?: ReactElement<CellMenuProps>
   /* Functions to be called on hover actions */
   hoverActions?: {
-    onEdit: (source: any) => void
+    onExpandedView?: (source: any) => void
+    onEdit?: (source: any) => void
+    onDelete?: (key: string) => void
   }
+  enableHoverActions?:
+    | [boolean, boolean, boolean]
+    | [boolean, boolean]
+    | [boolean]
+    | boolean
+    | ((
+        source: Array<{}>
+      ) =>
+        | [boolean, boolean, boolean]
+        | [boolean, boolean]
+        | [boolean]
+        | boolean)
+  disableCell?: (source: any) => boolean
 }
-class Table extends React.Component<ITable, any> {
+class Table extends React.Component<TableProps, any> {
   protected static readonly __DO_NOT_MODIFY_REACT_TABLE_COMPONENT_TYPE: string =
     '$$REACT_TABLE_BODY'
 
@@ -118,11 +136,16 @@ class Table extends React.Component<ITable, any> {
     }
   }
 
+  resizeFunction = (): void => {
+    this.scrollController(this.scrollComponentRef)
+  }
+
   componentDidMount(): void {
     if (this.scrollComponentRef) {
       this.scrollComponentRef.addEventListener('scroll', () => {
         this.scrollController(this.scrollComponentRef)
       })
+      window.addEventListener('resize', this.resizeFunction)
     }
   }
 
@@ -132,6 +155,10 @@ class Table extends React.Component<ITable, any> {
         this.scrollController(this.scrollComponentRef)
       })
     }
+  }
+
+  componentWillUnmount(): void {
+    window.removeEventListener('resize', this.resizeFunction)
   }
 
   render():
@@ -151,8 +178,17 @@ class Table extends React.Component<ITable, any> {
       loader,
       cellMenu,
       expandedView,
-      onCellSelect,
-      hoverActions
+      cellSelectionSpacing,
+      hoverActions,
+      enableHoverActions,
+      disableCell,
+      cellSelectionMenu,
+      expandedViewWidth,
+      expandedViewPlacement,
+      expandedViewTitle,
+      expandedViewFooter,
+      onExpandedViewClose,
+      onExpandedViewOpen
     } = this.props
     return (
       <ReactTableContext.Consumer>
@@ -165,35 +201,30 @@ class Table extends React.Component<ITable, any> {
           maxColumns,
           minColumns,
           columnKeys,
-          selectedTableItems
+          selectedTableItems,
+          model,
+          onRefresh
         }) => {
           return (
             <Fragment>
-              <CellSelectionHeader onCellSelect={onCellSelect} />
+              <CellSelectionHeader
+                cellSelectionSpacing={cellSelectionSpacing}
+                cellSelectionMenu={cellSelectionMenu}
+              />
               <div
                 className='ReactTable___table-wrapper'
                 id='ReactTable___table_wrapper-identifier'
+                style={{
+                  overflow: isEmpty(dataSource) || loading ? 'hidden' : 'unset'
+                }}
               >
-                {/* <FixHeader> */}
-                {/*  <CellExpanseSetter columns={columns} /> */}
-                {/*  <TableHead */}
-                {/*    columns={columns} */}
-                {/*    columnKeys={columnKeys} */}
-                {/*    onSelectAll={onSelectAll} */}
-                {/*    setColumns={setColumns} */}
-                {/*    selectedTableItems={selectedTableItems} */}
-                {/*    maxColumns={maxColumns} */}
-                {/*    minColumns={minColumns} */}
-                {/*    defaultColumns={defaultColumns} */}
-                {/*    allowCellSelect={!!onCellSelect} */}
-                {/*  /> */}
-                {/*  <tbody /> */}
-                {/* </FixHeader> */}
-
                 <ScrollBar
                   component='section'
-                  style={{ overflow: 'auto hidden' }}
-                  className='ReactTable___scroll-wrapper'
+                  className={`ReactTable___scroll-wrapper ${
+                    isEmpty(dataSource) || loading
+                      ? 'ReactTable___scroll-wrapper-unset'
+                      : ''
+                  }`}
                   containerRef={(ref: HTMLElement) => {
                     this.scrollComponentRef = ref
                   }}
@@ -207,8 +238,9 @@ class Table extends React.Component<ITable, any> {
                   <table className='ReactTable___table'>
                     <CellExpanseSetter
                       columns={columns}
-                      allowCellSelect={!!onCellSelect}
+                      allowCellSelect={!isEmpty(cellSelectionMenu)}
                       allowCellMenu={!!cellMenu}
+                      enableHoverActions={enableHoverActions}
                     />
                     <TableHead
                       columns={columns}
@@ -219,7 +251,9 @@ class Table extends React.Component<ITable, any> {
                       maxColumns={maxColumns}
                       minColumns={minColumns}
                       defaultColumns={defaultColumns}
-                      allowCellSelect={!!onCellSelect}
+                      allowCellSelect={!isEmpty(cellSelectionMenu)}
+                      loading={!!loading}
+                      onRefresh={onRefresh}
                     />
                     <TableBody
                       columnKeys={columnKeys}
@@ -228,9 +262,18 @@ class Table extends React.Component<ITable, any> {
                       loader={loader}
                       cellMenu={cellMenu}
                       expandedView={expandedView}
-                      allowCellSelect={!!onCellSelect}
+                      expandedViewWidth={expandedViewWidth}
+                      expandedViewPlacement={expandedViewPlacement}
+                      expandedViewFooter={expandedViewFooter}
+                      expandedViewTitle={expandedViewTitle}
+                      onExpandedViewClose={onExpandedViewClose}
+                      onExpandedViewOpen={onExpandedViewOpen}
+                      allowCellSelect={!isEmpty(cellSelectionMenu)}
                       allowCellMenu={!!cellMenu}
                       hoverActions={hoverActions}
+                      enableHoverActions={enableHoverActions}
+                      scrollComponentRef={this.scrollComponentRef}
+                      disableCell={disableCell}
                     />
                   </table>
                 </ScrollBar>
@@ -241,6 +284,7 @@ class Table extends React.Component<ITable, any> {
                 total={pagination?.all || 0}
                 loading={!!loading}
                 isAnEmptyContent={isEmpty(dataSource)}
+                model={model}
               />
             </Fragment>
           )
@@ -249,4 +293,4 @@ class Table extends React.Component<ITable, any> {
     )
   }
 }
-export { Table as default, ITable as BodyProps, CellMenu, CellMenuProps }
+export { Table as default, TableProps as BodyProps, CellMenu, CellMenuProps }

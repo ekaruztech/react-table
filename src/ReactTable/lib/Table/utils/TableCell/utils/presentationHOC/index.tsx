@@ -6,12 +6,13 @@ interface IHOC {
   columnKeys: string[]
   key: string
   cellIndex: number
+  isDisabled?: boolean
 }
 const presentationHOC = ({
   extraColumnsLength,
   columnKeys,
   key,
-  cellIndex
+  cellIndex,
 }: IHOC) => (Component: React.ReactNode) => (
   <motion.td
     className={`ReactTable___table-body-cell ${
