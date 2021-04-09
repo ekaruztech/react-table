@@ -1,19 +1,19 @@
 import Align from '../../../../../../../../Align'
-import { AutoComplete, InputNumber, Select, Input, Row, Col } from 'antd'
+import { InputNumber, Select, Input, Row, Col } from 'antd'
 import { has, isEmpty, isNumber } from 'lodash'
 import { toPercentage } from '../../../../../../../../hooks'
 import React from 'react'
 import TagRender from '../TagRender'
-import { isDate, DatePicker } from '../../../../../../../../_utils'
+import { isDate, DatePicker, TimePicker } from '../../../../../../../../_utils'
+
+// TODO: Extend filterSettings to Advanced filter
 
 type RenderFilterTypeProps = {
   type: string
   filterType: string | null
   property: any
   dimension: { height: number; width: number }
-  handleAutoComplete: (value: string) => void
   suffix: React.FunctionComponent
-  autoCompleteOptions: Array<{ value: string }> | undefined
   currentData: any
   handleFilterValueChange: (
     value: number | string | Date | undefined | null,
@@ -28,9 +28,7 @@ export default (props: RenderFilterTypeProps) => {
     filterType,
     property,
     dimension,
-    handleAutoComplete,
     suffix,
-    autoCompleteOptions,
     handleFilterValueChange,
     currentData
   } = props
@@ -41,10 +39,9 @@ export default (props: RenderFilterTypeProps) => {
       <Align style={{ width: '100%' }} alignCenter justifyBetween>
         <Row gutter={[20, 0]} style={{ width: '100%', margin: 0 }}>
           <Col span={10} style={{ paddingLeft: 0 }}>
-            {type === 'date' || type === 'datetime' ? (
-              <DatePicker
+            {type === 'time' && (
+              <TimePicker
                 style={{ width: '100%' }}
-                showTime={type === 'datetime'}
                 value={
                   new Date(
                     isDate(value?.start && new Date(value?.start))
@@ -60,7 +57,29 @@ export default (props: RenderFilterTypeProps) => {
                   )
                 }
               />
-            ) : (
+            )}
+            {type === 'date' ||
+              (type === 'datetime' && (
+                <DatePicker
+                  style={{ width: '100%' }}
+                  showTime={type === 'datetime'}
+                  value={
+                    new Date(
+                      isDate(value?.start && new Date(value?.start))
+                        ? value?.start
+                        : new Date()
+                    )
+                  }
+                  onChange={(date) =>
+                    handleFilterValueChange(
+                      new Date(date || Date.now()),
+                      'range',
+                      'start'
+                    )
+                  }
+                />
+              ))}
+            {type === 'number' && (
               <InputNumber
                 defaultValue={0}
                 value={isNumber(value?.start) ? value?.start : 0}
@@ -75,10 +94,9 @@ export default (props: RenderFilterTypeProps) => {
             <SuffixStatement />
           </Col>
           <Col span={10} style={{ paddingRight: 0 }}>
-            {type === 'date' || type === 'datetime' ? (
-              <DatePicker
+            {type === 'time' && (
+              <TimePicker
                 style={{ width: '100%' }}
-                showTime={type === 'datetime'}
                 value={
                   new Date(
                     isDate(value?.end && new Date(value?.end))
@@ -94,7 +112,29 @@ export default (props: RenderFilterTypeProps) => {
                   )
                 }
               />
-            ) : (
+            )}
+            {type === 'date' ||
+              (type === 'datetime' && (
+                <DatePicker
+                  style={{ width: '100%' }}
+                  showTime={type === 'datetime'}
+                  value={
+                    new Date(
+                      isDate(value?.end && new Date(value?.end))
+                        ? value?.end
+                        : new Date()
+                    )
+                  }
+                  onChange={(date) =>
+                    handleFilterValueChange(
+                      new Date(date || Date.now()),
+                      'range',
+                      'end'
+                    )
+                  }
+                />
+              ))}
+            {type === 'number' && (
               <InputNumber
                 defaultValue={0}
                 style={{ width: '100%' }}
@@ -108,8 +148,25 @@ export default (props: RenderFilterTypeProps) => {
     )
 
   switch (type) {
-    case 'number':
     case 'currency':
+      return (
+        <InputNumber
+          defaultValue={0}
+          value={isNumber(value) ? value : 0}
+          style={{ width: '100%' }}
+          onChange={(num) => handleFilterValueChange(num)}
+          formatter={(value: number | string | undefined) =>
+            `₦ ${value || ''}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+          }
+          parser={(value: string | undefined) =>
+            value ? parseInt(value.replace(/₦\s?|(,*)/g, '')) : 1
+          }
+          placeholder={
+            property?.title ? `Specify ${property.title?.toLowerCase?.()}` : ''
+          }
+        />
+      )
+    case 'number':
       return (
         <InputNumber
           defaultValue={0}
@@ -121,6 +178,18 @@ export default (props: RenderFilterTypeProps) => {
     case 'date':
       return (
         <DatePicker
+          style={{ width: '100%' }}
+          value={
+            new Date(value && isDate(new Date(value)) ? value : new Date())
+          }
+          onChange={(date) =>
+            handleFilterValueChange(new Date(date || new Date()))
+          }
+        />
+      )
+    case 'time':
+      return (
+        <TimePicker
           style={{ width: '100%' }}
           value={
             new Date(value && isDate(new Date(value)) ? value : new Date())
@@ -165,34 +234,15 @@ export default (props: RenderFilterTypeProps) => {
         )
       } else return null
     default:
-      if (property.autoComplete) {
-        return (
-          <AutoComplete
-            options={autoCompleteOptions}
-            onSelect={(value) => handleFilterValueChange(value)}
-            onSearch={handleAutoComplete}
-            defaultValue={value}
-            style={{ width: '100%' }}
-            placeholder={
-              property?.title
-                ? `Specify ${property.title?.toLowerCase?.()}`
-                : ''
-            }
-          />
-        )
-      } else {
-        return (
-          <Input
-            style={{ width: '100%' }}
-            value={value}
-            onChange={(e) => handleFilterValueChange(e.target.value)}
-            placeholder={
-              property?.title
-                ? `Specify ${property.title?.toLowerCase?.()}`
-                : ''
-            }
-          />
-        )
-      }
+      return (
+        <Input
+          style={{ width: '100%' }}
+          value={value}
+          onChange={(e) => handleFilterValueChange(e.target.value)}
+          placeholder={
+            property?.title ? `Specify ${property.title?.toLowerCase?.()}` : ''
+          }
+        />
+      )
   }
 }

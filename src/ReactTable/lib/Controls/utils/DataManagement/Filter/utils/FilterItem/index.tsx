@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Button, Select, Tag, Tooltip, Row, Col } from 'antd'
 import { motion } from 'framer-motion'
 import { useDimension } from '../../../../../../../../hooks'
@@ -79,7 +79,6 @@ export default (props: FilterItemProps) => {
     isLastIndex,
     isMoreThanOne,
     isFirstIndex,
-    dataSource,
     dispatch
   } = props
   // Current Property
@@ -119,63 +118,6 @@ export default (props: FilterItemProps) => {
     initialFilterType()
   )
 
-  // On load of filter item, tokenizes the fields value from data source for later usage.
-  const [
-    tokenizedAutoCompleteOptions,
-    setTokenizedAutoCompleteOptions
-  ] = useState<string | null>(null)
-
-  const [autoCompleteOptions, setAutoCompleteOptions] = useState<
-    Array<{ value: string }> | undefined
-  >([])
-
-  /**
-   * Tokenizes a text field value for auto-completion
-   * Tokenization replaces space with underscore and adds a new line to the beginning of each word, starting from the second.
-   * @param acc
-   * @param current
-   * @param index
-   */
-  const handleAutoCompleteResource = useCallback(
-    // Reduce callback
-    (acc: string, current: any, index: number): string => {
-      // Current is an object of data (from data-source)
-      const currentValue = current[property?.key || ''] || ''
-      const tokenize = currentValue.trim().split(' ').join('_')
-      // Arranges the tokenized string in new lines
-      return index === 0 ? acc.concat(tokenize) : acc.concat(`\n${tokenize}`)
-    },
-    [property]
-  )
-
-  /**
-   * Prepares the data for an auto-complete feature.
-   */
-  useEffect(() => {
-    if (type === 'text' && property?.autoComplete) {
-      setTokenizedAutoCompleteOptions(
-        dataSource.reduce(handleAutoCompleteResource, '')
-      )
-    }
-  }, [dataSource, handleAutoCompleteResource, property, type])
-
-  /**
-   * Matches user input with tokenized resource for autocompletion
-   * Converts all matched results to [{value: result}] format
-   * @param value
-   */
-  const handleAutoComplete = (value: string): void => {
-    const regex = new RegExp(
-      `(^|\\s)${value}+(?:\\w)*(\\s|$)|(^|\\s)\\w+(?:\\w)*(?:_)${value}+(?:\\w)*(\\s|$)`,
-      'gim'
-    )
-    const options = tokenizedAutoCompleteOptions?.match(regex)
-    if (options) {
-      setAutoCompleteOptions(
-        (options || []).map((o) => ({ value: o.split('_').join(' ').trim() }))
-      )
-    }
-  }
 
   /**
    * Removes a filter item
@@ -273,6 +215,7 @@ export default (props: FilterItemProps) => {
         type === 'boolean' ||
         type === 'date' ||
         type === 'datetime' ||
+        type === 'time' ||
         type === 'currency'
       )
         return 'is'
@@ -293,6 +236,7 @@ export default (props: FilterItemProps) => {
       if (
         (type === 'number' ||
           type === 'date' ||
+          type === 'time' ||
           type === 'datetime' ||
           type === 'currency') &&
         (filterType || '').includes('between')
@@ -302,6 +246,7 @@ export default (props: FilterItemProps) => {
     }
     return (type === 'number' ||
       type === 'date' ||
+      type === 'time' ||
       type === 'datetime' ||
       type === 'currency') &&
       (filterType || '').includes('between') ? (
@@ -403,13 +348,11 @@ export default (props: FilterItemProps) => {
             {type !== 'boolean' && (
               <Col span={10}>
                 <RenderFilterType
-                  autoCompleteOptions={autoCompleteOptions}
                   suffix={SuffixStatement}
                   property={property}
                   filterType={filterType}
                   dimension={dimension}
                   type={type}
-                  handleAutoComplete={handleAutoComplete}
                   handleFilterValueChange={handleFilterValueChange}
                   currentData={filterData}
                 />

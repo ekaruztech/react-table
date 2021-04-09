@@ -5,11 +5,38 @@ import { ColumnProps } from '../typings'
 import Model from './model'
 import { isDate as _isDate } from 'lodash'
 import dateFnsGenerateConfig from 'rc-picker/lib/generate/dateFns'
-import generatePicker from 'antd/es/date-picker/generatePicker'
+import generatePicker, {
+  PickerTimeProps,
+  RangePickerTimeProps
+} from 'antd/es/date-picker/generatePicker'
+import { Omit } from 'antd/es/_util/type'
 import 'antd/es/date-picker/style/index'
 type NumberFormatOptions = Intl.NumberFormatOptions
 
 const DatePicker = generatePicker<Date>(dateFnsGenerateConfig)
+
+export interface TimePickerProps
+  extends Omit<PickerTimeProps<Date>, 'picker'> {}
+export interface TimePickerRangeProps
+  extends Omit<RangePickerTimeProps<Date>, 'picker'> {}
+
+const TimePicker = React.forwardRef<any, TimePickerProps>((props, ref) => {
+  return <DatePicker {...props} picker='time' mode={undefined} ref={ref} />
+})
+const TimePickerRange = React.forwardRef<any, TimePickerRangeProps>(
+  (props, ref) => {
+    return (
+      <DatePicker.RangePicker
+        {...props}
+        picker='time'
+        mode={undefined}
+        ref={ref}
+      />
+    )
+  }
+)
+
+TimePicker.displayName = 'TimePicker'
 
 const initializeColumnsWithReorderPresets = (
   model: Model,
@@ -241,6 +268,8 @@ export {
   getNonQuickFiltersOnlyColumns,
   EmptyImage,
   DatePicker,
+  TimePicker,
+  TimePickerRange,
   findTruthies,
   formatNumber,
   formatCurrency,

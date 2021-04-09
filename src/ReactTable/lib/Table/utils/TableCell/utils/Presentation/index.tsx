@@ -62,6 +62,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
       )
     }
     case 'date':
+    case 'time':
     case 'datetime': {
       return (
         <DatePresentation
@@ -72,6 +73,7 @@ const Presentation: React.FC<PresentationProps> = (props) => {
           dateFormat={dateFormat}
           textFormat={textFormat}
           source={source}
+          columnType={columnType}
         />
       )
     }

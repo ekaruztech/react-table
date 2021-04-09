@@ -19,6 +19,7 @@ let locale = require('date-fns/locale/en-GB')
 type DatePresentationProps = {
   presentationType: 'tag' | undefined
   presentationColor: string | null
+  columnType: string
   isDisabled: boolean
   data: Date | undefined
   dateFormat: ColumnDateFormat | undefined
@@ -34,7 +35,8 @@ const DatePresentation = (props: DatePresentationProps) => {
     presentationType,
     dateFormat: _DateFormatSettings,
     textFormat: _TextFormat,
-    source
+    source,
+    columnType
   } = props
 
   const dateFormatSettings =
@@ -43,7 +45,9 @@ const DatePresentation = (props: DatePresentationProps) => {
       : _DateFormatSettings) ?? {}
 
   const dateFormat = {
-    formatString: dateFormatSettings?.formatString ?? 'MMM dd, yyyy hh:mm aaa',
+    formatString:
+      dateFormatSettings?.formatString ??
+      (columnType === 'time' ? 'HH:mm:ss' : 'MMM dd, yyyy HH:mm:ss'),
     locale: dateFormatSettings?.locale ?? SupportedDateLocales.enGB
   }
 

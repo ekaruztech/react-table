@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { isDate, pick, isFunction, map, filter, isEmpty } from 'lodash'
+import {
+  isDate,
+  pick,
+  isFunction,
+  map,
+  filter,
+  isEmpty,
+  isNumber
+} from 'lodash'
 import { Button, Col, Tooltip } from 'antd'
 import Align from '../../../../../Align'
 import Padding from '../../../../../Padding'
@@ -36,11 +44,23 @@ const QuickFilterItem = (props: IQuickFilterItem) => {
 
   const type: string = property?.type || 'text'
 
+  // Used to toggle the range picker as default, especially when filter value has already been persisted
+  const isDateRangePicker =
+    (property.type === 'date' ||
+      property.type === 'datetime' ||
+      property.type === 'time') &&
+    Array.isArray(property.value) &&
+    isDate(new Date(property.value[0])) &&
+    isDate(new Date(property.value[1]))
+
+  const isNumberRangePicker =
+    property.type === 'number' &&
+    Array.isArray(property.value) &&
+    isNumber(property.value[0]) &&
+    isNumber(property.value[1])
+
   const [toRangePicker, setToRangePicker] = useState<boolean>(
-    (property.type === 'date' || property.type === 'datetime') &&
-      Array.isArray(property.value) &&
-      isDate(new Date(property.value[0])) &&
-      isDate(new Date(property.value[1]))
+    isDateRangePicker || isNumberRangePicker
   )
 
   /**
@@ -81,7 +101,15 @@ const QuickFilterItem = (props: IQuickFilterItem) => {
   }
 
   const handleFilterValueChange = (
-    value: null | string | boolean | number | Date | undefined | Array<Date>
+    value:
+      | null
+      | string
+      | boolean
+      | number
+      | Date
+      | undefined
+      | Array<Date>
+      | [number, number]
   ): null => {
     dispatch({
       type: 'UPDATE_FILTER',
@@ -102,31 +130,34 @@ const QuickFilterItem = (props: IQuickFilterItem) => {
             <Align style={{ width: '100%' }} justifyBetween alignCenter>
               <span className='filter-title'>{property?.title || ''}</span>
               <Align alignCenter>
-                {((type === 'date' ||
-                  type === 'datetime') && property?.quickFilter?.allowRange) && (
-                  <Padding right={10}>
-                    <Tooltip
-                      title={
-                        toRangePicker
-                          ? 'Swith back to default'
-                          : 'Switch to range picker'
-                      }
-                    >
-                      <Button
-                        type='text'
-                        shape='circle'
-                        onClick={() =>
-                          setToRangePicker((prevState: boolean) => !prevState)
+                {(type === 'date' ||
+                  type === 'datetime' ||
+                  type === 'number' ||
+                  type === 'time') &&
+                  property?.filterOptions?.allowRange && (
+                    <Padding right={10}>
+                      <Tooltip
+                        title={
+                          toRangePicker
+                            ? 'Swith back to default'
+                            : 'Switch to range picker'
                         }
-                        icon={
-                          <span className='anticon'>
-                            <i className='ri-arrow-left-right-line' />
-                          </span>
-                        }
-                      />
-                    </Tooltip>
-                  </Padding>
-                )}
+                      >
+                        <Button
+                          type='text'
+                          shape='circle'
+                          onClick={() =>
+                            setToRangePicker((prevState: boolean) => !prevState)
+                          }
+                          icon={
+                            <span className='anticon'>
+                              <i className='ri-arrow-left-right-line' />
+                            </span>
+                          }
+                        />
+                      </Tooltip>
+                    </Padding>
+                  )}
                 <Tooltip title='Remove filter'>
                   <Button
                     type='text'

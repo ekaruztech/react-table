@@ -5,7 +5,7 @@ interface DataManagementFilterProps {
   filterIndex: number
   property: null | string
   type: string | null
-  value: null | string | boolean | number | Date | undefined | Date[]
+  value: any
 }
 type QuickFilterProps = DataManagementFilterProps & ColumnProps
 interface QuickFilterState {

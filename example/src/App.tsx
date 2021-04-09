@@ -40,376 +40,42 @@ export const evalStatusColor = (status: string) => {
   }
 }
 const db = {
-  dataSource: [
-    {
-      key: '1',
-      name:
-        'Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo Simeon Akpanudo',
-      cost: 9200000 * 3e5,
-      address: '10 Downing Street',
-      hobby: 'coding',
-
-      food_choice: 'Vegan',
-      id: '#9iopp785der0011',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 10) + 1950,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '2',
-      name: 'John Smith',
-      cost: 62100,
-      address: '30 Downing Avenue',
-      hobby: 'hunting',
-
-      food_choice: 'Meaty',
-      id: '#990uiopcfe11',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '3',
-      name: 'Elia Jones',
-      cost: 22001,
-      address: '40 Floor Street',
-      hobby: 'baking',
-      food_choice: 'Vegan',
-      id: '#99vvgty88031',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '5',
-      name: 'Nathan Philips',
-      cost: 30,
-      address: '4 14th Avenue',
-      hobby: 'Biking',
-      food_choice: 'Vegan',
-      id: '#9x70tyu31',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '6',
-      name: 'John McCally',
-      cost: 27,
-      address: '45 Boston Avenue',
-      hobby: 'Gymnastics',
-      food_choice: 'Vegan',
-      id: '#99bg831',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '9',
-      name: 'Masi klones',
-      cost: 42,
-      address: '1 Main Street',
-      hobby: 'Writing',
-      food_choice: 'Vegan',
-      id: '#90bgg431',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '8',
-      name: 'Joseph Xi Lee',
-      cost: 0,
-      address: '40 Houstin Street',
-      hobby: 'Teaching',
-
-      food_choice: 'Vegan',
-      id: '#999nhh31',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '10',
-      name: 'Mikel Leeland',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Photography',
-
-      food_choice: 'Vegan',
-      id: '#99@6770111',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '11',
-      name: 'Hanna Klose',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Landscaping',
-
-      food_choice: 'Vegan',
-      id: '12',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '13',
-      name: 'Hanna Um',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Teaching',
-
-      food_choice: 'Vegan',
-      id: '#4599r931',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '14',
-      name: 'Josh Butland',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Acting',
-
-      food_choice: 'Vegan',
-      id: '#9s99vbb31',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '15',
-      name: 'Gideon Morning',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Poetry',
-
-      food_choice: 'Vegan',
-      id: '#9vb993f1',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '16',
-      name: 'James Levi',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Teaching',
-
-      food_choice: 'Vegan',
-      id: '#99f931',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '17',
-      name: 'Priah Singh',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Movies',
-
-      food_choice: 'Vegan',
-      id: '#9d99g31',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '18',
-      name: 'Johanna Lee',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Jogging',
-
-      food_choice: 'Vegan',
-      id: '#99d931',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '19',
-      name: 'Emerald Lalong',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Comedy',
-
-      food_choice: 'Vegan',
-      id: '#99h931',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '20',
-      name: 'Lulu Oyetola',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Arguing',
-
-      food_choice:
-        'Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan Vegan ',
-      id: '#99v931',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '21',
-      name: 'Matthew Lee',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Writing',
-
-      food_choice: 'Vegan',
-      id: '#9993100',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: 'World',
-      id6: 'Hello',
-      id10: 'Finally'
-    },
-    {
-      key: '22',
-      name: 'Gretchen Spears',
-      cost: 6,
-      address: '40 Houstin Street',
-      hobby: 'Reading',
-
-      food_choice: 'Vegan',
-      id: '#9vbb99u31',
-      id2: 'World',
-      dooob: new Date(
-        Math.floor(Math.random() * 50) + 1955,
-        Math.floor(Math.random() * 11),
-        Math.floor(Math.random() + 28)
-      ),
-      id5: '',
-      id6: 'Hello',
-      id10: 'Finally'
-    }
-  ],
+  dataSource: Array(40)
+    .fill(0)
+    .map((_: number, index: number) => {
+      return {
+        key: index.toString(),
+        name: 'Simeon Akpanudo ' + index,
+        percentageChange: Math.random() * 100 * 3e3,
+        netWorth: Math.random() * 10000 * 3e5,
+        address: '10 Downing Street',
+        hobby: 'coding',
+        food_choice: 'Vegan',
+        id2: 'World',
+        timeOfLog: new Date().setHours(
+          Math.floor(Math.random() * 24),
+          Math.floor(Math.random() * 60),
+          Math.floor(Math.random() + 60)
+        ),
+        dob: new Date(
+          Math.floor(Math.random() * 10) + 1950,
+          Math.floor(Math.random() * 11),
+          Math.floor(Math.random() + 28)
+        ),
+        id5: 'World',
+        id6: 'Hello',
+        id10: 'Finally'
+      }
+    }),
   columns: (menu: { label: string; value: string }[] | Array<{}>) => [
     {
-      title: 'ID',
+      title: 'Request',
       dataIndex: 'id',
       key: 'id',
       type: 'action',
       actionPresentationType: 'default',
       actionCallback: (source: any) => console.log('action clicked id', source),
-      actionTitle: 'Print ID',
+      actionTitle: 'Request details',
       noQuickFilter: true
     },
     {
@@ -427,40 +93,104 @@ const db = {
         // wordSpacing: 30,
         textOverflow: 'ellipsis',
         textTransform: 'uppercase'
-      },
+      }
     },
     {
       title: 'DOB',
-      dataIndex: 'dooob',
-      key: 'dooob',
+      dataIndex: 'dob',
+      key: 'dob',
       type: 'datetime',
       presentationType: 'date',
       presentationColor: 'processing',
-      columnSpan: 1.5,
+      columnSpan: 1,
       dateFormat: () => {
         // console.count(text)
         return {
-          locale: SupportedDateLocales.ES
+          locale: SupportedDateLocales.JA
         }
       },
-      allowRange: true
+      filterOptions: {
+        allowRange: true,
+        datePickerType: 'date'
+      }
     },
     {
-      title: 'Cost',
-      dataIndex: 'cost',
-      key: 'cost',
-      type: 'number',
+      title: 'Time of Log',
+      dataIndex: 'timeOfLog',
+      key: 'timeOfLog',
+      type: 'time',
       presentationColor: 'volcano',
       columnSpan: 1,
-      numberFormat: () => ({
-        locale: 'es-ES',
+      dateFormat: () => {
+        // console.count(text)
+        return {
+          locale: SupportedDateLocales.JA
+        }
+      },
+      filterOptions: {
+        allowRange: true,
+        timePickerOptions: {
+          use12Hours: true,
+          format: 'HH:mm:ss',
+          hourStep: 2
+        }
+      }
+    },
+    {
+      title: 'Net worth',
+      dataIndex: 'netWorth',
+      key: 'netWorth',
+      type: 'currency',
+      // presentationColor: 'purple',
+      columnSpan: 1,
+      currencyFormat: {
+        locale: 'ja',
         notation: 'compact',
-        currency: 'eur',
-        style: 'currency'
+        currency: 'usd',
+        maximumSignificantDigits: 4
+        // style: 'currency'
+      },
+      textFormat: {
+        textAlign: 'right'
+        // fontWeight: 500
+      },
+      filterOptions: {}
+    },
+    {
+      title: 'Percentage change',
+      dataIndex: 'percentageChange',
+      key: 'percentageChange',
+      type: 'number',
+      // presentationColor: 'volcano',
+      columnSpan: 1.3,
+      numberFormat: () => ({
+        locale: 'ar',
+        notation: 'compact',
+        maximumSignificantDigits: 4,
+        style: 'percent'
+        // currency: 'usd',
+        // style: 'currency'
       }),
       textFormat: {
-        // textAlign: 'right'
-        fontWeight: 500
+        textAlign: 'right'
+        // fontWeight: 500
+      },
+      filterOptions: {
+        allowRange: true,
+        sliderOptions: {
+          marks: {
+            '-100': '-100%',
+            '-50': '-50%',
+            0: '0%',
+            50: '50%',
+            100: '100%'
+          },
+          tipFormatter: (value: any) => `${value}%`,
+          autoFocus: true
+        },
+        min: -100,
+        max: 100,
+        step: 0.5
       }
     },
     {
@@ -471,27 +201,15 @@ const db = {
       presentationType: 'tag',
       presentationColor: (value: string) => evalStatusColor(value),
       multiple: true,
-      listMenu: menu,
+      listMenu: menu
     },
     {
       title: 'Food choice',
       dataIndex: 'food_choice',
       key: 'food_choice',
-      type: 'boolean',
+      type: 'boolean'
     },
 
-    // //
-    {
-      title: 'ID-2',
-      dataIndex: 'id',
-      key: 'id2',
-      type: 'action',
-      actionPresentationType: 'primary',
-      actionCallback: (source: any) =>
-        console.log('action clicked id2', source),
-      actionTitle: 'Print ID-2',
-      noQuickFilter: true
-    },
     {
       title: 'Surname',
       dataIndex: 'surname',
@@ -512,30 +230,6 @@ const db = {
       key: 'bond',
       type: 'text',
       quickFilterOnly: true
-    },
-    {
-      title: 'ID-5',
-      dataIndex: 'id',
-      key: 'id5',
-      type: 'text',
-      presentationColor: 'volcano',
-      noQuickFilter: true
-    },
-    {
-      title: 'ID-6',
-      dataIndex: 'id',
-      key: 'id6',
-      type: 'text',
-      presentationColor: 'lime',
-      noQuickFilter: true
-    },
-    {
-      title: 'ID-10',
-      dataIndex: 'id',
-      key: 'id10',
-      type: 'text',
-      presentationColor: 'geekblue',
-      noQuickFilter: true
     }
   ],
   maxColumns: 10,

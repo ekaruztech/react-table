@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { ReactElement } from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { CellMenuProps } from '../ReactTable/lib/Table/utils/CellMenu'
 // eslint-disable-next-line no-unused-vars
@@ -117,7 +117,7 @@ export type ColumnTextFormat =
   | TextFormat
   | ((text?: number | string, source?: any) => TextFormat)
 
-export interface ColumnQuickFilterSettings {
+export interface ColumnFilterOptions {
   /**
    * Minimum value (applicable to both date and number types)
    */
@@ -137,7 +137,15 @@ export interface ColumnQuickFilterSettings {
   /**
    * Quick filter initial value
    */
-  initialValue?: null | string | boolean | number | Date | undefined | Array<Date>
+  initialValue?:
+    | null
+    | string
+    | boolean
+    | number
+    | Date
+    | undefined
+    | Array<Date>
+    | [number, number]
   datePickerType?: 'year' | 'week' | 'quarter' | 'month' | 'time' | 'date'
   timePickerOptions?: {
     use12Hours?: boolean
@@ -146,6 +154,14 @@ export interface ColumnQuickFilterSettings {
     minuteStep?: number
     secondStep?: number
     showNow?: boolean
+  }
+  sliderOptions?: {
+    autoFocus?: boolean
+    marks?: any
+    tipFormatter?:
+      | ((value?: number | undefined) => ReactNode)
+      | null
+      | undefined
   }
 }
 
@@ -230,7 +246,7 @@ export interface ColumnProps {
   /**
    * Settings for quick filter.
    */
-  quickFilter?: ColumnQuickFilterSettings
+  filterOptions?: ColumnFilterOptions
 }
 export interface TableColumnProps {
   all: Array<ColumnProps>
