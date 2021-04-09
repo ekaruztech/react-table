@@ -37,6 +37,7 @@ export type ColumnType =
   | 'boolean'
   | 'datetime'
   | 'date'
+  | 'time'
   | 'number'
   | 'action'
   | 'currency'
@@ -116,27 +117,120 @@ export type ColumnTextFormat =
   | TextFormat
   | ((text?: number | string, source?: any) => TextFormat)
 
+export interface ColumnQuickFilterSettings {
+  /**
+   * Minimum value (applicable to both date and number types)
+   */
+  min?: number | Date
+  /**
+   * Maximum value (applicable to both date and number types)
+   */
+  max?: number | Date
+  /**
+   * Steps for number range slider
+   */
+  step?: number
+  /**
+   * Allows the application of range pickers on date and number in the quick filter
+   */
+  allowRange?: boolean
+  /**
+   * Quick filter initial value
+   */
+  initialValue?: null | string | boolean | number | Date | undefined | Array<Date>
+  datePickerType?: 'year' | 'week' | 'quarter' | 'month' | 'time' | 'date'
+  timePickerOptions?: {
+    use12Hours?: boolean
+    format?: string
+    hourStep?: number
+    minuteStep?: number
+    secondStep?: number
+    showNow?: boolean
+  }
+}
+
 export interface ColumnProps {
+  /**
+   * Title of the column
+   */
   title: string
+  /**
+   *
+   */
   dataIndex: string
+  /**
+   * Key of the specified column: Note the key is very important, it controls every thing on the table (Presentations and Filters)
+   */
   key: string
+  /**
+   * Type of the column
+   */
   type: ColumnType
-  autoComplete?: boolean
+  /**
+   * Applicable to type list, to specify multiple selection
+   */
   multiple?: boolean
+  /**
+   * Presentation type for column (usually, Tag | Date, when specified)
+   */
   presentationType?: PresentationType
+  /**
+   * Preset Presentation color for column
+   */
   presentationColor?: PresentationColor | ((value: string) => PresentationColor)
+  /**
+   * Presentation/Button type for type action
+   */
   actionPresentationType?: ActionPresentationType
+  /**
+   * List menu in for type list
+   */
   listMenu?: Array<{ label: string; value: string | number }>
+  /**
+   * Callback for action
+   * @param source
+   */
   actionCallback?: (source: any) => void
+  /**
+   * Applicable to type action, This is the title of the button
+   */
   actionTitle?: string
+  /**
+   * The span of a column in ratio
+   */
   columnSpan?: number
+  /**
+   * Prevents a column from being used in the quick filter (Columns with this setting is presentation only)
+   */
   noQuickFilter?: boolean
+  /**
+   * Creates a column for quick filter only (Column data would not be displayed on table)
+   */
   quickFilterOnly?: boolean
+  /**
+   * Enables/Disables the advanced filter for a specified column
+   */
   advancedFilter?: boolean
+  /**
+   * Number format settings (applicable to only type of number)
+   */
   numberFormat?: ColumnNumberFormat
+  /**
+   * Currency format settings (applicable to only type of currency)
+   */
   currencyFormat?: ColumnCurrencyFormat
+  /**
+   * Text format settings (applicable to all columns)
+   */
   textFormat?: ColumnTextFormat
+  /**
+   * Format settings for column type date
+   */
   dateFormat?: ColumnDateFormat
+  /**
+   * Settings for quick filter.
+   */
+  quickFilter?: ColumnQuickFilterSettings
 }
 export interface TableColumnProps {
   all: Array<ColumnProps>

@@ -48,6 +48,14 @@
   .filter-title {
     color: var(--text-color);
   }
+  .filter-switch-container {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    position: relative;
+    background-color: var(--background-primary);
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
 }
 .ReactTable___QuickFilter-dropdown {
   .ant-dropdown-menu {

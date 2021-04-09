@@ -1,4 +1,4 @@
-import { AutoComplete, InputNumber, Select, Input } from 'antd'
+import { InputNumber, Select, Input, Switch } from 'antd'
 import { has, isNumber, first, last } from 'lodash'
 import React from 'react'
 import TagRender from '../../../Controls/utils/DataManagement/Filter/utils/TagRender'
@@ -8,22 +8,13 @@ import { add } from 'date-fns'
 interface IRenderFilterType {
   type: string
   property: any
-  handleAutoComplete: (value: string) => void
-  autoCompleteOptions: Array<{ value: string }> | undefined
   handleFilterValueChange: (
     value: null | string | boolean | number | Date | undefined | Array<Date>
   ) => null
   toRangePicker: boolean
 }
-const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
-  const {
-    type,
-    property,
-    handleAutoComplete,
-    autoCompleteOptions,
-    handleFilterValueChange,
-    toRangePicker
-  } = props
+const RenderFilterType = (props: IRenderFilterType) => {
+  const { type, property, handleFilterValueChange, toRangePicker } = props
 
   const value = property?.value
 
@@ -37,6 +28,25 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           onChange={(num) => handleFilterValueChange(num)}
         />
       )
+    case 'boolean':
+      return (
+        <div className='filter-switch-container'>
+          <Switch
+            checkedChildren={
+              <span className='anticon'>
+                <i className='ri-check-line' />
+              </span>
+            }
+            unCheckedChildren={
+              <span className='anticon'>
+                <i className='ri-close-line' />
+              </span>
+            }
+            checked={!!value}
+            onChange={(checked) => handleFilterValueChange(checked)}
+          />
+        </div>
+      )
     case 'currency':
       // const currencyCode = property?.currency;
       // TODO: Add currency code / sign to the currency formatter during localisation
@@ -47,10 +57,10 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
           style={{ width: '100%' }}
           onChange={(num) => handleFilterValueChange(num)}
           formatter={(value: number | string | undefined) =>
-            `${value || ''}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+            `₦ ${value || ''}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
           }
           parser={(value: string | undefined) =>
-            value ? value.replace(/₦\s?|(,*)/g, '') : ''
+            value ? parseInt(value.replace(/₦\s?|(,*)/g, '')) : 1
           }
         />
       )
@@ -125,35 +135,16 @@ const RenderFilterType: React.FC<IRenderFilterType> = (props) => {
         )
       }
     default:
-      if (property.autoComplete) {
-        return (
-          <AutoComplete
-            options={autoCompleteOptions}
-            onSelect={(value) => handleFilterValueChange(value)}
-            onSearch={handleAutoComplete}
-            defaultValue={value}
-            style={{ width: '100%' }}
-            placeholder={
-              property?.title
-                ? `Specify ${property.title?.toLowerCase?.()}`
-                : ''
-            }
-          />
-        )
-      } else {
-        return (
-          <Input
-            style={{ width: '100%' }}
-            value={value}
-            onChange={(e) => handleFilterValueChange(e.target.value)}
-            placeholder={
-              property?.title
-                ? `Specify ${property.title?.toLowerCase?.()}`
-                : ''
-            }
-          />
-        )
-      }
+      return (
+        <Input
+          style={{ width: '100%' }}
+          value={value}
+          onChange={(e) => handleFilterValueChange(e.target.value)}
+          placeholder={
+            property?.title ? `Specify ${property.title?.toLowerCase?.()}` : ''
+          }
+        />
+      )
   }
 }
 

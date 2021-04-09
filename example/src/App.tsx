@@ -417,7 +417,6 @@ const db = {
       dataIndex: 'name',
       key: 'name',
       type: 'text',
-      autoComplete: true,
       textFormat: {
         fontWeight: 400,
         fontStyle: 'normal',
@@ -429,7 +428,6 @@ const db = {
         textOverflow: 'ellipsis',
         textTransform: 'uppercase'
       },
-      noQuickFilter: true
     },
     {
       title: 'DOB',
@@ -442,10 +440,10 @@ const db = {
       dateFormat: () => {
         // console.count(text)
         return {
-          locale: SupportedDateLocales.JA
+          locale: SupportedDateLocales.ES
         }
       },
-      noQuickFilter: true
+      allowRange: true
     },
     {
       title: 'Cost',
@@ -454,11 +452,11 @@ const db = {
       type: 'number',
       presentationColor: 'volcano',
       columnSpan: 1,
-      noQuickFilter: true,
       numberFormat: () => ({
-        locale: 'ja',
+        locale: 'es-ES',
         notation: 'compact',
-        currency: 'jpy'
+        currency: 'eur',
+        style: 'currency'
       }),
       textFormat: {
         // textAlign: 'right'
@@ -474,14 +472,12 @@ const db = {
       presentationColor: (value: string) => evalStatusColor(value),
       multiple: true,
       listMenu: menu,
-      noQuickFilter: true
     },
     {
       title: 'Food choice',
       dataIndex: 'food_choice',
       key: 'food_choice',
       type: 'boolean',
-      noQuickFilter: true
     },
 
     // //
