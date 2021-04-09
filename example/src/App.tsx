@@ -451,18 +451,18 @@ const db = {
       title: 'Cost',
       dataIndex: 'cost',
       key: 'cost',
-      type: 'currency',
+      type: 'number',
       presentationColor: 'volcano',
       columnSpan: 1,
       noQuickFilter: true,
-      currencyFormat: {
+      numberFormat: () => ({
         locale: 'ja',
         notation: 'compact',
         currency: 'jpy'
-      },
+      }),
       textFormat: {
         // textAlign: 'right'
-        fontWeight: 500,
+        fontWeight: 500
       }
     },
     {

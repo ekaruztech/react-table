@@ -19,7 +19,7 @@ interface ITableCell {
   index?: number
 }
 
-// TODO: Update TableCells to allow for more presentation types.
+// TODO: Reduce re-renders for hover actions
 const TableCell: React.FC<ITableCell> = (props) => {
   const { source, extraColumnsLength = 1, index } = props
 
@@ -179,7 +179,6 @@ const TableCell: React.FC<ITableCell> = (props) => {
               cellMenuCallback
             )
 
-            console.count('Rerenders')
 
             return (
               <Fragment>

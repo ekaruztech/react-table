@@ -12,7 +12,6 @@ const FixHeader: React.FC<IFixHeader> = (props) => {
     'ReactTable___table_wrapper-identifier'
   )
 
-  console.info(dimension)
 
   return (
     <div

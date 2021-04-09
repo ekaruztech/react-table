@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import { Tag } from 'antd'
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import {
   ColumnDateFormat,
   ColumnTextFormat
@@ -12,7 +12,9 @@ import {
   throwUnsupportedDateLocaleError
 } from '../../../../../../../../../_utils/locales'
 import { isDate } from '../../../../../../../../../_utils'
-import { isFunction } from 'lodash'
+import { isFunction, isEqual } from 'lodash'
+
+let locale = require('date-fns/locale/en-GB')
 
 type DatePresentationProps = {
   presentationType: 'tag' | undefined
@@ -47,41 +49,34 @@ const DatePresentation = (props: DatePresentationProps) => {
 
   throwUnsupportedDateLocaleError(dateFormat.locale)
 
-  const locale = useRef(require('date-fns/locale/en-GB'))
-
-  const [formattedDate, setFormattedDate] = useState('--')
-
   const textFormat = isFunction(_TextFormat)
     ? _TextFormat(new Date(data as string | Date).toString(), source)
     : _TextFormat
 
-  const onFormattedDateChange = (date: Date) => {
-    const formatString = dateFormat.formatString
-    if (data && isDate(date)) {
-      setFormattedDate(
-        format(date, formatString, {
-          locale: locale.current
+  const getLocaleFormattedDate = (data: Date | undefined) => {
+    if (data) {
+      if (!isEqual(locale?.code, dateFormat.locale)) {
+        try {
+          locale = require(`date-fns/locale/${dateFormat.locale}`)
+        } catch (e) {
+          console.error(`React Table: could not retrieve date locale`)
+        }
+      }
+
+      const date = new Date(data as string | Date)
+      const formatString = dateFormat.formatString
+      if (isDate(date)) {
+        return format(date, formatString, {
+          locale: locale
         })
-      )
-      return
+      }
+      return '--'
     }
-    setFormattedDate('--')
+
+    return '--'
   }
 
-  useEffect(() => {
-    if (data) {
-      try {
-        locale.current = require(`date-fns/locale/${dateFormat.locale}`)
-      } catch (e) {
-        console.error(`React Table: could not retrieve date locale`)
-      }
-    }
-  }, [dateFormat])
-
-  useEffect(() => {
-    const date = new Date(data as string | Date)
-    onFormattedDateChange(date)
-  }, [locale.current, data])
+  const formattedDate = getLocaleFormattedDate(data)
 
   if (presentationType === 'tag') {
     return (
