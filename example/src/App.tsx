@@ -44,7 +44,7 @@ const db = {
     .fill(0)
     .map((_: number, index: number) => {
       return {
-        key: index.toString(),
+        key: `data-source-example-${index.toString()}`,
         name: 'Simeon Akpanudo ' + index,
         percentageChange: Math.random() * 100 * 3e3,
         netWorth: Math.random() * 10000 * 3e5,
@@ -456,29 +456,28 @@ const App = () => {
                 )
             }}
             enableHoverActions={[true, true, true]}
-            cellSelectionMenu={Array(4).fill(
-              // <Padding horizontal={10} style={{ height: '100%' }}>
-              //   <div
-              //     style={{
-              //       height: '100%',
-              //       borderLeft: '1px solid var(--border-color-split)'
-              //     }}
-              //   />
-              // </Padding>
-              <Tooltip title='Pin selected'>
-                <Button
-                  type='text'
-                  onClick={() => null}
-                  icon={
-                    <span className='anticon'>
-                      <i className='ri-pushpin-line' />
-                    </span>
-                  }
-                >
-                  Pin
-                </Button>
-              </Tooltip>
-            )}
+            cellSelectionMenu={Array(4)
+              .fill(0)
+              .map((_: number, index: number) => {
+                return (
+                  <Tooltip
+                    title='Pin selected'
+                    key={'cellSelectionMenu' + index}
+                  >
+                    <Button
+                      type='text'
+                      onClick={() => null}
+                      icon={
+                        <span className='anticon'>
+                          <i className='ri-pushpin-line' />
+                        </span>
+                      }
+                    >
+                      Pin
+                    </Button>
+                  </Tooltip>
+                )
+              })}
             cellMenu={
               <ReactTable.CellMenu
                 onDelete={() => null}

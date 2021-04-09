@@ -1,5 +1,14 @@
 import React, { useEffect, useMemo, useReducer } from 'react'
-import { Collapse, Typography, Button, Empty, Menu, Dropdown, Row } from 'antd'
+import {
+  Collapse,
+  Typography,
+  Button,
+  Empty,
+  Menu,
+  Dropdown,
+  Row,
+  Popconfirm
+} from 'antd'
 import { isEmpty, isFunction, pick, find, map } from 'lodash'
 import { motion } from 'framer-motion'
 import QuickFilterItem from '../QuickFilterItem'
@@ -203,7 +212,7 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                     overlay={menu}
                     trigger={['click']}
                     arrow
-                    overlayClassName={'ReactTable___QuickFilter-dropdown'}
+                    overlayClassName='ReactTable___QuickFilter-dropdown'
                   >
                     <Button
                       type='default'
@@ -219,13 +228,18 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                 </Empty>
               </motion.div>
             ) : (
-              <motion.div style={{ width: '100%' }}>
+              <motion.div
+                exit={{ opacity: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                style={{ width: '100%' }}
+              >
                 <Align className='filter-body' type='column'>
                   <Align alignStart className='filter-header'>
                     <Dropdown
                       overlay={menu}
                       trigger={['click']}
-                      overlayClassName={'ReactTable___QuickFilter-dropdown'}
+                      overlayClassName='ReactTable___QuickFilter-dropdown'
                       arrow
                     >
                       <Button
@@ -272,21 +286,30 @@ const FilterController: React.FC<FilterControllerProps> = (props) => {
                     style={{ width: '100%' }}
                     className='filter-footer'
                   >
-                    <Align style={{ width: '100%' }} justifyBetween alignCenter>
-                      <Button
-                        type='default'
-                        onClick={clearFilter}
-                        icon={
-                          <span className='anticon'>
-                            <i
-                              className='ri-close-line'
-                              style={{ fontSize: 16 }}
-                            />
-                          </span>
-                        }
-                      >
-                        Clear filter
-                      </Button>
+                    <Align style={{ width: '100%' }} justifyEnd alignCenter>
+                      <Padding right={20}>
+                        <Popconfirm
+                          onConfirm={clearFilter}
+                          title='Are you sure you want to clear this filter？'
+                          okText='Yes'
+                          cancelText='No'
+                          placement='topLeft'
+                        >
+                          <Button
+                            type='default'
+                            icon={
+                              <span className='anticon'>
+                                <i
+                                  className='ri-close-line'
+                                  style={{ fontSize: 16 }}
+                                />
+                              </span>
+                            }
+                          >
+                            Clear filter
+                          </Button>
+                        </Popconfirm>
+                      </Padding>
                       <Button
                         type='primary'
                         onClick={applyFilter}
