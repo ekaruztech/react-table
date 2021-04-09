@@ -69,6 +69,7 @@ const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
                         className={`ReactTable___CellSelection-col ${
                           !isLastElement ? 'CellSelection-border' : ''
                         }`}
+                        key={`ReactTable___CellSelection-col-indexOf-${index}`}
                       >
                         <motion.span
                           initial={{ opacity: 0 }}
