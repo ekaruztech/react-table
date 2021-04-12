@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import { Storage, StorageAPI } from '../storage'
 import { isPlainObject, isString, isUndefined, isNull, isNaN } from 'lodash'
+
 // eslint-disable-next-line no-unused-vars
-import { DataSortObject } from '../../typings'
+import { ColumnType } from '../../typings'
 
 export type ColumnReorderModel = {
   save: boolean
@@ -15,31 +16,30 @@ export type QuickFilterObject = {
 }
 export type QuickFilterModel = Array<QuickFilterObject> | null
 
-export type AdvancedFilterModel = {
-  queryType: 'or' | 'and'
-  filters: Array<{
-    type: string
-    property: string
-    value: any
-  }> | null
+export type CustomFilterPersistedObject = {
+  type: Omit<ColumnType, 'action'>
+  property: string
+  value: any
 }
 
-export type AdvancedSortModel = DataSortObject[] | []
+export interface CustomFilterModel {
+  queryType: 'or' | 'and'
+  filters: CustomFilterPersistedObject[] | null
+}
 
 export type RenderOrderModel = {
   items: { label: string; value: number; type: 'default' | 'custom' }[]
   selected: number
 }
 
-export type ModelProvider = {
+export interface ModelProvider {
   columnReorder: ColumnReorderModel
   quickFilter: QuickFilterModel
   renderOrder: RenderOrderModel
-  advancedFilter: AdvancedFilterModel
-  advancedSort: AdvancedSortModel
+  customFilter: CustomFilterModel
   pagination: PaginationModel
   hasAppliedQuickFilter: boolean
-  hasAppliedAdvancedFilter: boolean
+  hasAppliedCustomFilter: boolean
 }
 export interface PaginationModel {
   page: number
@@ -49,11 +49,10 @@ type ModelField =
   | 'renderOrder'
   | 'columnReorder'
   | 'quickFilter'
-  | 'advancedSort'
-  | 'advancedFilter'
+  | 'customFilter'
   | 'pagination'
   | 'hasAppliedQuickFilter'
-  | 'hasAppliedAdvancedFilter'
+  | 'hasAppliedCustomFilter'
 
 type ModelOptions = {
   override: boolean
@@ -69,11 +68,10 @@ class Model implements ModelAPI {
   public columnReorder: ColumnReorderModel
   public quickFilter: QuickFilterModel
   public renderOrder: RenderOrderModel
-  public advancedFilter: AdvancedFilterModel
-  public advancedSort: AdvancedSortModel
+  public customFilter: CustomFilterModel
   public pagination: PaginationModel
   public hasAppliedQuickFilter: boolean
-  public hasAppliedAdvancedFilter: boolean
+  public hasAppliedCustomFilter: boolean
   public readonly storage: StorageAPI
 
   public static DEFAULT_VALUES: ModelProvider = {
@@ -95,14 +93,13 @@ class Model implements ModelAPI {
       ],
       selected: 15
     },
-    advancedFilter: {
+    customFilter: {
       queryType: 'or',
       filters: []
     },
-    advancedSort: [],
     pagination: { page: 1 },
     hasAppliedQuickFilter: false,
-    hasAppliedAdvancedFilter: false
+    hasAppliedCustomFilter: false
   }
 
   constructor(model: ModelProvider & { name: string }) {
@@ -110,10 +107,9 @@ class Model implements ModelAPI {
     this.columnReorder = model.columnReorder
     this.renderOrder = model.renderOrder
     this.quickFilter = model.quickFilter
-    this.advancedFilter = model.advancedFilter
-    this.advancedSort = model.advancedSort
+    this.customFilter = model.customFilter
     this.pagination = model.pagination
-    this.hasAppliedAdvancedFilter = model.hasAppliedAdvancedFilter
+    this.hasAppliedCustomFilter = model.hasAppliedCustomFilter
     this.hasAppliedQuickFilter = model.hasAppliedQuickFilter
     this.storage = new Storage(model.name, model)
   }
@@ -132,12 +128,11 @@ class Model implements ModelAPI {
       if (Array.isArray(this[field]) && Array.isArray(value)) {
         if (options?.override) {
           this.storage.update({ [field]: value })
-
           // @ts-ignore
           this[field] = value
         } else {
           // @ts-ignore
-          const newValue = [...this[field], ...value]
+          const newValue = [...(this[field] ?? []), ...value]
           this.storage.update({ [field]: newValue })
           // @ts-ignore
           this[field] = newValue
@@ -173,60 +168,55 @@ class Model implements ModelAPI {
   }
 }
 
-type ExposedModelProps = {
+interface ExposedModelProps {
   quickFilter: QuickFilterModel
   renderOrder: number
-  advancedFilter: AdvancedFilterModel
-  advancedSort: AdvancedSortModel
+  customFilter: CustomFilterModel
   pagination: PaginationModel
   hasAppliedQuickFilter: boolean
-  hasAppliedAdvancedFilter: boolean
+  hasAppliedCustomFilter: boolean
   name: string
 }
 
 type ExposedModelFields =
   | 'quickFilter'
-  | 'advancedFilter'
+  | 'customFilter'
   | 'advancedSort'
   | 'pagination'
 
 class ExposedModel {
   public quickFilter: QuickFilterModel
   public renderOrder: number
-  public advancedFilter: AdvancedFilterModel
-  public advancedSort: AdvancedSortModel
+  public customFilter: CustomFilterModel
   public pagination: PaginationModel
   private readonly storage: StorageAPI
   public hasAppliedQuickFilter: boolean
-  public hasAppliedAdvancedFilter: boolean
+  public hasAppliedCustomFilter: boolean
   private readonly fields: ExposedModelFields[] = [
     'quickFilter',
-    'advancedFilter',
-    'advancedSort',
+    'customFilter',
     'pagination'
   ]
 
   private static DEFAULT_VALUES: ExposedModelProps = {
     quickFilter: [],
     renderOrder: 15,
-    advancedFilter: {
+    customFilter: {
       queryType: 'or',
       filters: []
     },
-    advancedSort: [],
     pagination: { page: 1 },
     name: '@voomsway/react-table',
-    hasAppliedAdvancedFilter: false,
+    hasAppliedCustomFilter: false,
     hasAppliedQuickFilter: false
   }
 
   constructor(exposedModel: ExposedModelProps) {
     this.renderOrder = exposedModel.renderOrder
     this.quickFilter = exposedModel.quickFilter
-    this.advancedFilter = exposedModel.advancedFilter
-    this.advancedSort = exposedModel.advancedSort
+    this.customFilter = exposedModel.customFilter
     this.pagination = exposedModel.pagination
-    this.hasAppliedAdvancedFilter = exposedModel.hasAppliedQuickFilter
+    this.hasAppliedCustomFilter = exposedModel.hasAppliedQuickFilter
     this.hasAppliedQuickFilter = exposedModel.hasAppliedQuickFilter
     this.storage = new Storage(exposedModel.name)
   }
@@ -325,18 +315,13 @@ class ExposedModel {
   public resetField(field: ExposedModelFields): void {
     this.validFields(field)
     switch (field) {
-      case 'advancedFilter':
-        this.store(field, ExposedModel.DEFAULT_VALUES.advancedFilter, {
+      case 'customFilter':
+        this.store(field, ExposedModel.DEFAULT_VALUES.customFilter, {
           override: true
         })
         break
       case 'quickFilter':
         this.store(field, ExposedModel.DEFAULT_VALUES.quickFilter, {
-          override: true
-        })
-        break
-      case 'advancedSort':
-        this.store(field, ExposedModel.DEFAULT_VALUES.advancedSort, {
           override: true
         })
         break

@@ -403,11 +403,6 @@ const App = () => {
             onRenderOrderChange={onRenderOrderChange}
             enableExport
             onExport={(key) => console.log(key)}
-            onSortApply={(sort: any) => console.log(sort)}
-            onSortClear={() => console.log('sort cleared')}
-            onFilterApply={(filter: any) => console.log(filter)}
-            onFilterClear={() => console.log('sort cleared')}
-            enableDataManagement={true}
           />
           <ReactTable.QuickFilter
             onApply={onApply}

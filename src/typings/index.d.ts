@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { ReactElement, ReactNode } from 'react'
 // eslint-disable-next-line no-unused-vars
-import { CellMenuProps } from '../ReactTable/lib/Table/utils/CellMenu'
+import { CellMenuProps } from '../Table/lib/Table/utils/CellMenu'
 // eslint-disable-next-line no-unused-vars
 import Model from '../_utils/model'
 import { SupportedDateLocales } from '../_utils/locales'
@@ -78,7 +78,7 @@ export type ColumnCurrencyFormat =
   | CurrencyFormat
   | ((text?: number | string, source?: any) => CurrencyFormat)
 
-export interface TextFormat {
+export interface ColumnTextFormat {
   direction?: 'ltr' | 'rtl'
   fontWeight?:
     | 100
@@ -113,9 +113,6 @@ export interface TextFormat {
   textOverflow?: 'clip' | 'ellipsis' | 'string'
 }
 
-export type ColumnTextFormat =
-  | TextFormat
-  | ((text?: number | string, source?: any) => TextFormat)
 
 export interface ColumnFilterOptions {
   /**
@@ -226,7 +223,7 @@ export interface ColumnProps {
   /**
    * Enables/Disables the advanced filter for a specified column
    */
-  advancedFilter?: boolean
+  customFilter?: boolean
   /**
    * Number format settings (applicable to only type of number)
    */
@@ -248,59 +245,12 @@ export interface ColumnProps {
    */
   filterOptions?: ColumnFilterOptions
 }
+
 export interface TableColumnProps {
   all: Array<ColumnProps>
   selected: Array<ColumnProps>
   unselected: Array<ColumnProps>
 }
-
-export type DataFilterObject = {
-  property: null | string
-  filterType: null | string
-  value: null | string | boolean | number | Date
-  propertyType: Omit<ColumnType, 'action'>
-}
-
-export type DataSortObject = {
-  order: 'ascending' | 'descending'
-  range: { from: number; to: number } | null
-  property: string | null
-}
-export interface DataManagementFilterProps {
-  filterIndex: number
-  filterProps: DataFilterObject
-}
-export interface DataManagementSortProps {
-  sortIndex: number
-  sortProps: DataSortObject
-}
-
-export type TableFilterProps = ColumnProps & DataManagementFilterProps
-
-export interface DateManagementState {
-  filters: Array<DataManagementFilterProps>
-  sorts: Array<DataManagementSortProps>
-}
-
-export type DateManagementAction =
-  | {
-      type: 'ADD_FILTER'
-      payload: {
-        filterProps: DataFilterObject
-      }
-    } // typescript union types allow for leading |'s to have nicer layout
-  | { type: 'REMOVE_FILTER'; payload: { filterIndex: number } }
-  | { type: 'UPDATE_FILTER'; payload: DataManagementFilterProps }
-  | { type: 'RESET_FILTER' }
-  | {
-      type: 'ADD_SORT'
-      payload: {
-        sortProps: DataSortObject
-      }
-    }
-  | { type: 'REMOVE_SORT'; payload: { sortIndex: number } }
-  | { type: 'RESET_SORT' }
-  | { type: 'UPDATE_SORT'; payload: DataManagementSortProps }
 
 export interface OnCellSelect {
   onPin: (source: any) => void
