@@ -20,7 +20,7 @@ interface ITableCell {
 }
 
 // TODO: Reduce re-renders for hover actions
-const TableCell: React.FC<ITableCell> = (props) => {
+const TableCell = (props: ITableCell) => {
   const { source, extraColumnsLength = 1, index } = props
 
   const trRef = useRef()
@@ -178,7 +178,6 @@ const TableCell: React.FC<ITableCell> = (props) => {
               cellMenu,
               cellMenuCallback
             )
-
 
             return (
               <Fragment>

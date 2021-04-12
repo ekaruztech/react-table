@@ -11,10 +11,9 @@ interface ICellSelectionHeader {
   cellSelectionMenu?: React.ReactNode[]
   cellSelectionSpacing?: number[] | number
 }
-const CellSelectionHeader: React.FC<ICellSelectionHeader> = (props) => {
+const CellSelectionHeader = (props: ICellSelectionHeader) => {
   const { cellSelectionMenu, cellSelectionSpacing = 4 } = props
 
-  // TODO: moved inline styles to css file
 
   return !isEmpty(cellSelectionMenu) ? (
     <ReactTableContext.Consumer>
