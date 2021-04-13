@@ -46,7 +46,8 @@ const db = {
       return {
         key: `data-source-example-${index.toString()}`,
         name: 'Simeon Akpanudo ' + index,
-        percentageChange: Math.random() * 100 * 3e3,
+        percentageChange: 0,
+        // percentageChange: Math.random() * 100 * 3e3,
         netWorth: Math.random() * 10000 * 3e5,
         address: '10 Downing Street',
         hobby: 'coding',

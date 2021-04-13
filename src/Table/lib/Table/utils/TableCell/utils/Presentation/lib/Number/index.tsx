@@ -7,7 +7,7 @@ import {
 } from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
 import { PresetColors } from '../../../../../../../../../_utils/colors'
-import { isFunction, isPlainObject } from 'lodash'
+import { isFunction, isPlainObject, isString, isNumber } from 'lodash'
 
 type NumberPresentationProps = {
   presentationType: 'tag' | undefined
@@ -48,7 +48,7 @@ const NumberPresentation = (props: NumberPresentationProps) => {
         }}
       >
         <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
-          {data ? number : '--'}
+          {isString(data) || isNumber(data) ? number : '--'}
         </TextFormat>
       </Tag>
     )
@@ -62,7 +62,7 @@ const NumberPresentation = (props: NumberPresentationProps) => {
       }}
     >
       <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
-        {data ? number : '--'}
+        {isString(data) || isNumber(data) ? number : '--'}
       </TextFormat>
     </div>
   )

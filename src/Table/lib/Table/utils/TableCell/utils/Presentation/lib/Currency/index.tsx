@@ -10,7 +10,7 @@ import {
   ColumnTextFormat
 } from '../../../../../../../../../typings'
 import TextFormat from '../TextFormat'
-import { isFunction, isPlainObject } from 'lodash'
+import { isFunction, isNumber, isPlainObject, isString } from 'lodash'
 
 type CurrencyPresentationProps = {
   source: any
@@ -53,7 +53,7 @@ const CurrencyPresentation = (props: CurrencyPresentationProps) => {
         }}
       >
         <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
-          {data ? currency : '--'}
+          {isString(data) || isNumber(data) ? currency : '--'}
         </TextFormat>
       </Tag>
     )
@@ -67,7 +67,7 @@ const CurrencyPresentation = (props: CurrencyPresentationProps) => {
       }}
     >
       <TextFormat textFormat={isPlainObject(textFormat) ? textFormat : {}}>
-        {data ? currency : '--'}
+        {isString(data) || isNumber(data) ? currency : '--'}
       </TextFormat>
     </div>
   )
